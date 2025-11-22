@@ -29,6 +29,9 @@ import java.sql.ResultSet;
  */
 public class FormLogin{
     JFrame frame;
+    Connection conn;
+    PreparedStatement cmd;
+    ResultSet rs;
     JLabel headerLb, welcomeLb, userLb, passLb, forgetpassLb;
     JButton btnLogin1, btnRegister1, btnLogin2, btnRegister2;
     JTextField txtusername;
@@ -138,18 +141,22 @@ public class FormLogin{
                     try{
                         String username = txtusername.getText();
                         String password= txtpass.getText();
-                        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/logindb", "root", "manuth@9273$");
-                        PreparedStatement preparedStatement=connection.prepareStatement("select * from userlogintable");
-                        ResultSet resultSet = preparedStatement.executeQuery();
+                        String dbName = "jdbc:mysql://localhost:3306/logindb";
+                        String dbUser = "root";
+                        String dbPass = "manuth@9273$";
+                        conn = DriverManager.getConnection(dbName, dbUser, dbPass);
+                        cmd = conn.prepareStatement("select * from userlogintable");
+                        rs = cmd.executeQuery();
                         if(username.equals("")||password.equals("")){
                             JOptionPane.showMessageDialog(null, "Please Enter all Fields");
                         }else{
-                            while(resultSet.next()){
-                                if(username.equalsIgnoreCase(resultSet.getString("USERNAME")) && password.equalsIgnoreCase(resultSet.getString("PASSWORD"))){
-                                    JOptionPane.showMessageDialog(null,"Login Successful");
+                            while(rs.next()){
+                                if(username.equalsIgnoreCase(rs.getString("USERNAME")) && password.equalsIgnoreCase(rs.getString("PASSWORD"))){
+                                    // JOptionPane.showMessageDialog(null,"Login Successful");
                                     new MainForm();
+                                    frame.setVisible(false);
                                 }
-                            }if(resultSet.isAfterLast()){
+                            }if(rs.isAfterLast()){
                                 JOptionPane.showMessageDialog(null,"Username or Password did not match");
                             }
                         }
