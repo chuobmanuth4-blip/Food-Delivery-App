@@ -90,10 +90,10 @@ public class FormLogin{
         btnRegister2.setForeground(Color.WHITE);
         btnRegister2.setBackground(Color.BLUE);
         // Create TextField
-        txtusername  = new JTextField("manuth9273");
+        txtusername  = new JTextField();
         txtusername.setBounds(48,120,290,30);
 
-        txtpass = new JPasswordField("0009273");
+        txtpass = new JPasswordField();
         txtpass.setBounds(48,180,290,30);
         // Create Panel
         pnl1 = new JPanel();
@@ -141,11 +141,12 @@ public class FormLogin{
                     try{
                         String username = txtusername.getText();
                         String password= txtpass.getText();
-                        String dbName = "jdbc:mysql://localhost:3306/logindb";
+                        String dbName = "jdbc:mysql://localhost:3306/fooddelivery";
                         String dbUser = "root";
                         String dbPass = "manuth@9273$";
                         conn = DriverManager.getConnection(dbName, dbUser, dbPass);
-                        cmd = conn.prepareStatement("select * from userlogintable");
+                        String sql = "SELECT * FROM Users";
+                        cmd = conn.prepareStatement(sql);
                         rs = cmd.executeQuery();
                         if(username.equals("")||password.equals("")){
                             JOptionPane.showMessageDialog(null, "Please Enter all Fields");

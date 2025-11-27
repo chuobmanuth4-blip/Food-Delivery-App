@@ -11,11 +11,16 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -25,9 +30,11 @@ import javax.swing.JTextField;
  * @author manut
  */
 public class SignUp extends JFrame{
+    Connection conn;
+    PreparedStatement cmd;
     JFrame frame;
     JLabel headerLb, welcomeLb, userLb, passLb1, passLb2, genderLb; //registerLb, footerLb;
-    JButton btnLogin1, btnRegister1, btnLogin2, btnRegister2;
+    JButton btnLogin1, btnRegister1, btnSignUp, btnRegister2;
     JTextField txtusername;
     JPasswordField txtpass1, txtpass2;
     JCheckBox cb1, cb2;
@@ -77,11 +84,11 @@ public class SignUp extends JFrame{
         btnRegister1.setForeground(Color.WHITE);
         btnRegister1.setBackground(Color.red);
 
-        btnLogin2 = new JButton("Sign Up");
-        btnLogin2.setFont(new Font("Arial", Font.BOLD, 15));
-        btnLogin2.setBounds(48,350,290,30);
-        btnLogin2.setForeground(Color.WHITE);
-        btnLogin2.setBackground(Color.BLUE);
+        btnSignUp = new JButton("Sign Up");
+        btnSignUp.setFont(new Font("Arial", Font.BOLD, 15));
+        btnSignUp.setBounds(48,350,290,30);
+        btnSignUp.setForeground(Color.WHITE);
+        btnSignUp.setBackground(Color.BLUE);
 
         btnRegister2 = new JButton("Alrady have an account? Log In");
         btnRegister2.setFont(new Font("Arial", Font.BOLD, 12));
@@ -128,12 +135,48 @@ public class SignUp extends JFrame{
         pnl2.add(genderLb);
         pnl2.add(cb1);
         pnl2.add(cb2);
-        pnl2.add(btnLogin2);
+        pnl2.add(btnSignUp);
         pnl2.add(btnRegister2);        
         // Add to Frame
         frame.add(pnl1, BorderLayout.WEST);
         frame.add(pnl2, BorderLayout.CENTER);
         // Process
+        btnSignUp.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                String username = txtusername.getText();
+                String password = txtpass1.getText();
+                String gender;
+                if (cb1.isSelected()) {
+                    gender = "Male";
+                } else if (cb2.isSelected()) {
+                    gender = "Female";
+                } else {
+                    gender = "Not selected";
+                }
+                String dbCon = "jdbc:mysql://localhost:3306/fooddelivery";
+                String dbName = "root";
+                String dbPass = "manuth@9273$";
+                 try {
+                    Class.forName("com.mysql.cj.jdbc.Driver");
+                    conn = DriverManager.getConnection(dbCon, dbName, dbPass);
+
+                    String sql = "INSERT INTO Users VALUES (?, ?, ?)";
+                    cmd = conn.prepareStatement(sql);            
+                    cmd.setString(1, username); 
+                    cmd.setString(2, gender);
+                    cmd.setString(3, password);
+                    cmd.executeUpdate();  
+                    JOptionPane.showMessageDialog(null, "Your sign‑up was successful. Please log in to your account!");
+                    new FormLogin();
+                    } 
+                    catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }catch (Exception exception) {
+                        System.out.println(exception);
+                    }
+            }
+        });
         btnLogin1.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
