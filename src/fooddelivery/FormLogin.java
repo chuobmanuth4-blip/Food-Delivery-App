@@ -12,6 +12,8 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -45,7 +47,7 @@ public class FormLogin{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
         // Create Label
-        headerLb = new JLabel("Admin Log In", JLabel.CENTER);
+        headerLb = new JLabel("Log In", JLabel.CENTER);
         headerLb.setFont(new Font("Arial", Font.BOLD, 20));
         headerLb.setBounds(100,50,200,50);
         headerLb.setForeground(Color.BLACK);
@@ -171,6 +173,14 @@ public class FormLogin{
             @Override
             public void actionPerformed(ActionEvent e){
                 new SignUp();
+                frame.setVisible(false);
+            }
+        });
+        forgetpassLb.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Your code here
+                new ForgetPassword();
                 frame.setVisible(false);
             }
         });

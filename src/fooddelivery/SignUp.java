@@ -33,9 +33,9 @@ public class SignUp extends JFrame{
     Connection conn;
     PreparedStatement cmd;
     JFrame frame;
-    JLabel headerLb, welcomeLb, userLb, passLb1, passLb2, genderLb; //registerLb, footerLb;
+    JLabel headerLb, welcomeLb, userLb, passLb1, passLb2, genderLb, emailLb;
     JButton btnLogin1, btnRegister1, btnSignUp, btnRegister2;
-    JTextField txtusername;
+    JTextField txtusername, txtEmail;
     JPasswordField txtpass1, txtpass2;
     JCheckBox cb1, cb2;
     JPanel pnl1, pnl2;
@@ -54,12 +54,16 @@ public class SignUp extends JFrame{
                 
         headerLb = new JLabel("Sign Up", JLabel.CENTER);
         headerLb.setFont(new Font("Arial", Font.BOLD, 20));
-        headerLb.setBounds(100,50,200,50);
+        headerLb.setBounds(100,10,200,30);
         headerLb.setForeground(Color.BLACK);
         
         userLb = new JLabel("Username");
-        userLb.setBounds(50,100,100,20);
+        userLb.setBounds(50,50,100,20);
         userLb.setForeground(Color.BLACK);
+        
+        emailLb = new JLabel("Email");
+        emailLb.setBounds(50,105,100,20);
+        emailLb.setForeground(Color.BLACK);
 
         passLb1 = new JLabel("Password");
         passLb1.setBounds(50,160,100,20);
@@ -97,8 +101,11 @@ public class SignUp extends JFrame{
         btnRegister2.setBackground(Color.BLUE);
         // Create TextField
         txtusername  = new JTextField("");
-        txtusername.setBounds(48,120,290,30);
-
+        txtusername.setBounds(48,70,290,30);
+        
+        txtEmail = new JTextField("");
+        txtEmail.setBounds(48,125,290,30);
+        
         txtpass1 = new JPasswordField("");
         txtpass1.setBounds(48,180,290,30);
         
@@ -128,6 +135,8 @@ public class SignUp extends JFrame{
         pnl2.add(headerLb);
         pnl2.add(userLb);
         pnl2.add(txtusername);
+        pnl2.add(emailLb);      
+        pnl2.add(txtEmail);
         pnl2.add(passLb1); 
         pnl2.add(txtpass1);
         pnl2.add(passLb2);
@@ -146,6 +155,7 @@ public class SignUp extends JFrame{
             public void actionPerformed(ActionEvent e){
                 String username = txtusername.getText();
                 String password = txtpass1.getText();
+                String email = txtEmail.getText();
                 String gender;
                 if (cb1.isSelected()) {
                     gender = "Male";
@@ -161,14 +171,16 @@ public class SignUp extends JFrame{
                     Class.forName("com.mysql.cj.jdbc.Driver");
                     conn = DriverManager.getConnection(dbCon, dbName, dbPass);
 
-                    String sql = "INSERT INTO Users VALUES (?, ?, ?)";
+                    String sql = "INSERT INTO Users(Username,Password,Gender,Email) VALUES (?, ?, ?, ?);";
                     cmd = conn.prepareStatement(sql);            
                     cmd.setString(1, username); 
-                    cmd.setString(2, gender);
-                    cmd.setString(3, password);
+                    cmd.setString(2, password);
+                    cmd.setString(3, gender);
+                    cmd.setString(4, email);
                     cmd.executeUpdate();  
                     JOptionPane.showMessageDialog(null, "Your sign‑up was successful. Please log in to your account!");
                     new FormLogin();
+                    frame.setVisible(false);
                     } 
                     catch (SQLException ex) {
                         ex.printStackTrace();
