@@ -4,7 +4,11 @@
  */
 package fooddelivery;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -21,41 +25,60 @@ import java.sql.ResultSet;
  *
  * @author manut
  */
-public class ResetPassword extends JFrame{
-    JFrame frame;
+public class ResetPassword{
     Connection conn;
-    private String email; // email from first form
+    String email; // email from first form'
+    JFrame frame;
+    JLabel headerLb, userLb, pass1Lb, pass2Lb, informLb;
     JTextField txtUsername;
     JPasswordField txtNewPass, txtConfirm;
     JButton btnReset;
     //Connection conn;
 
-    public ResetPassword(String email) {
+    public ResetPassword(String Email) {
+        this.email = Email;
+        // Create Frame
         frame = new JFrame();
-        this.email = email;
-
-        frame.setSize(400, 250);
-        frame.setLocationRelativeTo(null);
+        frame.setSize(400, 400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        frame.setLayout(new GridLayout(4, 2, 10, 10));
-
-        frame.add(new JLabel("Username:"));
+        frame.setLayout(null);
+        // Create Label
+        headerLb = new JLabel("Reset Password");
+        headerLb.setFont(new Font("Arial", Font.BOLD, 22));
+        headerLb.setForeground(Color.BLUE);
+        headerLb.setBounds(110,15,200,20);
+        informLb = new JLabel("Enter your username and a new password.");
+        informLb.setFont(new Font("Arial", Font.ITALIC, 15));
+        informLb.setBounds(50,50,300,20);    
+        userLb = new JLabel("Username");
+        userLb.setBounds(45,90,100,10);
+        pass1Lb = new JLabel("New Password");
+        pass1Lb.setBounds(45,150,100,10);
+        pass2Lb = new JLabel("Confirm Password");
+        pass2Lb.setBounds(45,210,100,10);
+        // Create TextField
         txtUsername = new JTextField();
-        frame.add(txtUsername);
-
-        frame.add(new JLabel("New Password:"));
+        txtUsername.setBounds(43,110,300,30);
         txtNewPass = new JPasswordField();
-        frame.add(txtNewPass);
-
-        frame.add(new JLabel("Confirm Password:"));
+        txtNewPass.setBounds(43,170,300,30);
         txtConfirm = new JPasswordField();
-        frame.add(txtConfirm);
-
-        btnReset = new JButton("Reset Password");
-        frame.add(new JLabel());
-        frame.add(btnReset);
-        frame.setVisible(true);
+        txtConfirm.setBounds(43,230,300,30);     
+        // Create Button  
+        btnReset = new JButton("Reset");
+        btnReset.setBackground(Color.GREEN);
+        btnReset.setForeground(Color.WHITE);
+        btnReset.setFont(new Font("Arial", Font.BOLD, 15));
+        btnReset.setBounds(43,290,300,40);
+        // Add Components to Frame
+        frame.add(headerLb);
+        frame.add(informLb);
+        frame.add(userLb);
+        frame.add(txtUsername);
+        frame.add(pass1Lb);
+        frame.add(txtNewPass);
+        frame.add(pass2Lb); 
+        frame.add(txtConfirm);   
+        frame.add(btnReset);           
         // Process
         btnReset.addActionListener(new ActionListener(){
             @Override
@@ -92,10 +115,10 @@ public class ResetPassword extends JFrame{
                         pst.setString(1, pass);
                         pst.setString(2, email);
                         pst.setString(3, username);
-
                         pst.executeUpdate();
-
-                        JOptionPane.showMessageDialog(null, "Password updated successfully!");
+                        JOptionPane.showMessageDialog(null, "Password updated successfull. Please log in with your new password!");
+                        new FormLogin();
+                        frame.setVisible(false);
                     } else {
                         JOptionPane.showMessageDialog(null, "Username does not match this email!");
                     }
@@ -105,5 +128,9 @@ public class ResetPassword extends JFrame{
                 }
             }
         });
+        // Show Frame 
+        frame.setVisible(true);
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
     }
 }

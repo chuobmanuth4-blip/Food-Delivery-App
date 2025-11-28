@@ -32,5 +32,6 @@ public class FoodDelivery {
         } 
         new FormLogin();
         //new ForgetPassword();
+        //new ResetPassword();
     }
 }

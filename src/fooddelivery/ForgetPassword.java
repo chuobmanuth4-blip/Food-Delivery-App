@@ -26,7 +26,7 @@ import javax.swing.JTextField;
  *
  * @author manut
  */
-public class ForgetPassword extends JFrame{
+public class ForgetPassword{
     Connection conn;
     PreparedStatement cmd;
     ResultSet rs;
@@ -112,7 +112,7 @@ public class ForgetPassword extends JFrame{
                    rs = cmd.executeQuery();
                    if(rs.next()){
                         new ResetPassword(email);
-                        //this.dispose();
+                        frame.setVisible(false);
                    }
                    else{
                        JOptionPane.showMessageDialog(null, "Email not found!");
