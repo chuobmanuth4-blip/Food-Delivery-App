@@ -23,7 +23,7 @@ import javax.swing.JPanel;
 public class UserForm extends JFrame{
     JFrame frame;
     JLabel lb1;
-    JButton btn1, btn2, btn3, btn4, btn5, btn6, btn7;
+    JButton btn1, btn2, btn3, btn4, btn5;
     JPanel pnlN, pnlW, pnlC;
     ImageIcon img;
     // Constuctor
@@ -39,10 +39,11 @@ public class UserForm extends JFrame{
         lb1 = new JLabel("Get it hot. Get it fast. GetFood.", img, JLabel.CENTER);
         lb1.setFont(new Font("Arial", Font.BOLD, 30));
         // Create Button
-        btn1 = new JButton("Home");
-        btn3 = new JButton("Order Food");
-        btn6 = new JButton("Setting");
-        btn7 = new JButton("Log Out");
+        btn1 = new JButton("Menu");
+        btn2 = new JButton("Order");
+        btn3 = new JButton("Profile");
+        btn4 = new JButton("About");        
+        btn5 = new JButton("Log Out");
         // Create Panel
         pnlN = new JPanel();
         pnlN.setLayout(new BorderLayout());
@@ -53,12 +54,15 @@ public class UserForm extends JFrame{
         pnlW.setPreferredSize(new Dimension(150,0));
         pnlW.setLayout(new GridLayout(10,1));
         pnlW.add(btn1);
-        pnlW.add(btn3);
-        pnlW.add(btn6);        
+        pnlW.add(btn2);
+        pnlW.add(btn3);        
+        pnlW.add(btn4);                
         pnlW.add(new JLabel(""));
         pnlW.add(new JLabel(""));
         pnlW.add(new JLabel(""));
-        pnlW.add(btn7);
+        pnlW.add(new JLabel(""));
+        pnlW.add(new JLabel(""));        
+        pnlW.add(btn5);
         
         pnlC = new JPanel();
         pnlC.setBackground(Color.black);

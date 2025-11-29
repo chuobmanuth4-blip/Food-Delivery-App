@@ -9,7 +9,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -23,7 +22,7 @@ import javax.swing.JPanel;
 public class DeliveryForm extends JFrame{
     JFrame frame;
     JLabel lb1;
-    JButton btn1, btn2, btn3, btn4, btn5, btn6, btn7;
+    JButton btn1, btn2, btn3, btn4;
     JPanel pnlN, pnlW, pnlC;
     ImageIcon img;
     // Constuctor
@@ -39,10 +38,10 @@ public class DeliveryForm extends JFrame{
         lb1 = new JLabel("Get it hot. Get it fast. GetFood.", img, JLabel.CENTER);
         lb1.setFont(new Font("Arial", Font.BOLD, 30));
         // Create Button
-        btn1 = new JButton("Home");
-        btn3 = new JButton("Order Food");
-        btn6 = new JButton("Setting");
-        btn7 = new JButton("Log Out");
+        btn1 = new JButton("Order");
+        btn2 = new JButton("Profile");
+        btn3 = new JButton("About");
+        btn4 = new JButton("Log Out");        
         // Create Panel
         pnlN = new JPanel();
         pnlN.setLayout(new BorderLayout());
@@ -53,12 +52,15 @@ public class DeliveryForm extends JFrame{
         pnlW.setPreferredSize(new Dimension(150,0));
         pnlW.setLayout(new GridLayout(10,1));
         pnlW.add(btn1);
-        pnlW.add(btn3);
-        pnlW.add(btn6);        
+        pnlW.add(btn2);
+        pnlW.add(btn3); 
         pnlW.add(new JLabel(""));
         pnlW.add(new JLabel(""));
         pnlW.add(new JLabel(""));
-        pnlW.add(btn7);
+        pnlW.add(new JLabel(""));
+        pnlW.add(new JLabel(""));
+        pnlW.add(new JLabel(""));        
+        pnlW.add(btn4);
         
         pnlC = new JPanel();
         pnlC.setBackground(Color.black);

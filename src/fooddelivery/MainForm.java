@@ -43,13 +43,12 @@ public class MainForm extends JFrame{
         lb1 = new JLabel("Get it hot. Get it fast. GetFood.", img, JLabel.CENTER);
         lb1.setFont(new Font("Arial", Font.BOLD, 30));
         // Create Button
-        btn1 = new JButton("Home");
-        btn2 = new JButton("Add Foods");
-        btn3 = new JButton("Order Food");
-        btn4 = new JButton("Dashboard");
-        btn5 = new JButton("Print Receipt");
-        btn6 = new JButton("Setting");
-        btn7 = new JButton("Log Out");
+        btn1 = new JButton("Products");
+        btn2 = new JButton("Orders");
+        btn3 = new JButton("Reports");
+        btn4 = new JButton("Settting ");
+        btn5 = new JButton("About");
+        btn6 = new JButton("Log Out");
         // Create Panel
         pnlN = new JPanel();
         pnlN.setLayout(new BorderLayout());
@@ -64,11 +63,11 @@ public class MainForm extends JFrame{
         pnlW.add(btn3);
         pnlW.add(btn4);
         pnlW.add(btn5); 
-        pnlW.add(btn6);        
         pnlW.add(new JLabel(""));
         pnlW.add(new JLabel(""));
         pnlW.add(new JLabel(""));
-        pnlW.add(btn7);
+        pnlW.add(new JLabel(""));
+        pnlW.add(btn6);
         
         pnlC = new JPanel();
         pnlC.setBackground(Color.black);
