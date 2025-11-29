@@ -25,6 +25,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import javax.swing.JRadioButton;
+import java.sql.SQLException;
 /**
  *
  * @author manut
@@ -38,6 +40,7 @@ public class FormLogin{
     JButton btnLogin1, btnRegister1, btnLogin2, btnRegister2;
     JTextField txtusername;
     JPasswordField txtpass;
+    JRadioButton rbtn;
     JPanel pnl1, pnl2;
     //Constructor
     public FormLogin(){
@@ -91,6 +94,9 @@ public class FormLogin{
         btnRegister2.setBounds(48,350,290,30);
         btnRegister2.setForeground(Color.WHITE);
         btnRegister2.setBackground(Color.BLUE);
+        // Create RadioButton
+        rbtn = new JRadioButton("Show password");
+        rbtn.setBounds(50,215,150,20);
         // Create TextField
         txtusername  = new JTextField();
         txtusername.setBounds(48,120,290,30);
@@ -115,6 +121,7 @@ public class FormLogin{
         pnl2.add(txtusername);
         pnl2.add(passLb); 
         pnl2.add(txtpass);
+        pnl2.add(rbtn);
         pnl2.add(forgetpassLb);
         pnl2.add(btnLogin2);
         pnl2.add(btnRegister2);        
@@ -122,6 +129,16 @@ public class FormLogin{
         frame.add(pnl1, BorderLayout.WEST);
         frame.add(pnl2, BorderLayout.CENTER);
         // Process
+        rbtn.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if(rbtn.isSelected()) {
+                    txtpass.setEchoChar((char)0);
+                } else {
+                    txtpass.setEchoChar('*');
+                }
+            }
+        });
         btnLogin1.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
@@ -139,35 +156,52 @@ public class FormLogin{
         btnLogin2.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
-                if(e.getSource()== btnLogin2){
-                    try{
-                        String username = txtusername.getText();
-                        String password= txtpass.getText();
-                        String dbName = "jdbc:mysql://localhost:3306/fooddelivery";
-                        String dbUser = "root";
-                        String dbPass = "manuth@9273$";
-                        conn = DriverManager.getConnection(dbName, dbUser, dbPass);
-                        String sql = "SELECT * FROM Users";
-                        cmd = conn.prepareStatement(sql);
-                        rs = cmd.executeQuery();
-                        if(username.equals("")||password.equals("")){
-                            JOptionPane.showMessageDialog(null, "Please Enter all Fields");
-                        }else{
-                            while(rs.next()){
-                                if(username.equalsIgnoreCase(rs.getString("USERNAME")) && password.equalsIgnoreCase(rs.getString("PASSWORD"))){
-                                    // JOptionPane.showMessageDialog(null,"Login Successful");
-                                    new MainForm();
-                                    frame.setVisible(false);
-                                }
-                            }if(rs.isAfterLast()){
-                                JOptionPane.showMessageDialog(null,"Username or Password did not match");
-                            }
+                String username = txtusername.getText();
+                String password = txtpass.getText();
+                if(username.isEmpty() || password.isEmpty()){
+                    JOptionPane.showMessageDialog(null, "Please fill in all required fields!");
+                    return;
+                }
+                try{
+                    String dbCon = "jdbc:mysql://localhost:3306/fooddelivery";
+                    String dbName = "root";
+                    String dbPass = "manuth@9273$";
+                    Class.forName("com.mysql.cj.jdbc.Driver");
+                    conn = DriverManager.getConnection(dbCon, dbName, dbPass);
+                    
+                    String sql = "SELECT * FROM Users WHERE Username = ? AND Password = ?";
+                    cmd = conn.prepareStatement(sql);
+                    cmd.setString(1, username);
+                    cmd.setString(2, password);
+                    rs = cmd.executeQuery();
+                    if (rs.next()){
+                        String role  = rs.getString("Role");
+                        if(role.equals("Customer")){
+                            new UserForm();
                         }
-                    }catch(Exception exception){
-                        System.out.println("Error while connecting to the database");
+                        else if(role.equals("Admin")){
+                            new MainForm();
+                        }
+                        else if(role.equals("Delivery Person")){
+                            new DeliveryForm();
+                        }
+                        else {
+                            JOptionPane.showMessageDialog(null, "Unknown role!");
+                            return;
+                        }
+                        frame.setVisible(false);
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "Invalid Username or Password!");
                     }
                 }
-            }
+                catch(SQLException ex){
+                    ex.printStackTrace();
+                }
+                catch (Exception exception) {
+                        System.out.println(exception);
+                }
+            } 
         });
         btnRegister2.addActionListener(new ActionListener(){
             @Override

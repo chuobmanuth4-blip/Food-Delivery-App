@@ -24,7 +24,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-
+import java.sql.ResultSet;
 /**
  *
  * @author manut
@@ -32,12 +32,13 @@ import javax.swing.JTextField;
 public class SignUp extends JFrame{
     Connection conn;
     PreparedStatement cmd;
+    ResultSet rs;
     JFrame frame;
     JLabel headerLb, welcomeLb, userLb, passLb1, passLb2, genderLb, emailLb;
     JButton btnLogin1, btnRegister1, btnSignUp, btnRegister2;
     JTextField txtusername, txtEmail;
     JPasswordField txtpass1, txtpass2;
-    JCheckBox cb1, cb2;
+    JCheckBox cb1, cb2, cb3;
     JPanel pnl1, pnl2;
     //Constructor
     public SignUp(){
@@ -115,10 +116,13 @@ public class SignUp extends JFrame{
         cb1 = new JCheckBox("Male");
         cb1.setBounds(50,300,50,20);
         cb2 = new JCheckBox("Female");
-        cb2.setBounds(120,300,100,20);
+        cb2.setBounds(120,300,80,20);
+        cb3 = new JCheckBox("Other");  
+        cb3.setBounds(205,300,100,20);       
         ButtonGroup bg = new ButtonGroup();
         bg.add(cb1);
         bg.add(cb2);
+        bg.add(cb3);
         // Create Panel
         pnl1 = new JPanel();
         pnl1.setBackground(Color.GREEN);
@@ -144,6 +148,7 @@ public class SignUp extends JFrame{
         pnl2.add(genderLb);
         pnl2.add(cb1);
         pnl2.add(cb2);
+        pnl2.add(cb3);
         pnl2.add(btnSignUp);
         pnl2.add(btnRegister2);        
         // Add to Frame
@@ -155,38 +160,67 @@ public class SignUp extends JFrame{
             public void actionPerformed(ActionEvent e){
                 String username = txtusername.getText();
                 String password = txtpass1.getText();
+                String confirmPass = txtpass2.getText();
                 String email = txtEmail.getText();
                 String gender;
+                
+                if (username.isEmpty() || password.isEmpty() || confirmPass.isEmpty() || email.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Please fill in all required fields!");
+                    return; 
+                }
+                if(!password.equals(confirmPass)){
+                    JOptionPane.showMessageDialog(null, "Your new password do not match!");
+                    return;
+                }
                 if (cb1.isSelected()) {
                     gender = "Male";
                 } else if (cb2.isSelected()) {
                     gender = "Female";
-                } else {
-                    gender = "Not selected";
+                } else if (cb3.isSelected()){
+                    gender = "Other";
                 }
-                String dbCon = "jdbc:mysql://localhost:3306/fooddelivery";
-                String dbName = "root";
-                String dbPass = "manuth@9273$";
-                 try {
+                else {
+                    JOptionPane.showMessageDialog(null, "Please select your gender!");
+                    return;
+                }
+                try 
+                {
+                    String dbCon = "jdbc:mysql://localhost:3306/fooddelivery";
+                    String dbName = "root";
+                    String dbPass = "manuth@9273$";
                     Class.forName("com.mysql.cj.jdbc.Driver");
                     conn = DriverManager.getConnection(dbCon, dbName, dbPass);
+                    
+                    
+                    String query = "SELECT * FROM Users WHERE Username = ? OR Email = ?";
+                    PreparedStatement cmdCheck;
+                    cmdCheck = conn.prepareStatement(query);
+                    cmdCheck.setString(1, username);
+                    cmdCheck.setString(2, email);
+                    rs = cmdCheck.executeQuery();
+                    if(rs.next()){
+                        JOptionPane.showMessageDialog(null, "Username or Email already exists");
+                        return;
+                    }
 
-                    String sql = "INSERT INTO Users(Username,Password,Gender,Email) VALUES (?, ?, ?, ?);";
+                    String sql = "INSERT INTO Users(Username,Password,Role,Gender,Email) VALUES (?, ?, ?, ?, ?);";
                     cmd = conn.prepareStatement(sql);            
                     cmd.setString(1, username); 
                     cmd.setString(2, password);
-                    cmd.setString(3, gender);
-                    cmd.setString(4, email);
+                    cmd.setString(3, "Customer");                  
+                    cmd.setString(4, gender);
+                    cmd.setString(5, email);
                     cmd.executeUpdate();  
                     JOptionPane.showMessageDialog(null, "Your sign‑up was successful. Please log in to your account!");
                     new FormLogin();
                     frame.setVisible(false);
-                    } 
-                    catch (SQLException ex) {
+                } 
+                catch (SQLException ex) {
                         ex.printStackTrace();
-                    }catch (Exception exception) {
+                }
+                catch (Exception exception) {
                         System.out.println(exception);
-                    }
+                }
             }
         });
         btnLogin1.addActionListener(new ActionListener(){

@@ -7,7 +7,6 @@ package fooddelivery;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,14 +26,13 @@ import java.sql.ResultSet;
  */
 public class ResetPassword{
     Connection conn;
-    String email; // email from first form'
+    PreparedStatement cmd;
+    String email; // email from ForgetPassword Form
     JFrame frame;
     JLabel headerLb, userLb, pass1Lb, pass2Lb, informLb;
     JTextField txtUsername;
     JPasswordField txtNewPass, txtConfirm;
     JButton btnReset;
-    //Connection conn;
-
     public ResetPassword(String Email) {
         this.email = Email;
         // Create Frame
@@ -86,7 +84,6 @@ public class ResetPassword{
                 String username = txtUsername.getText().trim();
                 String pass1 = String.valueOf(txtNewPass.getPassword());
                 String pass2 = String.valueOf(txtConfirm.getPassword());
-                
                 if (username.isEmpty() || pass1.isEmpty() || pass2.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Please fill all fields!");
                     return;
@@ -102,20 +99,19 @@ public class ResetPassword{
                     conn = DriverManager.getConnection(dbName, dbUser, dbPass);
                     // Verify that username belongs to this email
                     String check = "SELECT * FROM Users WHERE Email=? AND Username=?";
-                    PreparedStatement pst = conn.prepareStatement(check);
-                    pst.setString(1, email);
-                    pst.setString(2, username);
-                    ResultSet rs = pst.executeQuery();
+                    cmd = conn.prepareStatement(check);
+                    cmd.setString(1, email);
+                    cmd.setString(2, username);
+                    ResultSet rs = cmd.executeQuery();
                     if (rs.next()) {
-                        // Hash password
                         String pass = txtNewPass.getText();
                         // Update password safely
                         String update = "UPDATE Users SET Password=? WHERE Email=? AND Username=?";
-                        pst = conn.prepareStatement(update);
-                        pst.setString(1, pass);
-                        pst.setString(2, email);
-                        pst.setString(3, username);
-                        pst.executeUpdate();
+                        cmd = conn.prepareStatement(update);
+                        cmd.setString(1, pass);
+                        cmd.setString(2, email);
+                        cmd.setString(3, username);
+                        cmd.executeUpdate();
                         JOptionPane.showMessageDialog(null, "Password updated successfull. Please log in with your new password!");
                         new FormLogin();
                         frame.setVisible(false);
@@ -124,7 +120,7 @@ public class ResetPassword{
                     }
                 } 
                 catch (Exception ex) {
-                            JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
+                    JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
                 }
             }
         });
