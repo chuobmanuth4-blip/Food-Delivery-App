@@ -11,6 +11,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -22,19 +23,16 @@ import javax.swing.JPanel;
  * @author manut
  */
 public class MainForm extends JFrame{
-    Home hm;
-    AddFood ad;
-    OrderFood of;
     JFrame frame;
     JLabel lb1;
-    JButton btn1, btn2, btn3, btn4, btn5, btn6, btn7;
+    JButton btn1, btn2, btn3, btn4, btn5, btn6;
     JPanel pnlN, pnlW, pnlC;
     ImageIcon img;
     // Constuctor
     public MainForm(){
         // Create Frame
         frame = new JFrame();
-        frame.setSize(400,400);
+        //frame.setSize(400,400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
         // Create image
@@ -69,44 +67,43 @@ public class MainForm extends JFrame{
         pnlW.add(new JLabel(""));
         pnlW.add(btn6);
         
+        // Center Home Page
         pnlC = new JPanel();
-        pnlC.setBackground(Color.black);
         pnlC.setLayout(new BorderLayout());
+        
+        JLabel head2Lb = new JLabel("Welcome Admin!", JLabel.CENTER);
+        head2Lb.setFont(new Font("Arial", Font.BOLD, 25));
+        head2Lb.setPreferredSize(new Dimension(0,50));
+        
+        JPanel pnlCC = new JPanel();
+        pnlCC.setLayout(new GridLayout(1,3));
+        pnlCC.setBackground(Color.red);
+        JPanel pnlCCL = new JPanel();
+        pnlCCL.setBackground(Color.orange);
+        pnlCCL.setBorder(BorderFactory.createTitledBorder(""));
+        JPanel pnlCCC = new JPanel();
+        pnlCCC.setBackground(Color.CYAN);
+        pnlCCC.setBorder(BorderFactory.createTitledBorder(""));
+        JPanel pnlCCR = new JPanel();
+        pnlCCR.setBackground(Color.YELLOW);
+        pnlCCR.setBorder(BorderFactory.createTitledBorder(""));
+        
+        pnlCC.add(pnlCCL);
+        pnlCC.add(pnlCCC);
+        pnlCC.add(pnlCCR);        
+                
+        JPanel pnlCS = new JPanel();
+        pnlCS.setBackground(Color.BLUE);
+        pnlCS.setPreferredSize(new Dimension(0,380));
+        
+        pnlC.add(head2Lb, BorderLayout.NORTH);
+        pnlC.add(pnlCC, BorderLayout.CENTER);
+        pnlC.add(pnlCS, BorderLayout.SOUTH);          
         // Add to Frame
         frame.add(pnlN, BorderLayout.NORTH);
         frame.add(pnlW, BorderLayout.WEST);
         frame.add(pnlC, BorderLayout.CENTER);
         // Process
-        btn1.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e){
-                hm = new Home();
-                pnlC.removeAll();
-                pnlC.revalidate();
-                pnlC.repaint();
-                pnlC.add(hm.getPane());
-            }
-        });
-        btn2.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e){
-                ad = new AddFood();
-                pnlC.removeAll();
-                pnlC.revalidate();
-                pnlC.repaint();
-                pnlC.add(ad.getPane());
-            }
-        });
-        btn3.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e){
-                of = new OrderFood();
-                pnlC.removeAll();
-                pnlC.revalidate();
-                pnlC.repaint();
-                pnlC.add(of.getPane());
-            }
-        });
         // Show Frame
         frame.setVisible(true);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);

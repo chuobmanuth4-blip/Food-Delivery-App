@@ -30,9 +30,10 @@ public class FoodDelivery {
         {
             System.out.println(e.getMessage());
         } 
-        new FormLogin();
+        //new FormLogin();
         //new ForgetPassword();
         //new ResetPassword();
         //new UserForm();
+        new MainForm();
     }
 }
