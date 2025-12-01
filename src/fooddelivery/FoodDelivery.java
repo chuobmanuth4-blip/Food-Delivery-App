@@ -34,6 +34,6 @@ public class FoodDelivery {
         //new ForgetPassword();
         //new ResetPassword();
         //new UserForm();
-        new MainForm();
+        //new MainForm();
     }
 }

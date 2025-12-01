@@ -25,7 +25,7 @@ import javax.swing.JPanel;
 public class MainForm extends JFrame{
     JFrame frame;
     JLabel lb1;
-    JButton btn1, btn2, btn3, btn4, btn5, btn6;
+    JButton btn1, btn2, btn3, btn4, btn5, btn6, btn7;
     JPanel pnlN, pnlW, pnlC;
     ImageIcon img;
     // Constuctor
@@ -41,12 +41,13 @@ public class MainForm extends JFrame{
         lb1 = new JLabel("Get it hot. Get it fast. GetFood.", img, JLabel.CENTER);
         lb1.setFont(new Font("Arial", Font.BOLD, 30));
         // Create Button
-        btn1 = new JButton("Products");
-        btn2 = new JButton("Orders");
-        btn3 = new JButton("Reports");
-        btn4 = new JButton("Settting ");
-        btn5 = new JButton("About");
-        btn6 = new JButton("Log Out");
+        btn1 = new JButton("User");
+        btn2 = new JButton("Products");
+        btn3 = new JButton("Orders");
+        btn4 = new JButton("Reports");
+        btn5 = new JButton("Settting ");
+        btn6 = new JButton("About");
+        btn7 = new JButton("Log Out");
         // Create Panel
         pnlN = new JPanel();
         pnlN.setLayout(new BorderLayout());
@@ -60,12 +61,12 @@ public class MainForm extends JFrame{
         pnlW.add(btn2);
         pnlW.add(btn3);
         pnlW.add(btn4);
-        pnlW.add(btn5); 
+        pnlW.add(btn5);
+        pnlW.add(btn6);        
         pnlW.add(new JLabel(""));
         pnlW.add(new JLabel(""));
         pnlW.add(new JLabel(""));
-        pnlW.add(new JLabel(""));
-        pnlW.add(btn6);
+        pnlW.add(btn7);
         
         // Center Home Page
         pnlC = new JPanel();

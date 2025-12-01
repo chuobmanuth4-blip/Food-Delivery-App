@@ -176,6 +176,7 @@ public class FormLogin{
                     rs = cmd.executeQuery();
                     if (rs.next()){
                         String role  = rs.getString("Role");
+                        
                         if(role.equals("Customer")){
                             new UserForm();
                         }
