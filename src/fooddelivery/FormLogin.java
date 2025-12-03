@@ -165,7 +165,8 @@ public class FormLogin{
                 try{
                     String dbCon = "jdbc:mysql://localhost:3306/fooddelivery";
                     String dbName = "root";
-                    String dbPass = "Lyheng200609";
+                    //String dbPass = "Lyheng200609";
+                    String dbPass = "manuth@9273$";                    
                     Class.forName("com.mysql.cj.jdbc.Driver");
                     conn = DriverManager.getConnection(dbCon, dbName, dbPass);
                     
