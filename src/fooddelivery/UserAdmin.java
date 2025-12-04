@@ -11,24 +11,39 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
-
+import javax.swing.table.DefaultTableModel;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 /**
  *
  * @author manut
  */
 public class UserAdmin extends JFrame{
     Container pane;
-    JLabel lbHeader, lbSearch;
+    Connection conn;
+    PreparedStatement cmd; //cmd1, cmd2, cmd3;
+    ResultSet rs; 
+    JLabel lbHeader, lbSearch, lbFooter;
     JTextField txtSearch;
-    JButton btnSearch;
+    JButton btnSearch, btnCreate, btnEdit, btnDelete, btnRefresh, btnClear;
     ImageIcon imgUserM, imgSearch;
     JPanel pnlN, pnlC, pnlS;
+    JTable tb;
+    DefaultTableModel tbUser;
     public UserAdmin(){
         pane = this.getContentPane();
         pane.setLayout(new BorderLayout());
@@ -46,14 +61,35 @@ public class UserAdmin extends JFrame{
         lbSearch = new JLabel("Search:");
         lbSearch.setFont(new Font("Arial", Font.BOLD, 16));
         lbSearch.setBounds(200, 95, 100, 30);
+        
+        lbFooter = new JLabel("©2025 GETFOOD | All rights reserved", JLabel.CENTER);
+        lbFooter.setFont(new Font("Arial", Font.BOLD, 16));
         // Create TextField
         txtSearch = new JTextField();
+        
         txtSearch.setBounds(270, 85, 690, 50);
         // Create Button
         btnSearch = new JButton("Search", imgSearch);
         btnSearch.setBounds(960, 85, 100, 50);
         btnSearch.setBackground(Color.WHITE);
         btnSearch.setForeground(Color.CYAN);
+        
+        btnCreate = new JButton("Create User");
+        btnEdit = new JButton("Edit User");
+        btnDelete = new JButton("Delete User");
+        btnRefresh = new JButton("Refresh");
+        btnClear = new JButton("Clear");
+        // Create Table Model 
+        tbUser = new DefaultTableModel();
+        tbUser.addColumn("ID");
+        tbUser.addColumn("Username");
+        tbUser.addColumn("Role");
+        tbUser.addColumn("Gender");
+        tbUser.addColumn("Email");
+        tbUser.addColumn("CreatedAt");
+        tb = new JTable(tbUser);
+        JScrollPane scroll = new JScrollPane(tb);
+        loadUserTable();
         // Create Panel
         pnlN = new JPanel();
         pnlN.setLayout(null);
@@ -67,11 +103,113 @@ public class UserAdmin extends JFrame{
         
         pnlC = new JPanel();
         pnlC.setBackground(Color.DARK_GRAY);
+        pnlC.setLayout(new BorderLayout());
+        pnlC.add(scroll);
         
         pnlS = new JPanel();
-        pnlS.setBackground(Color.YELLOW);
-        pnlS.setPreferredSize(new Dimension(0,200));
+        pnlS.setLayout(new BorderLayout());  
+        pnlS.setBackground(Color.ORANGE);
+        pnlS.setPreferredSize(new Dimension(0,150));
+        JPanel pnlSN = new JPanel();
+        pnlSN.setLayout(new GridLayout(2,9));
+        pnlSN.setPreferredSize(new Dimension(0,110));
+        pnlSN.setBackground(Color.ORANGE);
+        pnlSN.add(new JLabel("")); 
+        pnlSN.add(new JLabel("")); 
+        pnlSN.add(btnCreate);
+        pnlSN.add(btnEdit);
+        pnlSN.add(btnDelete);
+        pnlSN.add(btnRefresh);
+        pnlSN.add(btnClear); 
+        pnlSN.add(new JLabel("")); 
+        pnlSN.add(new JLabel("")); 
         
+        pnlSN.add(new JLabel("Total Users:     ||")); 
+        pnlSN.add(new JLabel("Customers:     ||")); 
+        pnlSN.add(new JLabel("Delivery person:     ||"));   
+        pnlSN.add(new JLabel("")); 
+        pnlSN.add(new JLabel("")); 
+        pnlSN.add(new JLabel("")); 
+        pnlSN.add(new JLabel("")); 
+        pnlSN.add(new JLabel("")); 
+        pnlSN.add(new JLabel("")); 
+        
+        JPanel pnlSS = new JPanel();
+        pnlSS.add(lbFooter); 
+        pnlSS.setBackground(Color.ORANGE);
+        
+        pnlS.add(pnlSN, BorderLayout.NORTH);          
+        pnlS.add(pnlSS, BorderLayout.CENTER);
+        // Proces
+        btnSearch.addActionListener(new ActionListener(){
+            @Override
+              public void actionPerformed(ActionEvent e){
+                String input = txtSearch.getText().trim();
+                int id = 0;
+                try {
+                    id = Integer.parseInt(input);
+                } catch (NumberFormatException ex) {     
+                }
+                String username = input;
+                String email = input;
+                try 
+                {
+                    String dbCon = "jdbc:mysql://localhost:3306/fooddelivery";
+                    String dbName = "root";
+                    String dbPass = "manuth@9273$";  
+                    Class.forName("com.mysql.cj.jdbc.Driver");
+                    conn = DriverManager.getConnection(dbCon, dbName, dbPass);                    
+                    //String sql = "SELECT UserID, Username, Role, Gender, Email, createdAt" + "FROM Users WHERE UserId = ? OR Username = ? OR Email = ?";                                    
+                   String sql =
+                    "SELECT UserID, Username, Role, Gender, Email, createdAt " + "FROM Users WHERE UserID = ? OR Username = ? OR Email = ?";
+                    cmd = conn.prepareStatement(sql);                   
+                    cmd.setString(1,Integer.toString(id));                    
+                    cmd.setString(2, username);
+                    cmd.setString(3, email);                    
+                    rs = cmd.executeQuery();                
+                    if (rs.next()==true)
+                    {
+                        tbUser.setRowCount(0);
+                        tbUser.addRow(new Object[]{
+                            rs.getInt("UserID"),
+                            rs.getString("Username"),
+                            rs.getString("Role"),
+                            rs.getString("Gender"),
+                            rs.getString("Email"),
+                            rs.getTimestamp("createdAt")
+                        });
+                    }   
+                    else
+                        JOptionPane.showMessageDialog(null, "It is not found");
+                } 
+                catch (SQLException ex) {
+                    ex.printStackTrace();
+                }catch (Exception exception) {
+                    System.out.println(exception);
+                }
+            }
+        });
+        btnRefresh.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                loadUserTable();
+            }
+        });
+        btnClear.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                txtSearch.setText("");
+                tbUser.setRowCount(0); 
+                
+            }
+        });
+        
+        btnCreate.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+               new CreateUser();
+            }
+        });
         // Add Components to Frame
         pane.add(pnlN, BorderLayout.NORTH);
         pane.add(pnlC, BorderLayout.CENTER);
@@ -79,5 +217,33 @@ public class UserAdmin extends JFrame{
     }
     public Container getPane(){
         return pane;
+    }
+    public void loadUserTable() {
+        try {
+            conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/fooddelivery",
+                    "root",
+                    "manuth@9273$"
+            );
+            String sql = "SELECT UserID, Username, Role, Gender, Email, createdAt FROM Users";
+            cmd = conn.prepareStatement(sql);
+            rs = cmd.executeQuery();
+
+            tbUser.setRowCount(0);
+            while (rs.next()) {
+                    tbUser.addRow(new Object[]{
+                    rs.getInt("UserID"),
+                    rs.getString("Username"),
+                    rs.getString("Role"),
+                    rs.getString("Gender"),
+                    rs.getString("Email"),
+                    rs.getTimestamp("createdAt")
+                });
+            }
+            conn.close();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "DB Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
     }
 }
