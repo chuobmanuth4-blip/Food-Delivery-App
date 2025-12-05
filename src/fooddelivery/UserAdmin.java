@@ -160,8 +160,7 @@ public class UserAdmin extends JFrame{
                     Class.forName("com.mysql.cj.jdbc.Driver");
                     conn = DriverManager.getConnection(dbCon, dbName, dbPass);                    
                     //String sql = "SELECT UserID, Username, Role, Gender, Email, createdAt" + "FROM Users WHERE UserId = ? OR Username = ? OR Email = ?";                                    
-                   String sql =
-                    "SELECT UserID, Username, Role, Gender, Email, createdAt " + "FROM Users WHERE UserID = ? OR Username = ? OR Email = ?";
+                    String sql = "SELECT UserID, Username, Role, Gender, Email, createdAt " + "FROM Users WHERE UserID = ? OR Username = ? OR Email = ?";
                     cmd = conn.prepareStatement(sql);                   
                     cmd.setString(1,Integer.toString(id));                    
                     cmd.setString(2, username);
@@ -202,12 +201,24 @@ public class UserAdmin extends JFrame{
                 tbUser.setRowCount(0); 
                 
             }
-        });
-        
+        });  
         btnCreate.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
                new CreateUser();
+            }
+        });
+        
+        btnEdit.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+               new UpdateUser();
+            }
+        });
+        btnDelete.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+               new DeleteUser();
             }
         });
         // Add Components to Frame
