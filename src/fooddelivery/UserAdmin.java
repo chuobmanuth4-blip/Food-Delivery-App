@@ -35,7 +35,7 @@ import java.sql.SQLException;
 public class UserAdmin extends JFrame{
     Container pane;
     Connection conn;
-    PreparedStatement cmd; //cmd1, cmd2, cmd3;
+    PreparedStatement cmd; 
     ResultSet rs; 
     JLabel lbHeader, lbSearch, lbFooter;
     JTextField txtSearch;

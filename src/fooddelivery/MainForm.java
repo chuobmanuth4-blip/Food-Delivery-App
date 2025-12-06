@@ -25,6 +25,7 @@ import javax.swing.JTextArea;
  */
 public class MainForm{
     UserAdmin user;
+    ProductAdmin product;
     JFrame frame;
     JLabel lbHeader;
     JButton btn1, btn2, btn3, btn4, btn5, btn6, btn7;
@@ -92,11 +93,11 @@ public class MainForm{
             @Override
             public void actionPerformed(ActionEvent e){
                 btn1.setBackground(null);
-//                user = new UserAdmin();
-//                pnlC.removeAll();
-//                pnlC.revalidate();
-//                pnlC.repaint();
-//                pnlC.add(user.getPane());
+                product = new ProductAdmin();
+                pnlC.removeAll();
+                pnlC.revalidate();
+                pnlC.repaint();
+                pnlC.add(product.getPane());
             }
         });
         
