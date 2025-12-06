@@ -13,6 +13,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -65,9 +67,26 @@ public class UserAdmin extends JFrame{
         lbFooter = new JLabel("©2025 GETFOOD | All rights reserved", JLabel.CENTER);
         lbFooter.setFont(new Font("Arial", Font.BOLD, 16));
         // Create TextField
-        txtSearch = new JTextField();
-        
+        txtSearch = new JTextField("Please Enter UserID or Username or Email!");
         txtSearch.setBounds(270, 85, 690, 50);
+        txtSearch.setForeground(Color.GRAY);
+        txtSearch.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (txtSearch.getText().equals("Please Enter UserID or Username or Email!")) {
+                    txtSearch.setText("");
+                    txtSearch.setForeground(Color.BLACK);
+                }
+            }
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (txtSearch.getText().isEmpty()) {
+                    txtSearch.setForeground(Color.GRAY);
+                    txtSearch.setText("Please Enter UserID or Username or Email!");
+                }
+            }
+        });
+        
         // Create Button
         btnSearch = new JButton("Search", imgSearch);
         btnSearch.setBounds(960, 85, 100, 50);
@@ -179,7 +198,7 @@ public class UserAdmin extends JFrame{
                         });
                     }   
                     else
-                        JOptionPane.showMessageDialog(null, "It is not found");
+                        JOptionPane.showMessageDialog(null, "User is not found");
                 } 
                 catch (SQLException ex) {
                     ex.printStackTrace();
