@@ -11,13 +11,11 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 
 /**
  *
@@ -26,6 +24,7 @@ import javax.swing.JTextArea;
 public class MainForm{
     UserAdmin user;
     ProductAdmin product;
+    OrderAdmin order;
     JFrame frame;
     JLabel lbHeader;
     JButton btn1, btn2, btn3, btn4, btn5, btn6, btn7;
@@ -100,7 +99,17 @@ public class MainForm{
                 pnlC.add(product.getPane());
             }
         });
-        
+        btn3.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                btn1.setBackground(null);
+                order = new OrderAdmin();
+                pnlC.removeAll();
+                pnlC.revalidate();
+                pnlC.repaint();
+                pnlC.add(order.getPane());
+            }
+        });
         // Show Frame
         frame.setVisible(true);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);

@@ -8,7 +8,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -173,12 +172,7 @@ public class UserAdmin extends JFrame{
                 String email = input;
                 try 
                 {
-                    String dbCon = "jdbc:mysql://localhost:3306/fooddelivery";
-                    String dbName = "root";
-                    String dbPass = "manuth@9273$";  
-                    Class.forName("com.mysql.cj.jdbc.Driver");
-                    conn = DriverManager.getConnection(dbCon, dbName, dbPass);                    
-                    //String sql = "SELECT UserID, Username, Role, Gender, Email, createdAt" + "FROM Users WHERE UserId = ? OR Username = ? OR Email = ?";                                    
+                    dbConnection();                   
                     String sql = "SELECT UserID, Username, Role, Gender, Email, createdAt " + "FROM Users WHERE UserID = ? OR Username = ? OR Email = ?";
                     cmd = conn.prepareStatement(sql);                   
                     cmd.setString(1,Integer.toString(id));                    
@@ -250,11 +244,7 @@ public class UserAdmin extends JFrame{
     }
     public void loadUserTable() {
         try {
-            conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/fooddelivery",
-                    "root",
-                    "manuth@9273$"
-            );
+            dbConnection();
             String sql = "SELECT UserID, Username, Role, Gender, Email, createdAt FROM Users";
             cmd = conn.prepareStatement(sql);
             rs = cmd.executeQuery();
@@ -272,6 +262,20 @@ public class UserAdmin extends JFrame{
             }
             conn.close();
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "DB Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }
+    public void dbConnection(){
+        try{
+        String dbCon = "jdbc:mysql://localhost:3306/fooddelivery";
+        String dbName = "root";
+        String dbPass = "manuth@9273$";                    
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        conn = DriverManager.getConnection(dbCon, dbName, dbPass);
+        }
+        catch (Exception e) 
+        {
             JOptionPane.showMessageDialog(this, e.getMessage(), "DB Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }

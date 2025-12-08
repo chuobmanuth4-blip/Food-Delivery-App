@@ -4,7 +4,6 @@
  */
 package fooddelivery;
 
-// import com.sun.jdi.connect.spi.Connection;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -47,7 +46,7 @@ public class FormLogin{
         // Create Frame
         frame = new JFrame();
         frame.setSize(600,500);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setLayout(new BorderLayout());
         // Create Label
         headerLb = new JLabel("Log In", JLabel.CENTER);
@@ -98,10 +97,10 @@ public class FormLogin{
         rbtn = new JRadioButton("Show password");
         rbtn.setBounds(50,215,150,20);
         // Create TextField
-        txtusername  = new JTextField();
+        txtusername  = new JTextField("Manuth");
         txtusername.setBounds(48,120,290,30);
 
-        txtpass = new JPasswordField();
+        txtpass = new JPasswordField("Nuth9273");
         txtpass.setBounds(48,180,290,30);
         // Create Panel
         pnl1 = new JPanel();
@@ -177,9 +176,9 @@ public class FormLogin{
                     rs = cmd.executeQuery();
                     if (rs.next()){
                         String role  = rs.getString("Role");
-                        
                         if(role.equals("Customer")){
-                            new UserForm();
+                            int userID = rs.getInt("UserID");
+                            new UserForm(userID);
                         }
                         else if(role.equals("Admin")){
                             new MainForm();
@@ -191,7 +190,7 @@ public class FormLogin{
                             JOptionPane.showMessageDialog(null, "Unknown role!");
                             return;
                         }
-                        frame.setVisible(false);
+                        frame.dispose();
                     }
                     else{
                         JOptionPane.showMessageDialog(null, "Invalid Username or Password!");

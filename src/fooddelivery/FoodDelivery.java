@@ -10,7 +10,7 @@ import javax.swing.UIManager;
  *
  * @author manuth
  */
-public class FoodDelivery {
+public class FoodDelivery{
 
     /**
      * @param args the command line arguments
@@ -30,12 +30,13 @@ public class FoodDelivery {
         {
             System.out.println(e.getMessage());
         } 
-        //new FormLogin();
+        new FormLogin();
         //new ForgetPassword();
         //new ResetPassword();
         //new UserForm();
-        new MainForm();
+        //new MainForm();
         //new UpdateUser();
         //new DeleteUser();
+        //new DeliveryForm();
     }
 }

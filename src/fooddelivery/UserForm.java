@@ -9,7 +9,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -21,16 +22,20 @@ import javax.swing.JPanel;
  * @author manut
  */
 public class UserForm extends JFrame{
+    public int userID; 
+    OrderUser order;
     JFrame frame;
     JLabel lb1;
-    JButton btn1, btn2, btn3, btn4, btn5;
+    JButton btn1, btn2, btn3, btn4;
     JPanel pnlN, pnlW, pnlC;
     ImageIcon img;
     // Constuctor
-    public UserForm(){
+    public UserForm(int userID){
+        this.userID = userID;
         // Create Frame
         frame = new JFrame();
         frame.setSize(400,400);
+        frame.setBackground(Color.WHITE);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
         // Create image
@@ -39,14 +44,14 @@ public class UserForm extends JFrame{
         lb1 = new JLabel("Get it hot. Get it fast. GetFood.", img, JLabel.CENTER);
         lb1.setFont(new Font("Arial", Font.BOLD, 30));
         // Create Button
-        btn1 = new JButton("Menu");
-        btn2 = new JButton("Order");
-        btn3 = new JButton("Profile");
-        btn4 = new JButton("About");        
-        btn5 = new JButton("Log Out");
+        btn1 = new JButton("Order");
+        btn2 = new JButton("Profile");
+        btn3 = new JButton("About");        
+        btn4 = new JButton("Log Out");
         // Create Panel
         pnlN = new JPanel();
         pnlN.setLayout(new BorderLayout());
+        pnlN.setBackground(Color.WHITE);
         pnlN.setPreferredSize(new Dimension(0,100));
         pnlN.add(lb1, BorderLayout.WEST);
         
@@ -56,17 +61,28 @@ public class UserForm extends JFrame{
         pnlW.add(btn1);
         pnlW.add(btn2);
         pnlW.add(btn3);        
-        pnlW.add(btn4);                
+        pnlW.add(new JLabel(""));
         pnlW.add(new JLabel(""));
         pnlW.add(new JLabel(""));
         pnlW.add(new JLabel(""));
         pnlW.add(new JLabel(""));
         pnlW.add(new JLabel(""));        
-        pnlW.add(btn5);
+        pnlW.add(btn4);
         
         pnlC = new JPanel();
         pnlC.setBackground(Color.black);
         pnlC.setLayout(new BorderLayout());
+        // Process
+        btn1.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                order = new OrderUser(userID);
+                pnlC.removeAll();
+                pnlC.revalidate();
+                pnlC.repaint();
+                pnlC.add(order.getPane());
+            }
+        });
         // Add to Frame
         frame.add(pnlN, BorderLayout.NORTH);
         frame.add(pnlW, BorderLayout.WEST);

@@ -32,17 +32,14 @@ import javax.swing.JTextField;
  *
  * @author manut
  */
-public class UpdateUser{
-    Connection conn;
-    PreparedStatement cmd;
-    ResultSet rs;
+public class UpdateUser extends UserAdmin{
     JFrame frame;
     JLabel  headerLb,searchLb, userLb, passLb1, passLb2, roleLb, genderLb, emailLb;
     JTextField txtsearch, txtusername,txtemail;
     JPasswordField txtpass1, txtpass2;
     JComboBox cmbGender, cmbRole;
     JButton btnCancel, btnConfirm, btnSearch;
-    JPanel pnlN, pnlC;        
+    JPanel pnlN, pnlC;      
     int selectedUserId = -1;
     public UpdateUser(){
         // Create Frame
@@ -162,11 +159,7 @@ public class UpdateUser{
                 String email = input;
                 try 
                 {
-                    String dbCon = "jdbc:mysql://localhost:3306/fooddelivery";
-                    String dbName = "root";
-                    String dbPass = "manuth@9273$";  
-                    Class.forName("com.mysql.cj.jdbc.Driver");
-                    conn = DriverManager.getConnection(dbCon, dbName, dbPass);                    
+                    dbConnection();
                     String sql = "SELECT UserID, Username, Password, Role, Gender, Email FROM Users WHERE UserID = ? OR Username = ? OR Email = ?";
                     cmd = conn.prepareStatement(sql);                   
                     cmd.setInt(1, id);                    
@@ -215,12 +208,7 @@ public class UpdateUser{
                     return;
                 }
                 try {
-                    String dbCon = "jdbc:mysql://localhost:3306/fooddelivery";
-                    String dbName = "root";
-                    String dbPass = "manuth@9273$";
-                    
-                    Class.forName("com.mysql.cj.jdbc.Driver");
-                    conn = DriverManager.getConnection(dbCon, dbName, dbPass);                    
+                    dbConnection();
                     String sql = "UPDATE Users SET Username= ?, Password = ?, Role = ?, Gender = ?, Email = ? WHERE UserID = ?;";                     
                     cmd = conn.prepareStatement(sql);            
                     cmd.setString(1, username);

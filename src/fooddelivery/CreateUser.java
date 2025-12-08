@@ -23,18 +23,13 @@ import javax.swing.JTextField;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Connection;
-import java.sql.ResultSet;
 
 
 /**
  *
  * @author manut
  */
-public class CreateUser{
-    Connection conn;
-    PreparedStatement cmd;
-    ResultSet rs;
+public class CreateUser extends UserAdmin{
     JFrame frame;
     JLabel  headerLb, userLb, passLb1, passLb2, roleLb, genderLb, emailLb;
     JTextField txtusername,txtemail;
@@ -135,13 +130,7 @@ public class CreateUser{
                 }
                 try 
                 {
-                    String dbCon = "jdbc:mysql://localhost:3306/fooddelivery";
-                    String dbName = "root";
-                    //String dbPass = "Lyheng200609";
-                    String dbPass = "manuth@9273$";                    
-                    Class.forName("com.mysql.cj.jdbc.Driver");
-                    conn = DriverManager.getConnection(dbCon, dbName, dbPass);
-                    
+                    dbConnection(); 
                     String query = "SELECT * FROM Users WHERE Username = ? OR Email = ?";
                     PreparedStatement cmdCheck;
                     cmdCheck = conn.prepareStatement(query);

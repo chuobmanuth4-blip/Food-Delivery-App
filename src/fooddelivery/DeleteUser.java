@@ -19,20 +19,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 /**
  *
  * @author manut
  */
-public class DeleteUser {
-    Connection conn;
-    PreparedStatement cmd; //cmd1, cmd2, cmd3;
-    ResultSet rs; 
+public class DeleteUser extends UserAdmin{
     JFrame frame;
     JLabel headerLb;
     JTextField txtDelete;
@@ -114,11 +107,7 @@ public class DeleteUser {
                 String username = input;
                 
                 try{
-                    String dbCon = "jdbc:mysql://localhost:3306/fooddelivery";
-                    String dbName = "root";
-                    String dbPass = "manuth@9273$";  
-                    Class.forName("com.mysql.cj.jdbc.Driver");
-                    conn = DriverManager.getConnection(dbCon, dbName, dbPass);
+                    dbConnection();
                     String sql = "DELETE FROM Users WHERE UserID = ? OR Username = ? ";
                     cmd = conn.prepareStatement(sql);                   
                     cmd.setInt(1, id);                    
