@@ -27,6 +27,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
@@ -40,12 +41,13 @@ import javax.swing.table.DefaultTableModel;
 public final class OrderUser extends JFrame{
     Container pane;
     Connection conn;
-    PreparedStatement cmdOrder; 
+    PreparedStatement cmdOrder, cmdDetail, cmdPayment; 
     ResultSet rs; 
-    JLabel lbGrandTotal;
-    JTextField txtGrandTotal;
+    JLabel lbGrandTotal, lbAddress, lbPhone, lbMethod;
+    JTextField txtGrandTotal, txtAddress, txtPhone;
+    JComboBox cmb;
     JButton btnClear, btnOrder,btnDelete, btnAddToCart, btnMainDish, btnDrink, btnSnack, btnDessert, btnFastfood;
-    JPanel pnlW, pnlE;
+    JPanel pnlW, pnlE, pnlWC, pnlFastFood, pnlMainDish, pnlDrink, pnlSnack, pnlDessert;
     JTable tb;
     DefaultTableModel tbDetails;  
     public int userID;
@@ -58,8 +60,22 @@ public final class OrderUser extends JFrame{
         // Create Label
         lbGrandTotal = new JLabel("Grand Total: ", JLabel.CENTER);
         lbGrandTotal.setFont(new Font("Arial", Font.BOLD, 16));
+        
+        lbAddress = new JLabel("Address: ", JLabel.CENTER);
+        lbAddress.setFont(new Font("Arial", Font.BOLD, 16));
+        
+        lbPhone = new JLabel("Phone: ", JLabel.CENTER);
+        lbPhone.setFont(new Font("Arial", Font.BOLD, 16));
+        
+        lbMethod = new JLabel("Payment Method: ", JLabel.CENTER);
+        lbMethod.setFont(new Font("Arial", Font.BOLD, 16));
         // Create TextField
         txtGrandTotal = new JTextField();
+        txtAddress = new JTextField();
+        txtPhone = new JTextField();
+        String method [] = {null, "Cash", "Card", "Digital"};  
+        cmb = new JComboBox(method);
+        cmb.setBackground(Color.WHITE);
         // Create Button
         btnMainDish = new JButton("1-Main Dishes");
         btnDrink = new JButton("2-Drinks");
@@ -96,32 +112,79 @@ public final class OrderUser extends JFrame{
         pnlWN.add(btnDessert);
         pnlWN.add(btnFastfood);   
         // Menu  Lists
-        JPanel pnlWC = new JPanel();
+        pnlWC = new JPanel();
+        pnlWC = new JPanel(new BorderLayout());
         pnlWC.setBackground(Color.WHITE);
         pnlWC.setBorder(BorderFactory.createTitledBorder("Menu"));
-        pnlWC.setLayout(new GridLayout(3,5));
-        pnlWC.add(createFoodCard(1, "Burger.png", "Burger", 4.5f));
-        pnlWC.add(createFoodCard(2, "Pizza.png", "Pizza", 5f));
-        pnlWC.add(createFoodCard(3, "SetBurger.png", "BurgerSet", 10f));
-        pnlWC.add(createFoodCard(4, "FriedChicken.png", "Fried Chicken", 7f));
-        pnlWC.add(createFoodCard(5, "HotDog.png", "Hot Dog", 2.5f));
+        // Fast Food
+        pnlFastFood = new JPanel(new GridLayout(3, 5)); 
+        pnlFastFood.add(createFoodCard(1, "Burger.png", "Burger", 4.5f));
+        pnlFastFood.add(createFoodCard(2, "Pizza.png", "Pizza", 5f));
+        pnlFastFood.add(createFoodCard(3, "SetBurger.png", "BurgerSet", 10f));
+        pnlFastFood.add(createFoodCard(4, "FriedChicken.png", "Fried Chicken", 7f));
+        pnlFastFood.add(createFoodCard(5, "HotDog.png", "Hot Dog", 2.5f));
         
-        pnlWC.add(createFoodCard(6, "Pizza.png", "Pizza", 4.99f));
-        pnlWC.add(createFoodCard(7, "Pizza.png", "Pizza", 4.99f));
-        pnlWC.add(createFoodCard(8, "Pizza.png", "Pizza", 4.99f));
-        pnlWC.add(createFoodCard(9, "Pizza.png", "Pizza", 4.99f));
-        pnlWC.add(createFoodCard(10, "Pizza.png", "Pizza", 4.99f));
+        pnlFastFood.add(createFoodCard(6, "Donut.png", "Donut", 1.5f));
+        pnlFastFood.add(createFoodCard(7, "Nagget.png", "Nugget", 0.5f));
+        pnlFastFood.add(createFoodCard(8, "onionRing.png", "Onion Ring", 0.5f));
+        pnlFastFood.add(createFoodCard(9, "wraps.png", "Wrap", 1f));
+        pnlFastFood.add(createFoodCard(10, "Tacos.png", "Tacos", 1.5f));
 
-        pnlWC.add(createFoodCard(11, "Pizza.png", "Pizza", 4.99f));
-        pnlWC.add(createFoodCard(12, "Pizza.png", "Pizza", 4.99f));
-        pnlWC.add(createFoodCard(13, "Pizza.png", "Pizza", 4.99f));
-        pnlWC.add(createFoodCard(14, "Pizza.png", "Pizza", 4.99f));
-        pnlWC.add(createFoodCard(15,"Pizza.png", "Pizza", 4.99f));   
+        pnlFastFood.add(createFoodCard(11, "Sandwich.png", "Sandwich", 2.5f));
+        pnlFastFood.add(createFoodCard(12, "quesadilla.png", "Quesadila", 1.5f));
+        pnlFastFood.add(createFoodCard(13, "MozzarellaSticks.png", "Mozzarella Sticks", 1f));
+        pnlFastFood.add(createFoodCard(14, "FrenchFries.png", "French Fries", 1.5f));
+        pnlFastFood.add(createFoodCard(15,"Pizza.png", "Pizza", 4.99f));  
+        // Main Dishes
+        pnlMainDish = new JPanel(new GridLayout(3, 5));
+        pnlMainDish.add(createFoodCard(1, "Burger.png", "Burger", 1.5f));
+        pnlMainDish.add(createFoodCard(2, "Pizza.png", "Pizza", 5f));
+        pnlMainDish.add(createFoodCard(3, "SetBurger.png", "BurgerSet", 10f));
+        pnlMainDish.add(createFoodCard(4, "FriedChicken.png", "Fried Chicken", 7f));
+        pnlMainDish.add(createFoodCard(5, "HotDog.png", "Hot Dog", 2.5f));
+        
+        pnlMainDish.add(createFoodCard(6, "Donut.png", "Donut", 1.5f));
+        pnlMainDish.add(createFoodCard(7, "Nagget.png", "Nugget", 0.5f));
+        pnlMainDish.add(createFoodCard(8, "onionRing.png", "Onion Ring", 0.5f));
+        pnlMainDish.add(createFoodCard(9, "wraps.png", "Wrap", 1f));
+        pnlMainDish.add(createFoodCard(10, "Tacos.png", "Tacos", 1.5f));
+
+        pnlMainDish.add(createFoodCard(11, "Sandwich.png", "Sandwich", 2.5f));
+        pnlMainDish.add(createFoodCard(12, "quesadilla.png", "Quesadila", 1.5f));
+        pnlMainDish.add(createFoodCard(13, "MozzarellaSticks.png", "Mozzarella Sticks", 1f));
+        pnlMainDish.add(createFoodCard(14, "FrenchFries.png", "French Fries", 1.5f));
+        pnlMainDish.add(createFoodCard(15,"Pizza.png", "Pizza", 4.99f));
+        // Drinks
+        pnlDrink = new JPanel(new GridLayout(3, 5));
+        pnlDrink.add(createFoodCard(1, "Burger.png", "Burger", 2.5f));
+        pnlDrink.add(createFoodCard(2, "Pizza.png", "Pizza", 5f));
+        pnlDrink.add(createFoodCard(3, "SetBurger.png", "BurgerSet", 10f));
+        pnlDrink.add(createFoodCard(4, "FriedChicken.png", "Fried Chicken", 7f));
+        pnlDrink.add(createFoodCard(5, "HotDog.png", "Hot Dog", 2.5f));
+        
+        pnlDrink.add(createFoodCard(6, "Donut.png", "Donut", 1.5f));
+        pnlDrink.add(createFoodCard(7, "Nagget.png", "Nugget", 0.5f));
+        pnlDrink.add(createFoodCard(8, "onionRing.png", "Onion Ring", 0.5f));
+        pnlDrink.add(createFoodCard(9, "wraps.png", "Wrap", 1f));
+        pnlDrink.add(createFoodCard(10, "Tacos.png", "Tacos", 1.5f));
+
+        pnlDrink.add(createFoodCard(11, "Sandwich.png", "Sandwich", 2.5f));
+        pnlDrink.add(createFoodCard(12, "quesadilla.png", "Quesadila", 1.5f));
+        pnlDrink.add(createFoodCard(13, "MozzarellaSticks.png", "Mozzarella Sticks", 1f));
+        pnlDrink.add(createFoodCard(14, "FrenchFries.png", "French Fries", 1.5f));
+        pnlDrink.add(createFoodCard(15,"Pizza.png", "Pizza", 4.99f));
+        
         // Add to Cart
         JPanel pnlWS = new JPanel();
+        pnlWS.setBackground(Color.WHITE);
+        pnlWS.setLayout(new GridLayout(1,5));
         pnlWS.setPreferredSize(new Dimension(0,50));
+        pnlWS.add(new JLabel(""));
+        pnlWS.add(new JLabel(""));        
         pnlWS.add(btnAddToCart);
-        
+        pnlWS.add(new JLabel(""));
+        pnlWS.add(new JLabel(""));
+
         pnlW.add(pnlWN, BorderLayout.NORTH);
         pnlW.add(pnlWC, BorderLayout.CENTER);
         pnlW.add(pnlWS, BorderLayout.SOUTH);
@@ -130,24 +193,36 @@ public final class OrderUser extends JFrame{
         pnlE.setLayout(new BorderLayout());
         pnlE.setPreferredSize(new Dimension(450,0));
         pnlE.setBackground(Color.BLUE);
+        
         JPanel pnlEN = new JPanel();
-        pnlEN.setPreferredSize(new Dimension(0,500));
+        pnlEN.setPreferredSize(new Dimension(0,400));
         pnlEN.setLayout(new BorderLayout());
         pnlEN.setBackground(Color.WHITE);
         pnlEN.setBorder(BorderFactory.createTitledBorder("Summary"));
         pnlEN.add(scroll);
+        
+        JPanel pnlEC = new JPanel();
+        pnlEC.setLayout(new GridLayout(4,2)); 
+        pnlEC.setBackground(Color.CYAN);
+        pnlEC.add(lbGrandTotal);
+        pnlEC.add(txtGrandTotal); 
+        pnlEC.add(lbAddress);
+        pnlEC.add(txtAddress);  
+        pnlEC.add(lbPhone);
+        pnlEC.add(txtPhone); 
+        pnlEC.add(lbMethod);
+        pnlEC.add(cmb);  
         JPanel pnlES = new JPanel();
-        pnlES.setLayout(new GridLayout(2,3));
+        pnlES.setLayout(new GridLayout(1,3));
+        pnlES.setPreferredSize(new Dimension(0,80));
         pnlES.setBackground(Color.WHITE);
         pnlES.setBorder(BorderFactory.createTitledBorder(""));
-        pnlES.add(lbGrandTotal);
-        pnlES.add(txtGrandTotal);
-        pnlES.add(new JLabel(""));
         pnlES.add(btnOrder);
         pnlES.add(btnDelete);
         pnlES.add(btnClear);
         pnlE.add(pnlEN, BorderLayout.NORTH);
-        pnlE.add(pnlES, BorderLayout.CENTER);
+        pnlE.add(pnlEC, BorderLayout.CENTER);
+        pnlE.add(pnlES, BorderLayout.SOUTH);
         // Process
         btnAddToCart.addActionListener(new ActionListener() {
             @Override
@@ -178,15 +253,17 @@ public final class OrderUser extends JFrame{
         btnOrder.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
+                String method = (String) cmb.getSelectedItem();
+                float amount = Float.parseFloat(txtGrandTotal.getText());
                 try{
                     dbConnection();
-                    String sqlOrder = "INSERT INTO Orders (CustomerID, DeliveryID, Status) VALUES (?, NULL, 'Pending')";
+                    String sqlOrder = "INSERT INTO Orders (CustomerID, DeliveryID, Status, Address, Phone) VALUES (?, NULL, 'Pending', ?, ?);";
                     cmdOrder = conn.prepareStatement(sqlOrder, Statement.RETURN_GENERATED_KEYS);
                     cmdOrder.setInt(1, userID);
-                    int x = cmdOrder.executeUpdate();
-                    if(x > 0){
-                        JOptionPane.showMessageDialog(null, "Insert Orders is done!");
-                    }
+                    cmdOrder.setString(2, txtAddress.getText());
+                    cmdOrder.setString(3, txtPhone.getText());                    
+                    cmdOrder.executeUpdate();
+                    
                     int orderNo = 0;
                     rs = cmdOrder.getGeneratedKeys();
                     if (rs.next()) {
@@ -199,22 +276,32 @@ public final class OrderUser extends JFrame{
                         return;
                     }
                     String sqlDetail = "INSERT INTO Details(OrderNo, ProNo, Quantity, Price) VALUES (?, ?, ?, ?)";
-                    PreparedStatement psDetail = conn.prepareStatement(sqlDetail);
+                    cmdDetail = conn.prepareStatement(sqlDetail);
                     for (int i = 0; i < tbDetails.getRowCount(); i++) {
                         int proNo = Integer.parseInt(tbDetails.getValueAt(i, 0).toString());
                         int qty = Integer.parseInt(tbDetails.getValueAt(i, 2).toString());
                         double price = Double.parseDouble(tbDetails.getValueAt(i, 3).toString());
                         
-                        psDetail.setInt(1, orderNo);
-                        psDetail.setInt(2, proNo);
-                        psDetail.setInt(3, qty);
-                        psDetail.setDouble(4, price);
-                        psDetail.executeUpdate();
+                        cmdDetail.setInt(1, orderNo);
+                        cmdDetail.setInt(2, proNo);
+                        cmdDetail.setInt(3, qty);
+                        cmdDetail.setDouble(4, price);
+                        cmdDetail.executeUpdate();
                     }
-                    JOptionPane.showMessageDialog(null, "Order placed successfully!\nOrder No: " + orderNo);
-                    // CLEAR TABLE + TOTAL
+                    String sqlPayment = "INSERT INTO Payments(OrderNo, Amount, Method) VALUES (?, ?, ?);";
+                    cmdPayment = conn.prepareStatement(sqlPayment);
+                    cmdPayment.setInt(1, orderNo);
+                    cmdPayment.setFloat(2, amount);
+                    cmdPayment.setString(3, method);
+                    int z = cmdPayment.executeUpdate();
+                    if(z > 0){
+                        JOptionPane.showMessageDialog(null, "Your order is success!");
+                    }
                     tbDetails.setRowCount(0);
                     txtGrandTotal.setText("");
+                    txtAddress.setText("");
+                    txtPhone.setText("");
+                    cmb.setSelectedItem(null);
                 }
                 catch (SQLException ex) {
                     ex.printStackTrace();
@@ -249,6 +336,28 @@ public final class OrderUser extends JFrame{
             public void actionPerformed(ActionEvent e){
                 tbDetails.setRowCount(0);
                 txtGrandTotal.setText("");
+                txtAddress.setText("");
+                txtPhone.setText("");
+                cmb.setSelectedItem(null);
+            }
+        });
+        
+        btnMainDish.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                showCategory(pnlMainDish);
+            }
+        });
+        btnFastfood.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                showCategory(pnlFastFood);
+            }
+        });
+        btnDrink.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                showCategory(pnlDrink);
             }
         });
         // Add to Frame 
@@ -314,5 +423,11 @@ public final class OrderUser extends JFrame{
         card.putClientProperty("price", price);
         card.putClientProperty("spinner", spQty);
         return card;
+    }
+    public void showCategory(JPanel categoryPanel) {
+        pnlWC.removeAll();
+        pnlWC.add(categoryPanel);
+        pnlWC.revalidate();
+        pnlWC.repaint();
     }
 }
