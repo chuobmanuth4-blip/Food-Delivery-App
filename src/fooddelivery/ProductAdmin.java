@@ -114,8 +114,6 @@ public class ProductAdmin extends JFrame{
         txtProName = new JTextField();
         txtProName.setBounds(170,155,430,40);
         
-        
-        
         txtPrice = new JTextField();
         txtPrice.setBounds(170,295,430,40);
         

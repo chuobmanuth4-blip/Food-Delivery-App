@@ -120,7 +120,7 @@ public final class OrderUser extends JFrame{
         pnlFastFood = new JPanel(new GridLayout(3, 5)); 
         pnlFastFood.add(createFoodCard(1, "Pizza Slice.png", "Pizza Slice", 4.5f));
         pnlFastFood.add(createFoodCard(2, "Burger & Fries Combo.png", "Burger & Fries Combo", 5f));
-        pnlFastFood.add(createFoodCard(3, "Sandwichs.png", "Sandwich", 10f));
+        pnlFastFood.add(createFoodCard(3, "Sandwich.png", "Sandwich", 10f));
         pnlFastFood.add(createFoodCard(4, "Hot Dog.png", "Hot Dog", 7f));
         pnlFastFood.add(createFoodCard(5, "Fried Chicken (2 pcs).png", "Fried Chicken (2 pcs)", 2.5f));
         
@@ -147,13 +147,13 @@ public final class OrderUser extends JFrame{
         pnlMainDish.add(createFoodCard(37, "Kuy Teav.png", "Kuy Teav", 0.5f));
         pnlMainDish.add(createFoodCard(38, "BBQ Duck.png", "BBQ Duck", 0.5f));
         pnlMainDish.add(createFoodCard(39, "Cambodian Sour Soup.png", "Cambodian Sour Soup", 1f));
-        pnlMainDish.add(createFoodCard(40, "grilled fish with lemongrass.png", "grilled fish with lemongrass", 1.5f));
+        pnlMainDish.add(createFoodCard(40, "grilled fish with lemongrass.jpg", "grilled fish with lemongrass", 1.5f));
 
         pnlMainDish.add(createFoodCard(41, "Fried Tofu with Vegetables.png", "Fried Tofu with Vegetables", 2.5f));
         pnlMainDish.add(createFoodCard(42, "Cambodian Hotpot.png", "Cambodian Hotpot", 1.5f));
         pnlMainDish.add(createFoodCard(43, "Beef Noodle.png", "Beef Noodle", 1f));
         pnlMainDish.add(createFoodCard(44, "Chicken Wings.png", "Chicken Wings", 1.5f));
-        pnlMainDish.add(createFoodCard(45,"stir-fried squid.png", "stir-fried squid", 4.99f));
+        pnlMainDish.add(createFoodCard(45, "stir-fried squid.png", "stir-fried squid", 4.99f));
         // Drinks
         pnlDrink = new JPanel(new GridLayout(3, 5));
         pnlDrink.add(createFoodCard(16, "Beer.png", "Beer", 2.5f));
@@ -179,7 +179,7 @@ public final class OrderUser extends JFrame{
         pnlSnack.add(createFoodCard(47, "Deep-fried Chicken Wings.png", "Deep-fried Chicken Wings", 5f));
         pnlSnack.add(createFoodCard(48, "Spicy Chicken Hamburge.png", "Spicy Chicken Hamburge", 10f));
         pnlSnack.add(createFoodCard(49, "Num Kochay.png", "Num Kochay", 7f));
-        pnlSnack.add(createFoodCard(50, "Ice Cream (Nitrogen style).png", "Ice Cream (Nitrogen style)", 2.5f));
+        pnlSnack.add(createFoodCard(50, "Ice Cream.png", "Ice Cream (Nitrogen style)", 2.5f));
         
         pnlSnack.add(createFoodCard(51, "Fried Fish Balls.png", "Fried Fish Balls", 1.5f));
         pnlSnack.add(createFoodCard(52, "Cheese Sticks.png", "Cheese Sticks", 0.5f));
@@ -188,10 +188,10 @@ public final class OrderUser extends JFrame{
         pnlSnack.add(createFoodCard(55, "Mini Burgers.png", "Mini Burgers", 1.5f));
 
         pnlSnack.add(createFoodCard(56, "Fried Banana.png", "Fried Banana", 2.5f));
-        pnlSnack.add(createFoodCard(57, "Cupcakes (cookie dough flavor).png", "Cupcakes (cookie dough flavor)", 1.5f));
+        pnlSnack.add(createFoodCard(57, "Cupcakes.png", "Cupcakes", 1.5f));
         pnlSnack.add(createFoodCard(58, "Brownie Cake.png", "Brownie Cake", 1f));
         pnlSnack.add(createFoodCard(59, "Tiramisu.png", "Tiramisu", 1.5f));
-        pnlSnack.add(createFoodCard(60,"Ice Cream (Nitrogen style).png", "Ice Cream (Nitrogen style)", 4.99f));
+        pnlSnack.add(createFoodCard(60,"Ice Cream.png", "Ice Cream (Nitrogen style)", 4.99f));
         //Dessert
         pnlDessert = new JPanel(new GridLayout(3, 5));
         pnlDessert.add(createFoodCard(61, "Custard Tart.png", "Custard Tart", 2.5f));
@@ -203,11 +203,11 @@ public final class OrderUser extends JFrame{
         pnlDessert.add(createFoodCard(66, "Gelato Scoop.png", "Gelato Scoop", 1.5f));
         pnlDessert.add(createFoodCard(67, "Chocolate Mousse.png", "Chocolate Mousse", 0.5f));
         pnlDessert.add(createFoodCard(68, "Mango Sticky Rice.png", "Mango Sticky Rice", 0.5f));
-        pnlDessert.add(createFoodCard(69, "Donuts.png", "Donuts", 1f));
+        pnlDessert.add(createFoodCard(69, "Donut.png", "Donuts", 1f));
         pnlDessert.add(createFoodCard(70, "Custard Tart.png", "Custard Tart", 1.5f));
 
         pnlDessert.add(createFoodCard(71, "Cupcakes.png", "Cupcakes", 2.5f));
-        pnlDessert.add(createFoodCard(72, "Brownie Cakes.png", "Brownie Cake", 1.5f));
+        pnlDessert.add(createFoodCard(72, "Brownie Cake.png", "Brownie Cake", 1.5f));
         pnlDessert.add(createFoodCard(73, "Tiramisu.png", "Tiramisu", 1f));
         pnlDessert.add(createFoodCard(74, "Fruit Crepe.png", "Fruit Crepe", 1.5f));
         pnlDessert.add(createFoodCard(75,"Ice Cream.png", "Ice Cream", 4.99f));
@@ -395,6 +395,18 @@ public final class OrderUser extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e){
                 showCategory(pnlDrink);
+            }
+        });
+        btnSnack.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                showCategory(pnlSnack);
+            }
+        });
+        btnDessert.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                showCategory(pnlDessert);
             }
         });
         // Add to Frame 

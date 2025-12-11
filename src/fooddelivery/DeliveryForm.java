@@ -9,6 +9,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -21,12 +24,15 @@ import javax.swing.JPanel;
  */
 public class DeliveryForm extends JFrame{
     JFrame frame;
+    OrderDeliveryman od;
     JLabel lb1;
     JButton btn1, btn2, btn3, btn4;
     JPanel pnlN, pnlW, pnlC;
     ImageIcon img;
+    public int DeliveryID;
     // Constuctor
-    public DeliveryForm(){
+    public DeliveryForm(int deliveryID){
+        this.DeliveryID = deliveryID;
         // Create Frame
         frame = new JFrame();
         frame.setSize(400,400);
@@ -69,6 +75,17 @@ public class DeliveryForm extends JFrame{
         frame.add(pnlN, BorderLayout.NORTH);
         frame.add(pnlW, BorderLayout.WEST);
         frame.add(pnlC, BorderLayout.CENTER);
+        // Process
+        btn1.addActionListener(new ActionListener(){
+            @Override 
+            public void actionPerformed(ActionEvent e){
+                od = new OrderDeliveryman(deliveryID);
+                pnlC.removeAll();
+                pnlC.revalidate();
+                pnlC.repaint();
+                pnlC.add(od.getPane());
+            }
+        });
         // Show Frame
         frame.setVisible(true);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);

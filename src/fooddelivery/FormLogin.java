@@ -97,10 +97,10 @@ public class FormLogin{
         rbtn = new JRadioButton("Show password");
         rbtn.setBounds(50,215,150,20);
         // Create TextField
-        txtusername  = new JTextField("Manuth");
+        txtusername  = new JTextField("Vitur");
         txtusername.setBounds(48,120,290,30);
 
-        txtpass = new JPasswordField("Nuth9273");
+        txtpass = new JPasswordField("Tur1234");
         txtpass.setBounds(48,180,290,30);
         // Create Panel
         pnl1 = new JPanel();
@@ -183,8 +183,9 @@ public class FormLogin{
                         else if(role.equals("Admin")){
                             new MainForm();
                         }
-                        else if(role.equals("Delivery Person")){
-                            new DeliveryForm();
+                        else if(role.equals("Deliveryman")){
+                            int deliveryId = rs.getInt("UserID");
+                            new DeliveryForm(deliveryId);
                         }
                         else {
                             JOptionPane.showMessageDialog(null, "Unknown role!");

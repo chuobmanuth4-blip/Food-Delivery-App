@@ -69,7 +69,7 @@ public class CreateUser extends UserAdmin{
         txtemail = new JTextField();
         txtemail.setBounds(150,160,300,40);
         // Create ComboBox
-        String role [] = {"","Admin", "Customer", "Delivery Person"};
+        String role [] = {"","Admin", "Customer", "Deliveryman"};
         cmbRole = new JComboBox(role);
         cmbRole.setBounds(150,210,300,40);
         String gender [] = {"", "Male", "Female", "Other"};
