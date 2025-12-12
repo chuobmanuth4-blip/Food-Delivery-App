@@ -16,16 +16,13 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 /**
  *
  * @author manut
  */
-public class ResetPassword{
-    Connection conn;
+public class ResetPassword extends FoodDelivery{
     PreparedStatement cmd;
     String email; // email from ForgetPassword Form
     JFrame frame;
@@ -93,10 +90,7 @@ public class ResetPassword{
                     return;
                 }
                 try {
-                    String dbName = "jdbc:mysql://localhost:3306/fooddelivery";
-                    String dbUser = "root";
-                    String dbPass = "manuth@9273$"; 
-                    conn = DriverManager.getConnection(dbName, dbUser, dbPass);
+                    dbConnection();
                     // Verify that username belongs to this email
                     String check = "SELECT * FROM Users WHERE Email=? AND Username=?";
                     cmd = conn.prepareStatement(check);

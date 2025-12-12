@@ -223,7 +223,7 @@ public class OrderAdmin extends JFrame {
                 try 
                 {
                     dbConnection();
-                    String sql = "SELECT o.OrderNo, c.Username AS CustomerName, o.DeliveryID, o.OrderDate, p.Amount, o.Status FROM Orders o JOIN Users c ON o.CustomerID = c.UserID LEFT JOIN Payments p ON o.OrderNo = p.OrderNo WHERE o.OrderNo = ?;";
+                    String sql = "SELECT o.OrderNo, c.Username AS CustomerName, o.DeliveryID, o.OrderDate, SUM(d.Quantity * d.Price) AS Amount, o.Status FROM Orders o JOIN Users c ON o.CustomerID = c.UserID JOIN Details d ON o.OrderNo = d.OrderNo WHERE o.OrderNo = ? GROUP BY o.OrderNo, c.Username, o.DeliveryID, o.OrderDate, o.Status;";
                     cmd = conn.prepareStatement(sql);                   
                     cmd.setString(1,Integer.toString(orderNo));                    
                     rs = cmd.executeQuery();                
@@ -255,6 +255,18 @@ public class OrderAdmin extends JFrame {
                 loadOrderTable();
             }
         });
+        btnViewOrdDetail.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                int row = tb.getSelectedRow();
+                if(row == -1){
+                    JOptionPane.showMessageDialog(null, "Please select an order!");
+                    return;
+                }
+                int orderNo = (int) tb.getValueAt(row, 0);
+                new ViewDetail(orderNo);
+            }
+        });
         // Show
         pane.setVisible(true);
     }
@@ -278,7 +290,7 @@ public class OrderAdmin extends JFrame {
     public void loadOrderTable() {
         try {
             dbConnection();
-            String sql = "SELECT o.OrderNo, c.Username AS CustomerName, o.DeliveryID, o.OrderDate, p.Amount, o.Status FROM Orders o JOIN Users c ON o.CustomerID = c.UserID LEFT JOIN Payments p ON o.OrderNo = p.OrderNo;";
+            String sql = "SELECT o.OrderNo, c.Username AS CustomerName, o.DeliveryID, o.OrderDate, SUM(d.Quantity * d.Price) AS Amount, o.Status FROM Orders o JOIN Users c ON o.CustomerID = c.UserID JOIN Details d ON o.OrderNo = d.OrderNo GROUP BY o.OrderNo, c.Username, o.DeliveryID, o.OrderDate, o.Status;";
             cmd = conn.prepareStatement(sql);
             rs = cmd.executeQuery();
             tbOrder.setRowCount(0);

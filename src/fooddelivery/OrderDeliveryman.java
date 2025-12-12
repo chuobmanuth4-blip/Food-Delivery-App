@@ -9,7 +9,6 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
@@ -72,19 +71,19 @@ public final class OrderDeliveryman extends JFrame{
         lbPending = new JLabel("Pending:");
         lbPending.setForeground(Color.GREEN);
         lbPending.setFont(new Font("Arial", Font.BOLD, 15));
-        lbPending.setBounds(600, 10, 100, 30);
+        lbPending.setBounds(650, 10, 100, 30);
         loadStatus("Pending");
         
         lbCompleted = new JLabel("Completed:");
         lbCompleted.setForeground(Color.BLUE);
         lbCompleted.setFont(new Font("Arial", Font.BOLD, 15));
-        lbCompleted.setBounds(600, 50, 100, 30);
+        lbCompleted.setBounds(650, 50, 100, 30);
         loadStatus("Completed");
         
         lbCanceled = new JLabel("Cancelled:");
         lbCanceled.setForeground(Color.RED);
         lbCanceled.setFont(new Font("Arial", Font.BOLD, 15));
-        lbCanceled.setBounds(600, 90, 100, 30);
+        lbCanceled.setBounds(650, 90, 100, 30);
         loadStatus("Cancelled");
         // Create TextField
         txtSearch = new JTextField("Please Enter OrderNo to Search!");
@@ -115,7 +114,7 @@ public final class OrderDeliveryman extends JFrame{
         btnCompleted = new JButton("Completed");
         btnCompleted.setBounds(50,40,120,50);
         
-        btnCanceled = new JButton("Canceled");
+        btnCanceled = new JButton("Cancelled");
         btnCanceled.setBounds(170,40,120,50);
         
         btnViewDetail = new JButton("View Detail");
@@ -196,7 +195,7 @@ public final class OrderDeliveryman extends JFrame{
                 try 
                 {
                     dbConnection();
-                    String sql = "SELECT o.OrderNo, c.Username AS CustomerName, o.Address, o.Phone, p.Amount, o.OrderDate, o.Status FROM Orders o JOIN Users c ON o.CustomerID = c.UserID LEFT JOIN Payments p ON o.OrderNo = p.OrderNo WHERE o.OrderNo = ?;";
+                    String sql = "SELECT o.OrderNo, c.Username AS CustomerName, o.Address, o.Phone, SUM(d.Quantity * d.Price) AS Amount, o.OrderDate, o.Status FROM Orders o JOIN Users c ON o.CustomerID = c.UserID JOIN Details d ON o.OrderNo = d.OrderNo WHERE o.OrderNo = ? GROUP BY o.OrderNo, c.Username, o.Address, o.Phone, o.OrderDate, o.Status;";
                     cmd = conn.prepareStatement(sql);                   
                     cmd.setString(1,Integer.toString(orderNo));                    
                     rs = cmd.executeQuery();                
@@ -292,14 +291,19 @@ public final class OrderDeliveryman extends JFrame{
                 }
             }
         });
-        
-//        btnEdit.addActionListener(new ActionListener(){
-//            @Override
-//            public void actionPerformed(ActionEvent e){
-//               new UpdateUser();
-//            }
-//        };
-        // Add Components to Frame
+        btnViewDetail.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                int row = tb.getSelectedRow();
+                if(row == -1){
+                    JOptionPane.showMessageDialog(null, "Please select an order!");
+                    return;
+                }
+                int orderNo = (int) tb.getValueAt(row, 0);
+                new ViewDetail(orderNo);
+            }
+        });
+       // Add Components to Frame
         pane.add(pnlN, BorderLayout.NORTH);
         pane.add(pnlC, BorderLayout.CENTER);
         pane.add(pnlS, BorderLayout.SOUTH);        
@@ -324,7 +328,7 @@ public final class OrderDeliveryman extends JFrame{
     public void loadOrderTable() {
         try {
             dbConnection();
-            String sql = "SELECT o.DeliveryID, o.OrderNo, c.Username AS CustomerName, o.Address, o.Phone, p.Amount, o.OrderDate, o.Status FROM Orders o JOIN Users c ON o.CustomerID = c.UserID LEFT JOIN Payments p ON o.OrderNo = p.OrderNo WHERE o.DeliveryID = ?;";
+            String sql = "SELECT o.OrderNo, c.Username AS CustomerName, o.Address, o.Phone, SUM(d.Quantity * d.Price) AS Amount, o.OrderDate, o.Status FROM Orders o JOIN Users c ON o.CustomerID = c.UserID JOIN Details d ON o.OrderNo = d.OrderNo WHERE o.DeliveryID = ? GROUP BY o.OrderNo, c.Username, o.Address, o.Phone, o.OrderDate, o.Status;";
             cmd = conn.prepareStatement(sql);
             cmd.setInt(1, DeliveryID);
             rs = cmd.executeQuery();

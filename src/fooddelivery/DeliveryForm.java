@@ -22,7 +22,7 @@ import javax.swing.JPanel;
  *
  * @author manut
  */
-public class DeliveryForm extends JFrame{
+public class DeliveryForm{
     JFrame frame;
     OrderDeliveryman od;
     JLabel lb1;

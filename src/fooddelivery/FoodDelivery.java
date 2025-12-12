@@ -4,8 +4,10 @@
  */
 package fooddelivery;
 
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
-
+import java.sql.Connection;
+import java.sql.DriverManager;
 /**
  *
  * @author manuth
@@ -38,6 +40,21 @@ public class FoodDelivery{
         //new UpdateUser();
         //new DeleteUser();
         //new DeliveryForm();
-        //new Payment();
+        //new ViewDetail();
+    }
+    public Connection conn;
+    public void dbConnection(){
+        try{
+        String dbCon = "jdbc:mysql://localhost:3306/fooddelivery";
+        String dbName = "root";
+        String dbPass = "manuth@9273$";                    
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        conn = DriverManager.getConnection(dbCon, dbName, dbPass);
+        }
+        catch (Exception e) 
+        {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "DB Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
     }
 }

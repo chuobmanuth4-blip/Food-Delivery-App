@@ -11,8 +11,6 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import javax.swing.ButtonGroup;
@@ -29,8 +27,7 @@ import java.sql.ResultSet;
  *
  * @author manut
  */
-public class SignUp extends JFrame{
-    Connection conn;
+public class SignUp extends FoodDelivery{
     PreparedStatement cmd;
     ResultSet rs;
     JFrame frame;
@@ -185,14 +182,7 @@ public class SignUp extends JFrame{
                 }
                 try 
                 {
-                    String dbCon = "jdbc:mysql://localhost:3306/fooddelivery";
-                    String dbName = "root";
-                    //String dbPass = "Lyheng200609";
-                    String dbPass = "manuth@9273$";                    
-                    Class.forName("com.mysql.cj.jdbc.Driver");
-                    conn = DriverManager.getConnection(dbCon, dbName, dbPass);
-                    
-                    
+                    dbConnection();
                     String query = "SELECT * FROM Users WHERE Username = ? OR Email = ?";
                     PreparedStatement cmdCheck;
                     cmdCheck = conn.prepareStatement(query);

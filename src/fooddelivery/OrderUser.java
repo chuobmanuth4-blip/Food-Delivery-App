@@ -41,11 +41,10 @@ import javax.swing.table.DefaultTableModel;
 public final class OrderUser extends JFrame{
     Container pane;
     Connection conn;
-    PreparedStatement cmdOrder, cmdDetail, cmdPayment; 
+    PreparedStatement cmdOrder, cmdDetail; 
     ResultSet rs; 
-    JLabel lbGrandTotal, lbAddress, lbPhone, lbMethod;
+    JLabel lbGrandTotal, lbAddress, lbPhone;
     JTextField txtGrandTotal, txtAddress, txtPhone;
-    JComboBox cmb;
     JButton btnClear, btnOrder,btnDelete, btnAddToCart, btnMainDish, btnDrink, btnSnack, btnDessert, btnFastfood;
     JPanel pnlW, pnlE, pnlWC, pnlFastFood, pnlMainDish, pnlDrink, pnlSnack, pnlDessert;
     JTable tb;
@@ -66,16 +65,10 @@ public final class OrderUser extends JFrame{
         
         lbPhone = new JLabel("Phone: ", JLabel.CENTER);
         lbPhone.setFont(new Font("Arial", Font.BOLD, 16));
-        
-        lbMethod = new JLabel("Payment Method: ", JLabel.CENTER);
-        lbMethod.setFont(new Font("Arial", Font.BOLD, 16));
         // Create TextField
         txtGrandTotal = new JTextField();
         txtAddress = new JTextField();
         txtPhone = new JTextField();
-        String method [] = {null, "Cash", "Card", "Digital"};  
-        cmb = new JComboBox(method);
-        cmb.setBackground(Color.WHITE);
         // Create Button
         btnMainDish = new JButton("1-Main Dishes");
         btnDrink = new JButton("2-Drinks");
@@ -232,23 +225,21 @@ public final class OrderUser extends JFrame{
         pnlE.setBackground(Color.BLUE);
         
         JPanel pnlEN = new JPanel();
-        pnlEN.setPreferredSize(new Dimension(0,400));
+        pnlEN.setPreferredSize(new Dimension(0,450));
         pnlEN.setLayout(new BorderLayout());
         pnlEN.setBackground(Color.WHITE);
         pnlEN.setBorder(BorderFactory.createTitledBorder("Summary"));
         pnlEN.add(scroll);
         
         JPanel pnlEC = new JPanel();
-        pnlEC.setLayout(new GridLayout(4,2)); 
-        pnlEC.setBackground(Color.CYAN);
+        pnlEC.setLayout(new GridLayout(3,2)); 
+        pnlEC.setBackground(Color.WHITE);
         pnlEC.add(lbGrandTotal);
         pnlEC.add(txtGrandTotal); 
         pnlEC.add(lbAddress);
         pnlEC.add(txtAddress);  
         pnlEC.add(lbPhone);
         pnlEC.add(txtPhone); 
-        pnlEC.add(lbMethod);
-        pnlEC.add(cmb);  
         JPanel pnlES = new JPanel();
         pnlES.setLayout(new GridLayout(1,3));
         pnlES.setPreferredSize(new Dimension(0,80));
@@ -290,8 +281,6 @@ public final class OrderUser extends JFrame{
         btnOrder.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
-                String method = (String) cmb.getSelectedItem();
-                float amount = Float.parseFloat(txtGrandTotal.getText());
                 try{
                     dbConnection();
                     String sqlOrder = "INSERT INTO Orders (CustomerID, DeliveryID, Status, Address, Phone) VALUES (?, NULL, 'Pending', ?, ?);";
@@ -323,22 +312,14 @@ public final class OrderUser extends JFrame{
                         cmdDetail.setInt(2, proNo);
                         cmdDetail.setInt(3, qty);
                         cmdDetail.setDouble(4, price);
-                        cmdDetail.executeUpdate();
-                    }
-                    String sqlPayment = "INSERT INTO Payments(OrderNo, Amount, Method) VALUES (?, ?, ?);";
-                    cmdPayment = conn.prepareStatement(sqlPayment);
-                    cmdPayment.setInt(1, orderNo);
-                    cmdPayment.setFloat(2, amount);
-                    cmdPayment.setString(3, method);
-                    int z = cmdPayment.executeUpdate();
-                    if(z > 0){
-                        JOptionPane.showMessageDialog(null, "Your order is success!");
-                    }
+                        int x = cmdDetail.executeUpdate();
+                        if(x>0)                   
+                            JOptionPane.showMessageDialog(null, "Your order is success!");
+                    }                    
                     tbDetails.setRowCount(0);
                     txtGrandTotal.setText("");
                     txtAddress.setText("");
                     txtPhone.setText("");
-                    cmb.setSelectedItem(null);
                 }
                 catch (SQLException ex) {
                     ex.printStackTrace();
@@ -375,7 +356,6 @@ public final class OrderUser extends JFrame{
                 txtGrandTotal.setText("");
                 txtAddress.setText("");
                 txtPhone.setText("");
-                cmb.setSelectedItem(null);
             }
         });
         

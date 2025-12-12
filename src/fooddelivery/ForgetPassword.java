@@ -11,9 +11,7 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -26,8 +24,7 @@ import javax.swing.JTextField;
  *
  * @author manut
  */
-public class ForgetPassword{
-    Connection conn;
+public class ForgetPassword extends FoodDelivery{
     PreparedStatement cmd;
     ResultSet rs;
     JFrame frame;
@@ -96,16 +93,12 @@ public class ForgetPassword{
             @Override
             public void actionPerformed(ActionEvent e){
                 String email = txtEmail.getText().trim();
-
                 if (email.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Please enter email!");
                     return;
                 }               
-               String dbName = "jdbc:mysql://localhost:3306/fooddelivery";
-               String dbUser = "root";
-               String dbPass = "manuth@9273$"; 
                try{
-                   conn = DriverManager.getConnection(dbName, dbUser, dbPass);
+                   dbConnection();
                    String sql = "SELECT * FROM Users WHERE Email = ?;";
                    cmd = conn.prepareStatement(sql);
                    cmd.setString(1, email);

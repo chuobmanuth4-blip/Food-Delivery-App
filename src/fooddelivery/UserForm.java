@@ -21,7 +21,7 @@ import javax.swing.JPanel;
  *
  * @author manut
  */
-public class UserForm extends JFrame{
+public class UserForm{
     public int userID; 
     OrderUser order;
     JFrame frame;

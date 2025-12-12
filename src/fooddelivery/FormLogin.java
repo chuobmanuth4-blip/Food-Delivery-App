@@ -20,8 +20,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.JRadioButton;
@@ -30,9 +28,8 @@ import java.sql.SQLException;
  *
  * @author manut
  */
-public class FormLogin{
+public class FormLogin extends FoodDelivery{
     JFrame frame;
-    Connection conn;
     PreparedStatement cmd;
     ResultSet rs;
     JLabel headerLb, welcomeLb, userLb, passLb, forgetpassLb;
@@ -98,9 +95,11 @@ public class FormLogin{
         rbtn.setBounds(50,215,150,20);
         // Create TextField
         txtusername  = new JTextField("Vitur");
+        //txtusername  = new JTextField("Manuth");
         txtusername.setBounds(48,120,290,30);
 
         txtpass = new JPasswordField("Tur1234");
+        //txtpass = new JPasswordField("Nuth9273");
         txtpass.setBounds(48,180,290,30);
         // Create Panel
         pnl1 = new JPanel();
@@ -162,13 +161,7 @@ public class FormLogin{
                     return;
                 }
                 try{
-                    String dbCon = "jdbc:mysql://localhost:3306/fooddelivery";
-                    String dbName = "root";
-                    //String dbPass = "Lyheng200609";
-                    String dbPass = "manuth@9273$";                    
-                    Class.forName("com.mysql.cj.jdbc.Driver");
-                    conn = DriverManager.getConnection(dbCon, dbName, dbPass);
-                    
+                    dbConnection();     
                     String sql = "SELECT * FROM Users WHERE Username = ? AND Password = ?";
                     cmd = conn.prepareStatement(sql);
                     cmd.setString(1, username);
