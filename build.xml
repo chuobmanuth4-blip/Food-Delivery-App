@@ -10,6 +10,21 @@
 <project name="FoodDelivery" default="default" basedir=".">
     <description>Builds, tests, and runs the project FoodDelivery.</description>
     <import file="nbproject/build-impl.xml"/>
+    
+    <target name="compile-reports">
+    <taskdef name="jasper" classname="net.sf.jasperreports.ant.JRAntCompileTask">
+        <classpath>
+            <fileset dir="lib">
+                <include name="*.jar"/>
+            </fileset>
+        </classpath>
+    </taskdef>
+
+    <jasper
+        srcdir="src/reports"
+        destdir="build/classes/reports"
+        includes="*.jrxml" />
+    </target>
     <!--
 
     There exist several targets which are by default empty and which can be 

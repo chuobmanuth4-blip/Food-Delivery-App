@@ -94,12 +94,12 @@ public class FormLogin extends FoodDelivery{
         rbtn = new JRadioButton("Show password");
         rbtn.setBounds(50,215,150,20);
         // Create TextField
-        txtusername  = new JTextField("Vitur");
-        //txtusername  = new JTextField("Manuth");
+        //txtusername  = new JTextField("Vitur");
+        txtusername  = new JTextField("Manuth");
         txtusername.setBounds(48,120,290,30);
 
-        txtpass = new JPasswordField("Tur1234");
-        //txtpass = new JPasswordField("Nuth9273");
+        //txtpass = new JPasswordField("Tur1234");
+        txtpass = new JPasswordField("Nuth9273");
         txtpass.setBounds(48,180,290,30);
         // Create Panel
         pnl1 = new JPanel();

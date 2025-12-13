@@ -29,6 +29,8 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperReport;
 /**
  *
  * @author manut
@@ -267,6 +269,12 @@ public class OrderAdmin extends JFrame {
                 new ViewDetail(orderNo);
             }
         });
+        btnPrintReceipt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            }
+        });
+
         // Show
         pane.setVisible(true);
     }
