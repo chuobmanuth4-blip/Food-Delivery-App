@@ -25,6 +25,7 @@ public class MainForm{
     UserAdmin user;
     ProductAdmin product;
     OrderAdmin order;
+    Dashboard report;
     JFrame frame;
     JLabel lbHeader;
     JButton btn1, btn2, btn3, btn4, btn5, btn6, btn7;
@@ -37,7 +38,7 @@ public class MainForm{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
         // Create image
-        logo = new ImageIcon("C:\\Users\\manut\\OneDrive - ACLEDA University of Business Co., Ltd\\My Documents\\AUB BACHELOR CSE\\AUB BACHELOR CSE Y2S1\\CS 214 Java Programming\\Project\\FoodDelivery\\src\\logo2.png");
+        logo = new ImageIcon("D:\\Project\\FoodDelivery\\src\\logo.png");
         // Creat Label
         lbHeader = new JLabel("Get it hot. Get it fast. GetFood.", logo, JLabel.CENTER);
         lbHeader.setFont(new Font("Arial", Font.BOLD, 30));
@@ -81,6 +82,10 @@ public class MainForm{
             @Override
             public void actionPerformed(ActionEvent e){
                 btn1.setBackground(Color.GREEN);
+                btn2.setBackground(null);
+                btn3.setBackground(null);
+                btn4.setBackground(null);
+
                 user = new UserAdmin();
                 pnlC.removeAll();
                 pnlC.revalidate();
@@ -91,7 +96,10 @@ public class MainForm{
         btn2.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
-                btn1.setBackground(null);
+                btn1.setBackground(null);                
+                btn2.setBackground(Color.GREEN);
+                btn3.setBackground(null);                
+                btn4.setBackground(null);                                
                 product = new ProductAdmin();
                 pnlC.removeAll();
                 pnlC.revalidate();
@@ -103,6 +111,9 @@ public class MainForm{
             @Override
             public void actionPerformed(ActionEvent e){
                 btn1.setBackground(null);
+                btn2.setBackground(null);                
+                btn3.setBackground(Color.GREEN);
+                btn4.setBackground(null);                                
                 order = new OrderAdmin();
                 pnlC.removeAll();
                 pnlC.revalidate();
@@ -110,9 +121,22 @@ public class MainForm{
                 pnlC.add(order.getPane());
             }
         });
+        btn4.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                btn1.setBackground(null);
+                btn2.setBackground(null);
+                btn3.setBackground(null);
+                btn4.setBackground(Color.GREEN);
+                report = new Dashboard();
+                pnlC.removeAll();
+                pnlC.revalidate();
+                pnlC.repaint();
+                pnlC.add(report.getPane());
+            }
+        });
         // Show Frame
         frame.setVisible(true);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        frame.setUndecorated(true);
     }
 }

@@ -90,6 +90,5 @@ public class UserForm{
         // Show Frame
         frame.setVisible(true);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        frame.setUndecorated(true);
     } 
 }

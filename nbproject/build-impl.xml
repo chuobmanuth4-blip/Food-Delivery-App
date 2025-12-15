@@ -43,7 +43,7 @@ is divided into following sections:
         <property file="nbproject/private/private.properties"/>
     </target>
     <target name="-pre-init-libraries">
-        <property location=".\lib\nblibraries.properties" name="libraries.path"/>
+        <property location="lib\nblibraries.properties" name="libraries.path"/>
         <dirname file="${libraries.path}" property="libraries.dir.nativedirsep"/>
         <pathconvert dirsep="/" property="libraries.dir">
             <path path="${libraries.dir.nativedirsep}"/>
@@ -1029,7 +1029,7 @@ is divided into following sections:
                         <globmapper from="*" to="lib/*"/>
                     </chainedmapper>
                 </pathconvert>
-                <taskdef classname="org.netbeans.modules.java.j2seproject.copylibstask.CopyLibs" classpath="${libs.CopyLibs.classpath}" name="copylibs"/>
+                <taskdef classname="org.netbeans.modules.java.j2seproject.copylibstask.CopyLibs" classpath="C:\Program Files\Apache NetBeans\java\ant\extra\org-netbeans-modules-java-j2seproject-copylibstask.jar" name="copylibs"/>
                 <copylibs compress="${jar.compress}" excludeFromCopy="${copylibs.excludes}" index="${jar.index}" indexMetaInf="${jar.index.metainf}" jarfile="${dist.jar}" manifest="@{manifest}" manifestencoding="UTF-8" rebase="${copylibs.rebase}" runtimeclasspath="${run.classpath.without.build.classes.dir}">
                     <fileset dir="${build.classes.dir}" excludes="${dist.archive.excludes}"/>
                     <manifest>
