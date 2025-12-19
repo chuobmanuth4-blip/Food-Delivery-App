@@ -70,10 +70,10 @@ public class OrderAdmin extends JFrame {
         cmb = new JComboBox();
         cmb.setBounds(50,30,300,50);
         cmb.addItem("3-Vitur");
-        cmb.addItem("2-Visal");
-        cmb.addItem("3-Rayuth");
+        cmb.addItem("7-Visal");
+        cmb.addItem("9-Rayuth");
         cmb.addItem("4-Piseth");
-        cmb.addItem("5-Savin");
+        cmb.addItem("8-Savin");
         // Create Button 
         btnSearch = new JButton("Search");
         btnSearch.setBounds(600,15,100,40);

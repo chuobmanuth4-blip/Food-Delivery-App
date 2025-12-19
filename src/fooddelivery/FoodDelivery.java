@@ -32,15 +32,16 @@ public class FoodDelivery{
         {
             System.out.println(e.getMessage());
         } 
-        //new FormLogin();
+        new FormLogin();
         //new ForgetPassword();
         //new ResetPassword();
         //new UserForm();
-        new MainForm();
+        //new MainForm();
         //new UpdateUser();
         //new DeleteUser();
         //new DeliveryForm();
         //new ViewDetail();
+        //new TestPrint();
     }
     public Connection conn;
     public void dbConnection(){

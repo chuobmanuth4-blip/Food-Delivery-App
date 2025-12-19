@@ -38,7 +38,7 @@ public class MainForm{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
         // Create image
-        logo = new ImageIcon("D:\\Project\\FoodDelivery\\src\\logo.png");
+        logo = new ImageIcon("C:\\Users\\manut\\OneDrive - ACLEDA University of Business Co., Ltd\\My Documents\\AUB BACHELOR CSE\\AUB BACHELOR CSE Y2S1\\CS 214 Java Programming\\Project\\FoodDelivery\\src\\logo.png");
         // Creat Label
         lbHeader = new JLabel("Get it hot. Get it fast. GetFood.", logo, JLabel.CENTER);
         lbHeader.setFont(new Font("Arial", Font.BOLD, 30));

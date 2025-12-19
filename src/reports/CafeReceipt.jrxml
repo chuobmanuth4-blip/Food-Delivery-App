@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.5.final using JasperReports Library version 6.21.5-74d586df47b25dbd05bd0957999819196e59934a  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CafeReceipt" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c9f54d7d-22c0-457e-a531-fd6e8f8f8ae6">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MYSQL"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT Orders.OrderNo,Orders.Dates,Orders.CustNo,Orders.EmpNo,Orders.Location,Orders.Status,
+Details.ProNo,Products.ProName,Details.Qty,Details.UP, Details.Qty*Details.UP as Total
+from Orders inner join Details
+on Orders.OrderNo=Details.OrderNo inner join Products
+on Details.ProNo=Products.ProNo
+where Details.OrderNo=301]]>
+	</queryString>
+	<field name="OrderNo" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="OrderNo"/>
+		<property name="com.jaspersoft.studio.field.label" value="OrderNo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orders"/>
+	</field>
+	<field name="Dates" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="Dates"/>
+		<property name="com.jaspersoft.studio.field.label" value="Dates"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orders"/>
+	</field>
+	<field name="CustNo" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="CustNo"/>
+		<property name="com.jaspersoft.studio.field.label" value="CustNo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orders"/>
+	</field>
+	<field name="EmpNo" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="EmpNo"/>
+		<property name="com.jaspersoft.studio.field.label" value="EmpNo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orders"/>
+	</field>
+	<field name="Location" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Location"/>
+		<property name="com.jaspersoft.studio.field.label" value="Location"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orders"/>
+	</field>
+	<field name="Status" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Status"/>
+		<property name="com.jaspersoft.studio.field.label" value="Status"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orders"/>
+	</field>
+	<field name="ProNo" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="ProNo"/>
+		<property name="com.jaspersoft.studio.field.label" value="ProNo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="details"/>
+	</field>
+	<field name="ProName" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ProName"/>
+		<property name="com.jaspersoft.studio.field.label" value="ProName"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="products"/>
+	</field>
+	<field name="Qty" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="Qty"/>
+		<property name="com.jaspersoft.studio.field.label" value="Qty"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="details"/>
+	</field>
+	<field name="UP" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="UP"/>
+		<property name="com.jaspersoft.studio.field.label" value="UP"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="details"/>
+	</field>
+	<field name="Total" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="Total"/>
+		<property name="com.jaspersoft.studio.field.label" value="Total"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="57" splitType="Stretch">
+			<staticText>
+				<reportElement x="190" y="30" width="11" height="5" uuid="d614793e-dffc-4ddf-80d1-8eafe590f83a"/>
+				<text><![CDATA[Static Text]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="81" y="3" width="399" height="51" uuid="7a706e50-a8cc-4c64-be1e-175af68eed48"/>
+				<textElement textAlignment="Center">
+					<font size="33"/>
+				</textElement>
+				<text><![CDATA[Cafe Management System]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="58" splitType="Stretch">
+			<staticText>
+				<reportElement x="220" y="4" width="120" height="50" forecolor="#FF3300" uuid="5029016a-ee85-4e1a-aae0-3fd7bab1a63e"/>
+				<textElement textAlignment="Center">
+					<font size="33" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Receipt]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="32" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="108" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

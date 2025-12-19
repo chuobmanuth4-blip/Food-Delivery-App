@@ -26,10 +26,15 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import java.text.NumberFormat;
+import java.util.Locale;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PiePlot;
 /**
  *
- * @author manut
+ * @author manuth
  */
 public final class Dashboard extends JFrame{
     Container pane;
@@ -44,13 +49,13 @@ public final class Dashboard extends JFrame{
         pane = this.getContentPane();
         pane.setLayout(new BorderLayout());
         // Create image
-        imgUser = new ImageIcon("D:\\Project\\FoodDelivery\\src\\group.png");
+        imgUser = new ImageIcon("C:\\Users\\manut\\OneDrive - ACLEDA University of Business Co., Ltd\\My Documents\\AUB BACHELOR CSE\\AUB BACHELOR CSE Y2S1\\CS 214 Java Programming\\Project\\FoodDelivery\\src\\group.png");
         JLabel lbimg1 = new JLabel(imgUser);
-        imgOrder = new ImageIcon("D:\\Project\\FoodDelivery\\src\\orderAmount.png");
+        imgOrder = new ImageIcon("C:\\Users\\manut\\OneDrive - ACLEDA University of Business Co., Ltd\\My Documents\\AUB BACHELOR CSE\\AUB BACHELOR CSE Y2S1\\CS 214 Java Programming\\Project\\FoodDelivery\\src\\orderAmount.png");
         JLabel lbimg2 = new JLabel(imgOrder);
-        imgSold = new ImageIcon("D:\\Project\\FoodDelivery\\src\\sold.png");
+        imgSold = new ImageIcon("C:\\Users\\manut\\OneDrive - ACLEDA University of Business Co., Ltd\\My Documents\\AUB BACHELOR CSE\\AUB BACHELOR CSE Y2S1\\CS 214 Java Programming\\Project\\FoodDelivery\\src\\sold.png");
         JLabel lbimg3 = new JLabel(imgSold);
-        imgProfit = new ImageIcon("D:\\Project\\FoodDelivery\\src\\profits.png"); 
+        imgProfit = new ImageIcon("C:\\Users\\manut\\OneDrive - ACLEDA University of Business Co., Ltd\\My Documents\\AUB BACHELOR CSE\\AUB BACHELOR CSE Y2S1\\CS 214 Java Programming\\Project\\FoodDelivery\\src\\profits.png"); 
         JLabel lbimg4 = new JLabel(imgProfit);
         // Create Label
         lbUser = new JLabel("Customers", JLabel.CENTER);
@@ -67,7 +72,8 @@ public final class Dashboard extends JFrame{
         pnlN = new JPanel();
         pnlN.setLayout(new GridLayout(1,4));
         pnlN.setPreferredSize(new Dimension(0,100));
-        //Card 1
+        
+        // Card
         int CountCust=0, TodayCust=0, OrderNum = 0, OrderToday=0, SoldNum=0, SoldToday=0;
         float Profit = 0, ProfitToday = 0; 
         try {
@@ -75,49 +81,49 @@ public final class Dashboard extends JFrame{
             
             String sql1 = "SELECT COUNT(*) AS CustomerNumber FROM Users WHERE Role = 'Customer';";                     
             cmd = conn.prepareStatement(sql1);            
-            rs = cmd.executeQuery();    // Run     
+            rs = cmd.executeQuery();         
             if(rs.next())
                 CountCust = Integer.parseInt(rs.getString(1));
             
             String sql2 = "SELECT COUNT(*) AS CustomerNumber FROM Users WHERE Role = 'Customer' AND DATE(createdAt)= CURDATE();";                     
             cmd = conn.prepareStatement(sql2);            
-            rs = cmd.executeQuery();    // Run     
+            rs = cmd.executeQuery();       
             if(rs .next())
                 TodayCust = Integer.parseInt(rs.getString(1));
             
             String sql3 = "SELECT COUNT(*) AS OrderNumber FROM Orders;";                     
             cmd = conn.prepareStatement(sql3);            
-            rs = cmd.executeQuery();    // Run     
+            rs = cmd.executeQuery();       
             if(rs .next())
                 OrderNum = Integer.parseInt(rs.getString(1));
             
             String sql4 = "SELECT COUNT(*) AS OrderNumber FROM Orders WHERE DATE(OrderDate) = Date(now());";                     
             cmd = conn.prepareStatement(sql4);            
-            rs = cmd.executeQuery();    // Run     
+            rs = cmd.executeQuery();       
             if(rs .next())
                 OrderToday = Integer.parseInt(rs.getString(1));
             
-            String sql5 = "SELECT COUNT(Orders.OrderNo) as ItemSold FROM Orders JOIN Details on Orders.OrderNo = Details.OrderNo;";                     
+            String sql5 = "SELECT SUM(Details.Quantity) as ItemSold FROM Orders JOIN Details on Orders.OrderNo = Details.OrderNo;";                     
             cmd = conn.prepareStatement(sql5);            
-            rs = cmd.executeQuery();    // Run     
+            rs = cmd.executeQuery();     
             if(rs .next())
                 SoldNum = Integer.parseInt(rs.getString(1));
             
-            String sql6 = "SELECT COUNT(Orders.OrderNo) as ItemSold FROM Orders JOIN Details on Orders.OrderNo = Details.OrderNo AND DATE(OrderDate) = Date(now());";                     
+            String sql6 = "SELECT SUM(Details.Quantity) as ItemSold FROM Orders JOIN Details on Orders.OrderNo = Details.OrderNo AND DATE(OrderDate) = Date(now());";                     
             cmd = conn.prepareStatement(sql6);            
-            rs = cmd.executeQuery();    // Run     
+            rs = cmd.executeQuery();       
             if(rs .next())
                 SoldToday = Integer.parseInt(rs.getString(1));
             
             String sql7 = "SELECT SUM(Details.Quantity * Details.Price) as Total FROM Orders JOIN Details WHERE Details.OrderNo = Orders.OrderNo;";                     
             cmd = conn.prepareStatement(sql7);            
-            rs = cmd.executeQuery();    // Run     
+            rs = cmd.executeQuery();    
             if(rs .next())
                 Profit = Float.parseFloat(rs.getString(1));
             
             String sql8 = "SELECT SUM(Details.Quantity * Details.Price) as Total FROM Orders JOIN Details WHERE Details.OrderNo = Orders.OrderNo AND DATE(OrderDate) = Date(now());";                     
             cmd = conn.prepareStatement(sql8);            
-            rs = cmd.executeQuery();    // Run     
+            rs = cmd.executeQuery();        
             if(rs .next())
                 ProfitToday = Float.parseFloat(rs.getString(1));
         }
@@ -128,7 +134,7 @@ public final class Dashboard extends JFrame{
         }    
         pnlN1 = new JPanel();
         pnlN1.setLayout(new GridLayout(2,4));
-        pnlN1.setBackground(Color.WHITE);
+        pnlN1.setBackground(Color.CYAN);
         pnlN1.add(new JLabel(""));        
         pnlN1.add(lbUser);
         pnlN1.add(lbimg1);
@@ -137,7 +143,7 @@ public final class Dashboard extends JFrame{
         pnlN1.add(new JLabel(""));
         JLabel lb1 = new JLabel("" + CountCust, JLabel.CENTER);
         lb1.setFont(new Font("Serif", Font.BOLD, 16));
-        lb1.setForeground(Color.cyan);
+        lb1.setForeground(Color.WHITE);
         JLabel lb2 = new JLabel("+" + TodayCust, JLabel.CENTER);
         lb2.setFont(new Font("Serif", Font.BOLD, 16));
         lb2.setForeground(Color.BLUE);
@@ -147,7 +153,7 @@ public final class Dashboard extends JFrame{
 
         pnlN2 = new JPanel();
         pnlN2.setLayout(new GridLayout(2,4));
-        pnlN2.setBackground(Color.WHITE);
+        pnlN2.setBackground(Color.PINK);
         pnlN2.add(new JLabel(""));
         pnlN2.add(lbOrder);
         pnlN2.add(lbimg2);
@@ -166,7 +172,7 @@ public final class Dashboard extends JFrame{
         
         pnlN3 = new JPanel();
         pnlN3.setLayout(new GridLayout(2,4));
-        pnlN3.setBackground(Color.WHITE);
+        pnlN3.setBackground(Color.ORANGE);
         pnlN3.add(new JLabel(""));  
         pnlN3.add(lbSold);
         pnlN3.add(lbimg3);
@@ -184,7 +190,7 @@ public final class Dashboard extends JFrame{
 
         pnlN4 = new JPanel();
         pnlN4.setLayout(new GridLayout(2,3));
-        pnlN4.setBackground(Color.WHITE);
+        pnlN4.setBackground(Color.YELLOW);
         pnlN4.add(new JLabel(""));
         pnlN4.add(lbProfit);  
         pnlN4.add(lbimg4);
@@ -243,102 +249,6 @@ public final class Dashboard extends JFrame{
     public Container getPane(){
         return pane;
     }
-    public void BarChart1(){
-        JFreeChart barChart;
-        // Add data
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        dataset.addValue(500, "Income", "Main Dishes");
-        dataset.addValue(600, "Income", "Drinks");
-        dataset.addValue(700, "Income", "Snacks");
-        dataset.addValue(800, "Income", "Desserts");
-        dataset.addValue(1200, "Income", "Fast Food");
-        // Create Chart
-        barChart = ChartFactory.createBarChart( // creteBarChart or createLineChart 
-            "Bar Chart Example",
-            "Category",
-            "Value",
-            dataset,
-            PlotOrientation.HORIZONTAL,
-            true,true,false
-        );
-        // Create ChartPanel
-        ChartPanel chartPanel = new ChartPanel(barChart);
-        chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
-        // Add to Panel
-        pnlC1.add(chartPanel);
-    }
-    public void BarChart2(){
-        JFreeChart barChart;
-        // Add data
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        dataset.addValue(500, "Income", "January");
-        dataset.addValue(600, "Income", "February");
-        dataset.addValue(700, "Income", "March");
-        dataset.addValue(800, "Income", "April");
-        dataset.addValue(1200, "Income", "May");
-        dataset.addValue(900, "Income", "June");
-        // Create Chart
-        barChart = ChartFactory.createBarChart( // creteBarChart or createLineChart 
-            "Bar Chart Example",
-            "Category",
-            "Value",
-            dataset,
-            PlotOrientation.VERTICAL,
-            true,true,false
-        );
-        // Create ChartPanel
-        ChartPanel chartPanel = new ChartPanel(barChart);
-        chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
-        // Add to Panel
-        pnlC2.add(chartPanel);
-    }
-    public void LineChart(){
-        JFreeChart barChart;
-        // Add data
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        dataset.addValue(500, "Income", "January");
-        dataset.addValue(600, "Income", "February");
-        dataset.addValue(700, "Income", "March");
-        dataset.addValue(800, "Income", "April");
-        dataset.addValue(1200, "Income", "May");
-        dataset.addValue(900, "Income", "June");
-        // Create Chart
-        barChart = ChartFactory.createLineChart( // creteBarChart or createLineChart 
-            "Line Chart Example",
-            "Category",
-            "Value",
-            dataset,
-            PlotOrientation.HORIZONTAL,
-            true,true,false
-        );
-        // Create ChartPanel
-        ChartPanel chartPanel = new ChartPanel(barChart);
-        chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
-        // Add to Panel
-        pnlC3.add(chartPanel);
-    }
-    public void PieChart(){
-        JFreeChart barChart;
-        // Add data
-        DefaultPieDataset dataset = new DefaultPieDataset();
-        dataset.setValue("January", 500);
-        dataset.setValue("February", 600);
-        dataset.setValue("March", 700);
-        dataset.setValue("April", 800);
-        dataset.setValue("May", 1200);
-        dataset.setValue("June", 900);
-        // Create Chart
-        barChart = ChartFactory.createPieChart( // creteBarChart or createLineChart 
-            "Pie Chart Example",
-            dataset,
-            true,true,false
-        );
-        // Create ChartPanel
-        ChartPanel chartPanel = new ChartPanel(barChart);
-        chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
-        // Add to Panel
-        pnlC4.add(chartPanel);
-    }
     public void dbConnection(){
         try{
         String dbCon = "jdbc:mysql://localhost:3306/fooddelivery";
@@ -351,6 +261,213 @@ public final class Dashboard extends JFrame{
         {
             JOptionPane.showMessageDialog(null, e.getMessage(), "DB Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
+        }
+    }
+    public void BarChart1(){
+        dbConnection();
+        try{
+            // Add data
+            String sql = """
+                         SELECT c.CategoryName, SUM(d.Quantity) AS ItemSold 
+                         FROM Details d 
+                         INNER JOIN Orders o ON d.OrderNo = o.OrderNo
+                         INNER JOIN Products p ON d.ProNo = p.ProNo
+                         INNER JOIN Categories c ON c.CategoryNo = p.CategoryNo 
+                         GROUP BY c.CategoryName;
+                         """;
+            cmd = conn.prepareStatement(sql);
+            rs = cmd.executeQuery();
+            DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+            while(rs.next()){
+                int Itemsold = rs.getInt("ItemSold");
+                String cateName = rs.getString("CategoryName");
+                dataset.setValue(Itemsold, "Items", cateName);
+            } 
+            JFreeChart barChart;
+            // Create Chart
+            barChart = ChartFactory.createBarChart( 
+                "Items Sold by Category",
+                "Category",
+                "Value",
+                dataset,
+                PlotOrientation.HORIZONTAL,
+                false,true,false
+            );
+            // Create ChartPanel
+            ChartPanel chartPanel = new ChartPanel(barChart);
+            chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
+            // Add to Panel
+            pnlC1.removeAll();
+            pnlC1.add(chartPanel);
+            pnlC1.revalidate();
+            pnlC1.repaint();
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        }catch (Exception exception) {
+            System.out.println(exception);
+        } 
+    }
+    public void BarChart2(){
+        // Add data
+        dbConnection();
+        try{
+            String sql = """
+                         SELECT 
+                             WEEKDAY(OrderDate) AS dayIndex,  
+                             COUNT(*) AS OrderCount
+                         FROM Orders
+                         WHERE YEARWEEK(OrderDate, 1) = YEARWEEK(CURDATE(), 1)
+                         GROUP BY dayIndex
+                         ORDER BY dayIndex;
+                         """;
+            cmd = conn.prepareStatement(sql);
+            rs = cmd.executeQuery();
+            DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+            String[] days = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat","Sun"};
+            for(String d : days){
+                dataset.addValue(0, "Orders", d);  
+            }
+            while(rs.next()){
+                int dayIndex = rs.getInt("dayIndex"); 
+                String dayName = days[dayIndex];
+                int orderCount  = rs.getInt("OrderCount");
+
+                dataset.setValue(orderCount, "Orders", dayName);            
+            }
+            // Create Chart
+            JFreeChart barChart;
+            barChart = ChartFactory.createBarChart( 
+                "Orders per Day(This week)",
+                "",
+                "Orders",
+                dataset,
+                PlotOrientation.VERTICAL,
+                false,true,false
+            );
+            CategoryPlot plot = barChart.getCategoryPlot();
+            NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
+            rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+            // Create ChartPanel
+            ChartPanel chartPanel = new ChartPanel(barChart);
+            chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
+            // Add to Panel
+            pnlC2.removeAll();
+            pnlC2.add(chartPanel);
+            pnlC2.revalidate();
+            pnlC2.repaint();
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        }catch (Exception exception) {
+            System.out.println(exception);
+        }
+    }
+    public void LineChart(){
+        dbConnection();
+        try{
+            String sql = """
+                         SELECT 
+                             WEEKDAY(o.OrderDate) AS dayIndex,
+                             o.Address,
+                             SUM(d.Quantity * d.Price) AS Income
+                         FROM Orders o
+                         INNER JOIN Details d ON o.OrderNo = d.OrderNo
+                         WHERE YEARWEEK(o.OrderDate, 1) = YEARWEEK(CURDATE(), 1)
+                         GROUP BY dayIndex, o.Address
+                         ORDER BY dayIndex;
+                         """;
+            cmd = conn.prepareStatement(sql);
+            rs = cmd.executeQuery();
+            DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+            
+            String[] days = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat","Sun"};
+            String[] locations = {"Sen Sok", "Por Sen Chey", "Toul Kork", "Russei Keo"};
+
+            for (String loc : locations) {
+                for (String day : days) {
+                    dataset.addValue(0, loc, day);
+                }
+            }
+            while(rs.next()){
+                int dayIndex = rs.getInt("dayIndex"); 
+                String dayName = days[dayIndex];
+                String location = rs.getString("Address");
+                double income = rs.getDouble("Income");
+
+                dataset.addValue(income, location, dayName);            
+            }
+            JFreeChart lineChart;
+            lineChart = ChartFactory.createLineChart( 
+                "Weekly Income by Location",
+                "",
+                "Income",
+                dataset,
+                PlotOrientation.VERTICAL,
+                true,true,false
+            );
+            CategoryPlot plot = lineChart.getCategoryPlot();
+            NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
+            rangeAxis.setNumberFormatOverride(
+                    NumberFormat.getCurrencyInstance(Locale.US)
+            );
+            // Create ChartPanel
+            ChartPanel chartPanel = new ChartPanel(lineChart);
+            chartPanel.setBackground(Color.WHITE);
+            //chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
+            // Add to Panel
+            pnlC3.removeAll();
+            pnlC3.add(chartPanel);
+            pnlC3.validate(); 
+            pnlC3.repaint();
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        }catch (Exception exception) {
+            System.out.println(exception);
+        }
+    }
+    public void PieChart(){
+        dbConnection();
+        try{
+            String sql = "SELECT Categories.CategoryName, SUM(Products.Price * Details.Quantity ) AS TOTAL FROM Details INNER JOIN Products ON Details.ProNo = Products.ProNo INNER JOIN Categories ON Categories.CategoryNo = Products.CategoryNo GROUP BY Categories.CategoryName;";
+            cmd = conn.prepareStatement(sql);
+            rs = cmd.executeQuery();
+            DefaultPieDataset dataset=new DefaultPieDataset();
+            while (rs.next()) {
+                String category = rs.getString("CategoryName");
+                double total = rs.getDouble("TOTAL");
+                dataset.setValue(category, total);
+            }
+            JFreeChart pieChart = ChartFactory.createPieChart(
+               "Income by Category",
+               dataset,    
+               true, true, false);
+            
+            PiePlot plot = (PiePlot) pieChart.getPlot();
+            NumberFormat currencyFormat =
+                    NumberFormat.getCurrencyInstance(Locale.US);
+
+            plot.setLabelGenerator(
+                    new StandardPieSectionLabelGenerator(
+                            "{0}: {1} ({2})",
+                            currencyFormat,
+                            NumberFormat.getPercentInstance()
+                    )
+            );
+            // Create ChartPanel
+            ChartPanel pieChartPnl = new ChartPanel(pieChart);
+            pieChartPnl.setPreferredSize(new java.awt.Dimension(500, 270));
+            // Add to Panel
+            pnlC4.removeAll();
+            pnlC4.add(pieChartPnl);
+            pnlC4.validate(); 
+            pnlC4.repaint();
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        }catch (Exception exception) {
+            System.out.println(exception);
         }
     }
 }

@@ -3,7 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package fooddelivery;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -109,6 +108,33 @@ public class UserAdmin extends JFrame{
         JScrollPane scroll = new JScrollPane(tb);
         loadUserTable();
         // Create Panel
+        
+        int Total=0, Cust=0, Deliveryman = 0;
+        try {
+            dbConnection();
+            String sql1 = "SELECT COUNT(*) FROM Users WHERE Role = 'Customer' OR Role = 'Deliveryman';";                     
+            cmd = conn.prepareStatement(sql1);            
+            rs = cmd.executeQuery();    // Run     
+            if(rs.next())
+                Total = Integer.parseInt(rs.getString(1));
+            
+            String sql2 = "SELECT COUNT(*) FROM Users  WHERE Role = 'Customer';";                     
+            cmd = conn.prepareStatement(sql2);            
+            rs = cmd.executeQuery();    // Run     
+            if(rs .next())
+                Cust = Integer.parseInt(rs.getString(1));
+            
+            String sql3 = "SELECT COUNT(*) AS TotalUser FROM Users WHERE Role = 'Deliveryman';";                     
+            cmd = conn.prepareStatement(sql3);            
+            rs = cmd.executeQuery();    // Run     
+            if(rs .next())
+                Deliveryman = Integer.parseInt(rs.getString(1));
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        }catch (Exception exception) {
+            System.out.println(exception);
+        }    
         pnlN = new JPanel();
         pnlN.setLayout(null);
         pnlN.setBackground(Color.ORANGE);
@@ -142,9 +168,19 @@ public class UserAdmin extends JFrame{
         pnlSN.add(new JLabel("")); 
         pnlSN.add(new JLabel("")); 
         
-        pnlSN.add(new JLabel("Total Users:     ||")); 
-        pnlSN.add(new JLabel("Customers:     ||")); 
-        pnlSN.add(new JLabel("Delivery person:     ||"));   
+        
+        JLabel lb1 = new JLabel("Total Users: " + Total, JLabel.CENTER);
+        lb1.setFont(new Font("Serif", Font.BOLD, 16));
+        lb1.setForeground(Color.black);
+        JLabel lb2 = new JLabel("Customers: " + Cust, JLabel.CENTER);
+        lb2.setFont(new Font("Serif", Font.BOLD, 16));
+        lb2.setForeground(Color.BLUE);
+        JLabel lb3 = new JLabel("Delivery person: " + Deliveryman, JLabel.CENTER);
+        lb3.setFont(new Font("Serif", Font.BOLD, 16));
+        lb3.setForeground(Color.red);
+        pnlSN.add(lb1); 
+        pnlSN.add(lb2); 
+        pnlSN.add(lb3);   
         pnlSN.add(new JLabel("")); 
         pnlSN.add(new JLabel("")); 
         pnlSN.add(new JLabel("")); 
@@ -245,7 +281,7 @@ public class UserAdmin extends JFrame{
     public void loadUserTable() {
         try {
             dbConnection();
-            String sql = "SELECT UserID, Username, Role, Gender, Email, createdAt FROM Users";
+            String sql = "SELECT UserID, Username, Role, Gender, Email, createdAt FROM Users WHERE Role = 'Customer' OR Role = 'Deliveryman';";
             cmd = conn.prepareStatement(sql);
             rs = cmd.executeQuery();
 

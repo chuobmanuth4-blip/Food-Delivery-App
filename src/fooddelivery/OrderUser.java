@@ -27,7 +27,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.ImageIcon;
-import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
@@ -130,49 +129,49 @@ public final class OrderUser extends JFrame{
         pnlFastFood.add(createFoodCard(15,"onionRing.png", "Onion Rings", 2.5f));  
         // Main Dishes
         pnlMainDish = new JPanel(new GridLayout(3, 5));
-        pnlMainDish.add(createFoodCard(31, "Fish Amok.png", "Fish Amok", 4.5f));
-        pnlMainDish.add(createFoodCard(32, "Lok Lak.png", "Lok Lak ", 5f));
-        pnlMainDish.add(createFoodCard(33, "Khmer Curry Chicken.png", "Khmer Curry Chicken", 4.5f));
-        pnlMainDish.add(createFoodCard(34, "Grilled Pork with Rice.png", "Grilled Pork with Rice", 3.5f));
-        pnlMainDish.add(createFoodCard(35, "Stir-fried Morning Glory.png", "Stir Fired Morning Glory", 2.5f));
+        pnlMainDish.add(createFoodCard(16, "Fish Amok.png", "Fish Amok", 4.5f));
+        pnlMainDish.add(createFoodCard(17, "Lok Lak.png", "Lok Lak ", 5f));
+        pnlMainDish.add(createFoodCard(18, "Khmer Curry Chicken.png", "Khmer Curry Chicken", 4.5f));
+        pnlMainDish.add(createFoodCard(19, "Grilled Pork with Rice.png", "Grilled Pork with Rice", 3.5f));
+        pnlMainDish.add(createFoodCard(20, "Stir-fried Morning Glory.png", "Stir Fired Morning Glory", 2.5f));
         
-        pnlMainDish.add(createFoodCard(36, "Fried Rice with Shrimp.png", "Fried Rice with Shrimp", 2.5f));
-        pnlMainDish.add(createFoodCard(37, "Kuy Teav.png", "Kuy Teav", 2f));
-        pnlMainDish.add(createFoodCard(38, "BBQ Duck.png", "BBQ Duck", 6f));
-        pnlMainDish.add(createFoodCard(39, "Cambodian Sour Soup.png", "Cambodian Sour Soup", 4f));
-        pnlMainDish.add(createFoodCard(40, "grilled fish with lemongrass.jpg", "Grilled Fish", 5f));
+        pnlMainDish.add(createFoodCard(21, "Fried Rice with Shrimp.png", "Fried Rice with Shrimp", 2.5f));
+        pnlMainDish.add(createFoodCard(22, "Kuy Teav.png", "Kuy Teav", 2f));
+        pnlMainDish.add(createFoodCard(23, "BBQ Duck.png", "BBQ Duck", 6f));
+        pnlMainDish.add(createFoodCard(24, "Cambodian Sour Soup.png", "Cambodian Sour Soup", 4f));
+        pnlMainDish.add(createFoodCard(25, "grilled fish with lemongrass.jpg", "Grilled Fish", 5f));
 
-        pnlMainDish.add(createFoodCard(41, "Fried Tofu with Vegetables.png", "Fried Tofu", 4f));
-        pnlMainDish.add(createFoodCard(42, "Cambodian Hotpot.png", "Cambodian Hotpot", 5f));
-        pnlMainDish.add(createFoodCard(43, "Beef Noodle.png", "Beef Noodle", 2.5f));
-        pnlMainDish.add(createFoodCard(44, "Chicken Wings.png", "Chicken Wings", 3f));
-        pnlMainDish.add(createFoodCard(45, "stir-fried squid.png", "Stir Fried Squid", 5f));
+        pnlMainDish.add(createFoodCard(26, "Fried Tofu with Vegetables.png", "Fried Tofu", 4f));
+        pnlMainDish.add(createFoodCard(27, "Cambodian Hotpot.png", "Cambodian Hotpot", 5f));
+        pnlMainDish.add(createFoodCard(28, "Beef Noodle.png", "Beef Noodle", 2.5f));
+        pnlMainDish.add(createFoodCard(29, "Chicken Wings.png", "Chicken Wings", 3f));
+        pnlMainDish.add(createFoodCard(30, "stir-fried squid.png", "Stir Fried Squid", 5f));
         // Drinks
         pnlDrink = new JPanel(new GridLayout(3, 5));
-        pnlDrink.add(createFoodCard(16, "Beer.png", "Beer", 0.5f));
-        pnlDrink.add(createFoodCard(17, "Cocount.png", "Cocount", 1f));
-        pnlDrink.add(createFoodCard(18, "Ice_latter.png", "Iced Latte", 2.5f));
-        pnlDrink.add(createFoodCard(19, "Thnol-Coffee.png", "Ice Thnol Coffee", 3f));
-        pnlDrink.add(createFoodCard(20, "GreenTea.png", "Green Milk Tea Frappe", 3f));
+        pnlDrink.add(createFoodCard(31, "Beer.png", "Beer", 0.5f));
+        pnlDrink.add(createFoodCard(32, "Coconut.png", "Coconut", 1f));
+        pnlDrink.add(createFoodCard(33, "Ice_latter.png", "Iced Latte", 2.5f));
+        pnlDrink.add(createFoodCard(34, "Thnol-Coffee.png", "Ice Thnol Coffee", 3f));
+        pnlDrink.add(createFoodCard(35, "GreenTea.png", "Green Milk Tea Frappe", 3f));
         
-        pnlDrink.add(createFoodCard(21, "Match_latte.png", "Matcha Latte", 2.5f));
-        pnlDrink.add(createFoodCard(22, "Matcha_Cream.png", "Matcha Cream", 2.5f));
-        pnlDrink.add(createFoodCard(23, "cappuccino.png", "Cappuccino.", 2.5f));
-        pnlDrink.add(createFoodCard(24, "mineral water.png", "Cambodia Water", 1f));
-        pnlDrink.add(createFoodCard(25, "ChocolateMilk.png", "Chocolate Milk", 2.5f));
+        pnlDrink.add(createFoodCard(36, "Match_latte.png", "Matcha Latte", 2.5f));
+        pnlDrink.add(createFoodCard(37, "Matcha_Cream.png", "Matcha Cream", 2.5f));
+        pnlDrink.add(createFoodCard(38, "cappuccino.png", "Cappuccino", 2.5f));
+        pnlDrink.add(createFoodCard(39, "mineral water.png", "Cambodia Water", 0.5f));
+        pnlDrink.add(createFoodCard(40, "ChocolateMilk.png", "Chocolate Milk", 2.5f));
 
-        pnlDrink.add(createFoodCard(26, "LycheeTea.png", "LyChee Tea", 2.5f));
-        pnlDrink.add(createFoodCard(27, "PassionJuice.png", "Passion Juice", 2.5f));
-        pnlDrink.add(createFoodCard(28, "RaspberyTea.png", "Wildberry Raspberry Tea", 2.5f));
-        pnlDrink.add(createFoodCard(29, "MochaChipFrappe.png", "Mocha Chip Frappe", 3f));
-        pnlDrink.add(createFoodCard(30,"Americano.png", "Americano", 4.99f));
+        pnlDrink.add(createFoodCard(41, "LycheeTea.png", "Lychee Tea", 2.5f));
+        pnlDrink.add(createFoodCard(42, "PassionJuice.png", "Passion Juice", 2.5f));
+        pnlDrink.add(createFoodCard(43, "RaspberyTea.png", "Wildberry Raspberry Tea", 2.5f));
+        pnlDrink.add(createFoodCard(44, "MochaChipFrappe.png", "Mocha Chip Frappe", 3f));
+        pnlDrink.add(createFoodCard(45,"Americano.png", "Americano", 3f));
         //Snack
         pnlSnack = new JPanel(new GridLayout(3, 5));
         pnlSnack.add(createFoodCard(46, "Pork Cheese Hamburger.png", "Pork Cheese Hamburger", 2.5f));
-        pnlSnack.add(createFoodCard(47, "Deep-fried Chicken Wings.png", "Fried Chicken Wings", 5f));
-        pnlSnack.add(createFoodCard(48, "BBQ Pork Bun.png", "Spicy Chicken Hamburge", 10f));
-        pnlSnack.add(createFoodCard(49, "Num Kochay.png", "Num Kochay", 7f));
-        pnlSnack.add(createFoodCard(50, "Ice Cream.png", "Ice Cream", 2.5f));
+        pnlSnack.add(createFoodCard(47, "Deep-fried Chicken Wings.png", "Fried Chicken Wings", 2f));
+        pnlSnack.add(createFoodCard(48, "BBQ Pork Bun.png", "Pork Bun", 2f));
+        pnlSnack.add(createFoodCard(49, "Num Kochay.png", "Num Kochay", 0.5f));
+        pnlSnack.add(createFoodCard(50, "kitkat.png", "KitKat", 1.5f));
         
         pnlSnack.add(createFoodCard(51, "Fried Fish Balls.png", "Fried Fish Balls", 1.5f));
         pnlSnack.add(createFoodCard(52, "Cheese Sticks.png", "Cheese Sticks", 0.5f));
@@ -181,29 +180,29 @@ public final class OrderUser extends JFrame{
         pnlSnack.add(createFoodCard(55, "Mini Burgers.png", "Mini Burgers", 1.5f));
 
         pnlSnack.add(createFoodCard(56, "Fried Banana.png", "Fried Banana", 2.5f));
-        pnlSnack.add(createFoodCard(57, "Cupcakes.png", "Cupcakes", 1.5f));
-        pnlSnack.add(createFoodCard(58, "Brownie Cake.png", "Brownie Cake", 1f));
-        pnlSnack.add(createFoodCard(59, "Tiramisu.png", "Tiramisu", 1.5f));
-        pnlSnack.add(createFoodCard(60,"Ice Cream.png", "Ice Cream", 4.99f));
+        pnlSnack.add(createFoodCard(57, "oreo.png", "Oreo Cookies", 1f));
+        pnlSnack.add(createFoodCard(58, "snickers.png", "Snickers", 1f));
+        pnlSnack.add(createFoodCard(59, "cheetos.png", "Cheetos", 1.5f));
+        pnlSnack.add(createFoodCard(60,"Potatos.png", "lay's Potato Chips", 2f));
         //Dessert
         pnlDessert = new JPanel(new GridLayout(3, 5));
-        pnlDessert.add(createFoodCard(61, "Custard Tart.png", "Custard Tart", 2.5f));
-        pnlDessert.add(createFoodCard(62, "Banana Cake.png", "Banana Cake", 5f));
-        pnlDessert.add(createFoodCard(63, "Cookies (assorted).png", "Cookies", 10f));
-        pnlDessert.add(createFoodCard(64, "Fruit Salad.png", "Fruit Salad", 7f));
-        pnlDessert.add(createFoodCard(65, "Waffles.png", "Waffles", 2.5f));
+        pnlDessert.add(createFoodCard(61, "Custard Tart.png", "Custard Tart", 1.5f));
+        pnlDessert.add(createFoodCard(62, "Banana Cake.png", "Banana Cake", 1f));
+        pnlDessert.add(createFoodCard(63, "Cookies (assorted).png", "Cookies", 2f));
+        pnlDessert.add(createFoodCard(64, "Fruit Salad.png", "Fruit Salad", 1.5f));
+        pnlDessert.add(createFoodCard(65, "Waffles.png", "Waffles", 1.5f));
         
         pnlDessert.add(createFoodCard(66, "Gelato Scoop.png", "Gelato Scoop", 1.5f));
         pnlDessert.add(createFoodCard(67, "Chocolate Mousse.png", "Chocolate Mousse", 0.5f));
         pnlDessert.add(createFoodCard(68, "Mango Sticky Rice.png", "Mango Sticky Rice", 0.5f));
         pnlDessert.add(createFoodCard(69, "Donut.png", "Donuts", 1f));
-        pnlDessert.add(createFoodCard(70, "Custard Tart.png", "Custard Tart", 1.5f));
+        pnlDessert.add(createFoodCard(70, "Num.jpg", "Num Chak Krachan", 0.5f));
 
-        pnlDessert.add(createFoodCard(71, "Cupcakes.png", "Cupcakes", 2.5f));
+        pnlDessert.add(createFoodCard(71, "Cupcakes.png", "Cupcakes", 1.5f));
         pnlDessert.add(createFoodCard(72, "Brownie Cake.png", "Brownie Cake", 1.5f));
         pnlDessert.add(createFoodCard(73, "Tiramisu.png", "Tiramisu", 1f));
         pnlDessert.add(createFoodCard(74, "Fruit Crepe.png", "Fruit Crepe", 1.5f));
-        pnlDessert.add(createFoodCard(75,"Ice Cream.png", "Ice Cream", 4.99f));
+        pnlDessert.add(createFoodCard(75,"Ice Cream.png", "Ice Cream", 1.0f));
         // Add to Cart
         JPanel pnlWS = new JPanel();
         pnlWS.setBackground(Color.WHITE);
@@ -255,32 +254,50 @@ public final class OrderUser extends JFrame{
         btnAddToCart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Component[] cards = pnlWC.getComponents();
-                for (Component c : cards) {
-                    if (c instanceof JPanel panel) {
-                        JSpinner sp = (JSpinner) panel.getClientProperty("spinner");
+                if (pnlWC.getComponentCount() == 0) return;
+                // Get the currently displayed category panel
+                JPanel categoryPanel = (JPanel) pnlWC.getComponent(0);
+                for (Component c : categoryPanel.getComponents()) {
+                    if (c instanceof JPanel card) {
+
+                        JSpinner sp = (JSpinner) card.getClientProperty("spinner");
+                        if (sp == null)
+                            continue;
                         int qty = (Integer) sp.getValue();
                         if (qty > 0) {
-                            int proNo = (int) panel.getClientProperty("proNo");
-                            String name = (String) panel.getClientProperty("name");
-                            float price = (float) panel.getClientProperty("price");
+                            int proNo = (int) card.getClientProperty("proNo");
+                            String name = (String) card.getClientProperty("name");
+                            float price = (float) card.getClientProperty("price");
                             float total = price * qty;
-                            // Add to table
-                            tbDetails.addRow(new Object[]{proNo, name, qty, price, total});
+
+                            tbDetails.addRow(new Object[]{
+                                proNo, name, qty, price, total
+                            });
+
                             sp.setValue(0);
                         }
                     }
                 }
+                // Update grand total
                 double grandTotal = 0;
                 for (int row = 0; row < tbDetails.getRowCount(); row++) {
-                    grandTotal += Double.parseDouble(tbDetails.getValueAt(row, 4).toString());
+                    grandTotal += Double.parseDouble(
+                        tbDetails.getValueAt(row, 4).toString()
+                    );
                 }
                 txtGrandTotal.setText(String.valueOf(grandTotal));
             }
-        }); 
+        });
+ 
         btnOrder.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
+                String address = txtAddress.getText();
+                String phone = txtPhone.getText();
+                if (address.isEmpty() || phone.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Please fill in all required fields!");
+                    return; 
+                }
                 try{
                     dbConnection();
                     String sqlOrder = "INSERT INTO Orders (CustomerID, DeliveryID, Status, Address, Phone) VALUES (?, NULL, 'Pending', ?, ?);";
@@ -312,10 +329,9 @@ public final class OrderUser extends JFrame{
                         cmdDetail.setInt(2, proNo);
                         cmdDetail.setInt(3, qty);
                         cmdDetail.setDouble(4, price);
-                        int x = cmdDetail.executeUpdate();
-                        if(x>0)                   
-                            JOptionPane.showMessageDialog(null, "Your order is success!");
-                    }                    
+                        cmdDetail.executeUpdate();
+                    }    
+                    JOptionPane.showMessageDialog(null, "Your order is success!");
                     tbDetails.setRowCount(0);
                     txtGrandTotal.setText("");
                     txtAddress.setText("");
@@ -426,7 +442,7 @@ public final class OrderUser extends JFrame{
         pnlInfo.setBackground(Color.WHITE);
         
         JLabel lbName = new JLabel(name, JLabel.CENTER);
-        lbName.setFont(new Font("Arial", Font.BOLD, 14));
+        lbName.setFont(new Font("Arial", Font.BOLD, 12));
         
         JLabel lbPrice = new JLabel("$" + price, JLabel.CENTER);
         lbPrice.setFont(new Font("Arial", Font.PLAIN, 13));
