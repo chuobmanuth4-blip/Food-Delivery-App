@@ -1,0 +1,222 @@
+<!-- Created with Jaspersoft Studio version 7.0.3.final using JasperReports Library version 7.0.3-41034ca841d452f3305ba55b9042260aaa1ab5dd  -->
+<jasperReport name="DeliveryReceipt" language="java" columnCount="1" pageWidth="600" pageHeight="600" columnWidth="570" leftMargin="15" rightMargin="15" topMargin="10" bottomMargin="10" uuid="2f803344-7631-4c4e-b60d-50dd9a5058ef" ignorePagination="true" floatColumnFooter="true">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MYSQL"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="OrderNoParam" class="java.lang.Integer"/>
+	<query language="sql"><![CDATA[SELECT
+    o.OrderNo,
+    o.OrderDate,
+    o.DeliveryID AS DeliverymanID,
+    c.Username AS CustomerName,
+    o.Address,
+    o.Phone AS Telephone,
+    p.ProNo,
+    p.ProName,
+    d.Quantity,
+    d.Price,
+    (d.Quantity * d.Price) AS Total
+FROM Orders o
+INNER JOIN Details d
+    ON o.OrderNo = d.OrderNo
+INNER JOIN Products p
+    ON d.ProNo = p.ProNo
+INNER JOIN Users c
+    ON o.CustomerID = c.UserID
+LEFT JOIN Users dm
+    ON o.DeliveryID = dm.UserID
+    WHERE o.OrderNo = $P{OrderNoParam}
+ORDER BY o.OrderNo
+]]></query>
+	<field name="OrderNo" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="OrderNo"/>
+		<property name="com.jaspersoft.studio.field.label" value="OrderNo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orders"/>
+	</field>
+	<field name="OrderDate" class="java.time.LocalDateTime">
+		<property name="com.jaspersoft.studio.field.name" value="OrderDate"/>
+		<property name="com.jaspersoft.studio.field.label" value="OrderDate"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orders"/>
+	</field>
+	<field name="DeliverymanID" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="DeliveryID"/>
+		<property name="com.jaspersoft.studio.field.label" value="DeliverymanID"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orders"/>
+	</field>
+	<field name="CustomerName" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Username"/>
+		<property name="com.jaspersoft.studio.field.label" value="CustomerName"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="users"/>
+	</field>
+	<field name="Address" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Address"/>
+		<property name="com.jaspersoft.studio.field.label" value="Address"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orders"/>
+	</field>
+	<field name="Telephone" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Phone"/>
+		<property name="com.jaspersoft.studio.field.label" value="Telephone"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orders"/>
+	</field>
+	<field name="ProNo" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="ProNo"/>
+		<property name="com.jaspersoft.studio.field.label" value="ProNo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="products"/>
+	</field>
+	<field name="ProName" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ProName"/>
+		<property name="com.jaspersoft.studio.field.label" value="ProName"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="products"/>
+	</field>
+	<field name="Quantity" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="Quantity"/>
+		<property name="com.jaspersoft.studio.field.label" value="Quantity"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="details"/>
+	</field>
+	<field name="Price" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="Price"/>
+		<property name="com.jaspersoft.studio.field.label" value="Price"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="details"/>
+	</field>
+	<field name="Total" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="Total"/>
+		<property name="com.jaspersoft.studio.field.label" value="Total"/>
+	</field>
+	<variable name="GrandTotal" calculation="Sum" class="java.math.BigDecimal">
+		<expression><![CDATA[$F{Total}]]></expression>
+	</variable>
+	<variable name="CurrentTime" class="java.util.Date">
+		<expression><![CDATA[new java.util.Date()]]></expression>
+	</variable>
+	<background splitType="Stretch"/>
+	<title height="95" splitType="Stretch">
+		<element kind="staticText" uuid="00f93f84-27b8-4ccc-bf30-a8fe0f153f87" x="380" y="52" width="178" height="20" fontName="SansSerif" fontSize="14.0" bold="true" hTextAlign="Center">
+			<text><![CDATA[KINGDOM OF CAMBODIA]]></text>
+		</element>
+		<element kind="staticText" uuid="d49d8800-1700-4130-b47a-6fe4fdfaa394" x="394" y="72" width="52" height="20" fontName="SansSerif" fontSize="13.0" bold="true" hTextAlign="Center">
+			<text><![CDATA[Nation]]></text>
+		</element>
+		<element kind="staticText" uuid="da4264da-bf7e-416d-b44d-1966017331a8" x="444" y="72" width="60" height="20" fontName="SansSerif" fontSize="13.0" bold="true" hTextAlign="Center">
+			<text><![CDATA[Religion]]></text>
+		</element>
+		<element kind="staticText" uuid="0bb5aae2-89ff-4c5e-8e62-47f66e904950" x="505" y="72" width="34" height="20" fontName="SansSerif" fontSize="13.0" bold="true" hTextAlign="Center">
+			<text><![CDATA[King]]></text>
+		</element>
+		<element kind="image" uuid="957c3dd4-c82d-4ce0-88f0-2287523e4e13" x="434" y="-8" width="72" height="62">
+			<expression><![CDATA["D:/Receipt/kingdomofcam.png"]]></expression>
+		</element>
+		<element kind="image" uuid="6ed83ac7-31e4-4947-97ab-d163b9bf48c2" x="9" y="2" width="91" height="92">
+			<expression><![CDATA["C:/Users/manut/OneDrive - ACLEDA University of Business Co., Ltd/My Documents/AUB BACHELOR CSE/AUB BACHELOR CSE Y2S1/CS 214 Java Programming/Project/FoodDelivery/src/logo.png"]]></expression>
+		</element>
+		<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+	</title>
+	<pageHeader height="129" splitType="Stretch">
+		<element kind="staticText" uuid="7c8a5deb-9195-4fb1-b40d-35a106c52897" x="232" y="3" width="90" height="32" forecolor="#F50E0A" fontSize="19.0" bold="true">
+			<text><![CDATA[RECEIPT]]></text>
+		</element>
+		<element kind="staticText" uuid="4ab6515c-bbcc-4b70-843d-27e7cd19e0ea" x="2" y="44" width="61" height="15" rotation="None" markup="html" fontName="Times New Roman" fontSize="13.0" bold="true" italic="false">
+			<text><![CDATA[OrderNo: ]]></text>
+		</element>
+		<element kind="staticText" uuid="ca36daad-9dbd-4199-8322-39449b134988" x="0" y="85" width="100" height="15" rotation="None" markup="html" fontName="Times New Roman" fontSize="13.0" bold="true" italic="false">
+			<text><![CDATA[CustomerName: ]]></text>
+		</element>
+		<element kind="staticText" uuid="ac8b65e8-1225-43af-b8bf-c368bb848279" x="389" y="44" width="100" height="15" rotation="None" markup="html" fontName="Times New Roman" fontSize="13.0" bold="true" italic="false">
+			<text><![CDATA[DeliverymanID: ]]></text>
+		</element>
+		<element kind="staticText" uuid="35551352-9995-4af5-8468-6ab5cce6973f" x="184" y="44" width="71" height="15" rotation="None" markup="html" fontName="Times New Roman" fontSize="13.0" bold="true" italic="false">
+			<text><![CDATA[OrderDate: ]]></text>
+		</element>
+		<element kind="staticText" uuid="95a0458e-9fb3-49ba-9b45-d449fdf82080" x="184" y="85" width="54" height="15" rotation="None" markup="html" fontName="Times New Roman" fontSize="13.0" bold="true" italic="false">
+			<text><![CDATA[Address: ]]></text>
+		</element>
+		<element kind="staticText" uuid="5dc498f9-60f0-49b7-b897-5c2684c9169e" x="390" y="85" width="71" height="15" rotation="None" markup="html" fontName="Times New Roman" fontSize="13.0" bold="true" italic="false">
+			<text><![CDATA[Telephone: ]]></text>
+		</element>
+		<element kind="textField" uuid="7a9c4d69-5f9c-4cd6-9eb7-1b7c88a88cfb" x="63" y="44" width="121" height="15" fontName="Times New Roman" fontSize="13.0" bold="true">
+			<expression><![CDATA[$F{OrderNo}]]></expression>
+		</element>
+		<element kind="textField" uuid="d578fe1e-5c0b-4a35-9891-61b7d51cd8d7" x="255" y="44" width="135" height="15" fontName="Times New Roman" fontSize="13.0" bold="true">
+			<expression><![CDATA[$F{OrderDate}]]></expression>
+		</element>
+		<element kind="textField" uuid="57b1bf75-982a-49ce-b2a6-3c48deb65a21" x="485" y="44" width="75" height="15" fontName="Times New Roman" fontSize="13.0" bold="true">
+			<expression><![CDATA[$F{DeliverymanID}]]></expression>
+		</element>
+		<element kind="textField" uuid="7d895a64-f999-4699-8fa9-9dd1566b8e4d" x="100" y="85" width="84" height="15" fontName="Times New Roman" fontSize="13.0" bold="true">
+			<expression><![CDATA[$F{CustomerName}]]></expression>
+		</element>
+		<element kind="textField" uuid="e9a7201e-26a1-46b5-ae92-aa8448b9eedd" x="249" y="85" width="90" height="15" fontName="Times New Roman" fontSize="13.0" bold="true">
+			<expression><![CDATA[$F{Address}]]></expression>
+		</element>
+		<element kind="textField" uuid="6f155016-836d-47d0-9c03-0831d0c8539a" x="461" y="85" width="90" height="15" fontName="Times New Roman" fontSize="13.0" bold="true">
+			<expression><![CDATA[$F{Telephone}]]></expression>
+		</element>
+	</pageHeader>
+	<columnHeader height="26" splitType="Stretch">
+		<element kind="staticText" uuid="0aee30f0-bd10-4ba8-8787-9fa16e24bfdb" x="0" y="1" width="72" height="19" rotation="None" markup="html" fontName="Times New Roman" fontSize="13.0" bold="true" italic="false">
+			<text><![CDATA[ProductNo]]></text>
+		</element>
+		<element kind="staticText" uuid="4fd2740d-f232-421f-944d-2d74ef631e7d" x="130" y="0" width="90" height="19" rotation="None" markup="html" fontName="Times New Roman" fontSize="13.0" bold="true" italic="false">
+			<text><![CDATA[ProductName ]]></text>
+		</element>
+		<element kind="staticText" uuid="8c422bad-563e-411f-93c7-e704231a7ad4" x="280" y="0" width="63" height="19" rotation="None" markup="html" fontName="Times New Roman" fontSize="13.0" bold="true" italic="false">
+			<text><![CDATA[Quantity]]></text>
+		</element>
+		<element kind="staticText" uuid="110e7b74-a9ee-4f55-8896-e6dbdf43f8be" x="400" y="0" width="40" height="19" rotation="None" markup="html" fontName="Times New Roman" fontSize="13.0" bold="true" italic="false">
+			<text><![CDATA[Price]]></text>
+		</element>
+		<element kind="staticText" uuid="a1e0a886-b456-4bd9-9db6-58376b80d457" x="510" y="0" width="34" height="19" rotation="None" markup="html" fontName="Times New Roman" fontSize="13.0" bold="true" italic="false">
+			<text><![CDATA[Total ]]></text>
+		</element>
+		<element kind="line" uuid="fca6c5e8-5387-4986-aa57-77f7b993142c" x="-2" y="20" width="546" height="1">
+			<pen lineWidth="2.0"/>
+		</element>
+	</columnHeader>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<element kind="textField" uuid="67cb69a9-1130-47c1-b4c0-75fc65a7ae8f" positionType="Float" stretchType="NoStretch" x="24" y="2" width="48" height="15" fontName="Times New Roman" fontSize="13.0" linkType="None" linkTarget="Self" blankWhenNull="false" printWhenDetailOverflows="true" removeLineWhenBlank="true" bold="true">
+				<expression><![CDATA[$F{ProNo}]]></expression>
+			</element>
+			<element kind="textField" uuid="6533e673-7e24-44c2-a1be-d2191d41796d" positionType="Float" stretchType="ContainerHeight" x="130" y="2" width="130" height="15" fontName="Times New Roman" fontSize="13.0" printWhenDetailOverflows="true" removeLineWhenBlank="true" bold="true">
+				<expression><![CDATA[$F{ProName}]]></expression>
+			</element>
+			<element kind="textField" uuid="4ce4bd69-f1c3-4003-b544-fe792f3f66f7" stretchType="NoStretch" x="299" y="2" width="20" height="15" fontName="Times New Roman" fontSize="13.0" printWhenDetailOverflows="true" removeLineWhenBlank="true" bold="true">
+				<expression><![CDATA[$F{Quantity}]]></expression>
+			</element>
+			<element kind="textField" uuid="1b2a95d2-c715-489d-9552-1d28ea41ccc6" stretchType="NoStretch" x="404" y="2" width="56" height="15" fontName="Times New Roman" fontSize="13.0" linkTarget="Self" printWhenDetailOverflows="true" removeLineWhenBlank="true" bold="true">
+				<expression><![CDATA[$F{Price}]]></expression>
+			</element>
+			<element kind="textField" uuid="85bb8c5e-a569-427f-823e-6a2fcbce0445" stretchType="NoStretch" x="510" y="2" width="65" height="15" fontName="Times New Roman" fontSize="13.0" printWhenDetailOverflows="true" removeLineWhenBlank="true" bold="true">
+				<expression><![CDATA[$F{Total}]]></expression>
+			</element>
+			<element kind="staticText" uuid="f20a39ea-c88a-4885-931b-8033e8179166" x="396" y="1" width="8" height="21" fontSize="13.0" printWhenDetailOverflows="true" removeLineWhenBlank="true" bold="true">
+				<text><![CDATA[$]]></text>
+			</element>
+			<element kind="staticText" uuid="bde7aea9-386e-4f19-aa55-28a61ec1afa9" x="502" y="1" width="8" height="21" fontSize="13.0" printWhenDetailOverflows="true" removeLineWhenBlank="true" bold="true">
+				<text><![CDATA[$]]></text>
+			</element>
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+		</band>
+	</detail>
+	<columnFooter height="25" splitType="Stretch">
+		<element kind="staticText" uuid="581ef66d-6322-4f1a-8f5a-dae15396ac2c" x="395" y="2" width="75" height="16" rotation="None" markup="html" fontName="Times New Roman" fontSize="13.0" bold="true" italic="false">
+			<text><![CDATA[Grand Total: ]]></text>
+		</element>
+		<element kind="textField" uuid="d33e8182-a271-463e-af43-eb2c2898dcca" x="511" y="2" width="79" height="16" fontName="Times New Roman" fontSize="13.0" bold="true">
+			<expression><![CDATA[$V{GrandTotal}]]></expression>
+		</element>
+		<element kind="staticText" uuid="55ccf91a-481e-4ed3-9f3d-442f0bd85ff9" x="503" y="1" width="8" height="21" fontSize="13.0" bold="true">
+			<text><![CDATA[$]]></text>
+		</element>
+	</columnFooter>
+	<pageFooter height="48" splitType="Stretch">
+		<element kind="staticText" uuid="0ca75688-2cc1-4184-bcfa-86620361ffc2" x="167" y="1" width="226" height="30" forecolor="#FA1A16" fontName="SansSerif" fontSize="18.0" bold="true">
+			<text><![CDATA[Thank you for your order!]]></text>
+		</element>
+		<element kind="textField" uuid="fc444b15-da05-4f24-bbf1-fd2b2d3dfc87" x="456" y="32" width="116" height="16" fontSize="12.0" bold="true">
+			<expression><![CDATA[$V{CurrentTime}]]></expression>
+		</element>
+		<element kind="staticText" uuid="52e70819-65f0-4a34-90f5-682b79f3ac7f" x="385" y="32" width="70" height="16" rotation="None" markup="html" fontName="Times New Roman" fontSize="13.0" bold="true" italic="false">
+			<text><![CDATA[Printed on: ]]></text>
+		</element>
+	</pageFooter>
+	<summary splitType="Stretch"/>
+</jasperReport>

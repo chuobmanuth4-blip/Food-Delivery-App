@@ -24,13 +24,16 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-//import net.sf.jasperreports.engine.JasperFillManager;
-//import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.swing.JRViewer;
 /**
  *
  * @author manut
@@ -272,9 +275,45 @@ public class OrderAdmin extends JFrame {
         btnPrintReceipt.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                try {
+                    dbConnection(); // make sure conn is valid
+
+                    // Load compiled report
+                    JasperReport jr = (JasperReport) JRLoader.loadObjectFromFile(
+                        "C:\\Users\\manut\\OneDrive - ACLEDA University of Business Co., Ltd\\My Documents\\AUB BACHELOR CSE\\AUB BACHELOR CSE Y2S1\\CS 214 Java Programming\\Project\\FoodDelivery\\src\\reports\\DeliveryReceipt.jasper"
+                    );
+
+                    // Parameters
+                    Map<String, Object> param = new HashMap<>();
+                    int row = tb.getSelectedRow();
+                    if(row == -1){
+                        JOptionPane.showMessageDialog(null, "Please select an order to print!");
+                        return;
+                    }
+                    int orderNo = (int) tb.getValueAt(row, 0);
+                    param.put("OrderNoParam", orderNo);
+
+                    // Fill report
+                    JasperPrint jp = JasperFillManager.fillReport(jr, param, conn);
+
+                    // Clear panel
+                    pnlCEC.removeAll();
+                    pnlCEC.setLayout(new BorderLayout());
+
+                    // Add JRViewer to panel
+                    JRViewer viewer = new JRViewer(jp);
+                    viewer.setZoomRatio(0.3f);
+                    pnlCEC.add(viewer, BorderLayout.CENTER);
+
+                    // Refresh panel
+                    pnlCEC.revalidate();
+                    pnlCEC.repaint();
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             }
         });
-
         // Show
         pane.setVisible(true);
     }
