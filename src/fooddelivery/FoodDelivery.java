@@ -41,7 +41,6 @@ public class FoodDelivery{
         //new DeleteUser();
         //new DeliveryForm();
         //new ViewDetail();
-        //new TestPrint();
     }
     public Connection conn;
     public void dbConnection(){

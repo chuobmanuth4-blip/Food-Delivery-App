@@ -65,13 +65,13 @@ public class UserAdmin extends JFrame{
         lbFooter = new JLabel("©2025 GETFOOD | All rights reserved", JLabel.CENTER);
         lbFooter.setFont(new Font("Arial", Font.BOLD, 16));
         // Create TextField
-        txtSearch = new JTextField("Please Enter UserID or Username or Email!");
+        txtSearch = new JTextField("Please Enter UserID or Username!");
         txtSearch.setBounds(270, 85, 690, 50);
         txtSearch.setForeground(Color.GRAY);
         txtSearch.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                if (txtSearch.getText().equals("Please Enter UserID or Username or Email!")) {
+                if (txtSearch.getText().equals("Please Enter UserID or Username!")) {
                     txtSearch.setText("");
                     txtSearch.setForeground(Color.BLACK);
                 }
@@ -80,7 +80,7 @@ public class UserAdmin extends JFrame{
             public void focusLost(FocusEvent e) {
                 if (txtSearch.getText().isEmpty()) {
                     txtSearch.setForeground(Color.GRAY);
-                    txtSearch.setText("Please Enter UserID or Username or Email!");
+                    txtSearch.setText("Please Enter UserID or Username!");
                 }
             }
         });
@@ -102,17 +102,17 @@ public class UserAdmin extends JFrame{
         tbUser.addColumn("Username");
         tbUser.addColumn("Role");
         tbUser.addColumn("Gender");
-        tbUser.addColumn("Email");
+        tbUser.addColumn("Telephone");
         tbUser.addColumn("CreatedAt");
         tb = new JTable(tbUser);
         JScrollPane scroll = new JScrollPane(tb);
         loadUserTable();
         // Create Panel
         
-        int Total=0, Cust=0, Deliveryman = 0;
+        int Total=0, Admin = 0, Cust=0, Deliveryman = 0;
         try {
             dbConnection();
-            String sql1 = "SELECT COUNT(*) FROM Users WHERE Role = 'Customer' OR Role = 'Deliveryman';";                     
+            String sql1 = "SELECT COUNT(*) FROM Users;";                     
             cmd = conn.prepareStatement(sql1);            
             rs = cmd.executeQuery();    // Run     
             if(rs.next())
@@ -129,6 +129,12 @@ public class UserAdmin extends JFrame{
             rs = cmd.executeQuery();    // Run     
             if(rs .next())
                 Deliveryman = Integer.parseInt(rs.getString(1));
+            
+            String sql4 = "SELECT COUNT(*) AS TotalUser FROM Users WHERE Role = 'Admin';";                     
+            cmd = conn.prepareStatement(sql4);            
+            rs = cmd.executeQuery();    // Run     
+            if(rs .next())
+                Admin = Integer.parseInt(rs.getString(1));
         }
         catch (SQLException ex) {
             ex.printStackTrace();
@@ -175,13 +181,16 @@ public class UserAdmin extends JFrame{
         JLabel lb2 = new JLabel("Customers: " + Cust, JLabel.CENTER);
         lb2.setFont(new Font("Serif", Font.BOLD, 16));
         lb2.setForeground(Color.BLUE);
-        JLabel lb3 = new JLabel("Delivery person: " + Deliveryman, JLabel.CENTER);
+        JLabel lb3 = new JLabel("Deliveryman: " + Deliveryman, JLabel.CENTER);
         lb3.setFont(new Font("Serif", Font.BOLD, 16));
         lb3.setForeground(Color.red);
+        JLabel lb4 = new JLabel("Admin: " + Admin, JLabel.CENTER);
+        lb4.setFont(new Font("Serif", Font.BOLD, 16));
+        lb4.setForeground(Color.WHITE);
         pnlSN.add(lb1); 
+        pnlSN.add(lb4);         
         pnlSN.add(lb2); 
         pnlSN.add(lb3);   
-        pnlSN.add(new JLabel("")); 
         pnlSN.add(new JLabel("")); 
         pnlSN.add(new JLabel("")); 
         pnlSN.add(new JLabel("")); 
@@ -205,15 +214,13 @@ public class UserAdmin extends JFrame{
                 } catch (NumberFormatException ex) {     
                 }
                 String username = input;
-                String email = input;
                 try 
                 {
                     dbConnection();                   
-                    String sql = "SELECT UserID, Username, Role, Gender, Email, createdAt " + "FROM Users WHERE UserID = ? OR Username = ? OR Email = ?";
+                    String sql = "SELECT UserID, Username, Role, Gender, Telephone, createdAt " + "FROM Users WHERE UserID = ? OR Username = ?;";
                     cmd = conn.prepareStatement(sql);                   
                     cmd.setString(1,Integer.toString(id));                    
                     cmd.setString(2, username);
-                    cmd.setString(3, email);                    
                     rs = cmd.executeQuery();                
                     if (rs.next()==true)
                     {
@@ -223,7 +230,7 @@ public class UserAdmin extends JFrame{
                             rs.getString("Username"),
                             rs.getString("Role"),
                             rs.getString("Gender"),
-                            rs.getString("Email"),
+                            rs.getString("Telephone"),
                             rs.getTimestamp("createdAt")
                         });
                     }   
@@ -241,6 +248,7 @@ public class UserAdmin extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e){
                 loadUserTable();
+                txtSearch.setText("");
             }
         });
         btnClear.addActionListener(new ActionListener(){
@@ -267,7 +275,29 @@ public class UserAdmin extends JFrame{
         btnDelete.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
-               new DeleteUser();
+                int row = tb.getSelectedRow();
+                if(row == -1){
+                    JOptionPane.showMessageDialog(null, "Please select a user to delete!");
+                    return;
+                }
+                int userID = (int) tb.getValueAt(row, 0);
+                try{
+                    dbConnection();
+                    String sql = "DELETE FROM Users WHERE UserID = ?";
+                    cmd = conn.prepareStatement(sql);
+                    cmd.setInt(1, userID);
+                    int x = cmd.executeUpdate();
+                    if(x > 0){
+                        JOptionPane.showMessageDialog(null, "User deleted successfully!");
+                        loadUserTable(); 
+                    } else {
+                        JOptionPane.showMessageDialog(null, "User deleted failed!");
+                    }
+                }
+                catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "DB Error", JOptionPane.ERROR_MESSAGE);
+                    ex.printStackTrace();
+                }
             }
         });
         // Add Components to Frame
@@ -281,10 +311,9 @@ public class UserAdmin extends JFrame{
     public void loadUserTable() {
         try {
             dbConnection();
-            String sql = "SELECT UserID, Username, Role, Gender, Email, createdAt FROM Users WHERE Role = 'Customer' OR Role = 'Deliveryman';";
+            String sql = "SELECT UserID, Username, Role, Gender, Telephone, createdAt FROM Users;";
             cmd = conn.prepareStatement(sql);
             rs = cmd.executeQuery();
-
             tbUser.setRowCount(0);
             while (rs.next()) {
                     tbUser.addRow(new Object[]{
@@ -292,7 +321,7 @@ public class UserAdmin extends JFrame{
                     rs.getString("Username"),
                     rs.getString("Role"),
                     rs.getString("Gender"),
-                    rs.getString("Email"),
+                    rs.getString("Telephone"),
                     rs.getTimestamp("createdAt")
                 });
             }

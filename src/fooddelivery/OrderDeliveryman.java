@@ -31,7 +31,7 @@ import java.sql.SQLException;
 import javax.swing.BorderFactory;
 /**
  *
- * @author manut
+ * @author manuth
  */
 public final class OrderDeliveryman extends JFrame{
     Container pane;
@@ -127,7 +127,7 @@ public final class OrderDeliveryman extends JFrame{
         tbOrder.addColumn("OrderNo");
         tbOrder.addColumn("CustomerName");
         tbOrder.addColumn("Address");
-        tbOrder.addColumn("Phone");
+        tbOrder.addColumn("Telephone");
         tbOrder.addColumn("Amount");        
         tbOrder.addColumn("OrderDate");
         tbOrder.addColumn("Status");
@@ -195,7 +195,7 @@ public final class OrderDeliveryman extends JFrame{
                 try 
                 {
                     dbConnection();
-                    String sql = "SELECT o.OrderNo, c.Username AS CustomerName, o.Address, o.Phone, SUM(d.Quantity * d.Price) AS Amount, o.OrderDate, o.Status FROM Orders o JOIN Users c ON o.CustomerID = c.UserID JOIN Details d ON o.OrderNo = d.OrderNo WHERE o.OrderNo = ? GROUP BY o.OrderNo, c.Username, o.Address, o.Phone, o.OrderDate, o.Status;";
+                    String sql = "SELECT o.OrderNo, c.Username AS CustomerName, o.Address, c.Telephone, SUM(d.Quantity * d.Price) AS Amount, o.OrderDate, o.Status FROM Orders o JOIN Users c ON o.CustomerID = c.UserID JOIN Details d ON o.OrderNo = d.OrderNo WHERE o.OrderNo = ? GROUP BY o.OrderNo, c.Username, o.Address, c.Telephone, o.OrderDate, o.Status;";
                     cmd = conn.prepareStatement(sql);                   
                     cmd.setString(1,Integer.toString(orderNo));                    
                     rs = cmd.executeQuery();                
@@ -206,7 +206,7 @@ public final class OrderDeliveryman extends JFrame{
                         rs.getInt("OrderNo"),
                         rs.getString("CustomerName"),
                         rs.getString("Address"),
-                        rs.getString("Phone"),
+                        rs.getString("Telephone"),
                         rs.getFloat("Amount"),
                         rs.getString("OrderDate"),
                         rs.getString("Status"),
@@ -328,7 +328,7 @@ public final class OrderDeliveryman extends JFrame{
     public void loadOrderTable() {
         try {
             dbConnection();
-            String sql = "SELECT o.OrderNo, c.Username AS CustomerName, o.Address, o.Phone, SUM(d.Quantity * d.Price) AS Amount, o.OrderDate, o.Status FROM Orders o JOIN Users c ON o.CustomerID = c.UserID JOIN Details d ON o.OrderNo = d.OrderNo WHERE o.DeliveryID = ? GROUP BY o.OrderNo, c.Username, o.Address, o.Phone, o.OrderDate, o.Status;";
+            String sql = "SELECT o.OrderNo, c.Username AS CustomerName, o.Address, c.Telephone, SUM(d.Quantity * d.Price) AS Amount, o.OrderDate, o.Status FROM Orders o JOIN Users c ON o.CustomerID = c.UserID JOIN Details d ON o.OrderNo = d.OrderNo WHERE o.DeliverymanID = ? GROUP BY o.OrderNo, c.Username, o.Address, c.Telephone, o.OrderDate, o.Status;";
             cmd = conn.prepareStatement(sql);
             cmd.setInt(1, DeliveryID);
             rs = cmd.executeQuery();
@@ -338,7 +338,7 @@ public final class OrderDeliveryman extends JFrame{
                     rs.getInt("OrderNo"),
                     rs.getString("CustomerName"),
                     rs.getString("Address"),
-                    rs.getString("Phone"),
+                    rs.getString("Telephone"),
                     rs.getFloat("Amount"),
                     rs.getString("OrderDate"),
                     rs.getString("Status"),
@@ -352,7 +352,7 @@ public final class OrderDeliveryman extends JFrame{
    public void loadStatus(String status) {
         try {
             dbConnection();
-            String sql = "SELECT COUNT(OrderNo) AS Total FROM Orders WHERE Status = ? AND DeliveryID = ?;";
+            String sql = "SELECT COUNT(OrderNo) AS Total FROM Orders WHERE Status = ? AND DeliverymanID = ?;";
             cmd = conn.prepareStatement(sql);
             cmd.setString(1, status);
             cmd.setInt(2, DeliveryID);

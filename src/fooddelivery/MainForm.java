@@ -35,7 +35,7 @@ public class MainForm{
     public MainForm(){
         // Create Frame
         frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setLayout(new BorderLayout());
         // Create image
         logo = new ImageIcon("C:\\Users\\manut\\OneDrive - ACLEDA University of Business Co., Ltd\\My Documents\\AUB BACHELOR CSE\\AUB BACHELOR CSE Y2S1\\CS 214 Java Programming\\Project\\FoodDelivery\\src\\logo.png");
@@ -133,6 +133,12 @@ public class MainForm{
                 pnlC.revalidate();
                 pnlC.repaint();
                 pnlC.add(report.getPane());
+            }
+        });
+        btn7.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                frame.dispose();
             }
         });
         // Show Frame

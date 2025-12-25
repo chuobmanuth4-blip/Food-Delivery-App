@@ -28,8 +28,8 @@ public class ForgetPassword extends FoodDelivery{
     PreparedStatement cmd;
     ResultSet rs;
     JFrame frame;
-    JLabel headerLb, informLb, emailLb;
-    JTextField txtEmail;
+    JLabel headerLb, informLb,  phLb;
+    JTextField txtphone;
     JButton btnNext;
     JPanel pnlN, pnlS, pnlW, pnlE, pnlC;
     public ForgetPassword(){
@@ -43,16 +43,16 @@ public class ForgetPassword extends FoodDelivery{
         headerLb.setFont(new Font("Arial",Font.BOLD, 20));
         headerLb.setBounds(95,5,200,30);
         
-        informLb = new JLabel("Enter your email to reset your password.");
+        informLb = new JLabel("Enter telephone to reset your password.");
         informLb.setFont(new Font("Arial",Font.ITALIC, 16));
         informLb.setBounds(50,40,300,20);
         
-        emailLb = new JLabel("Email");
-        emailLb.setFont(new Font("Arial",Font.BOLD, 15));
-        emailLb.setBounds(30,80,100,20);
+        phLb = new JLabel("Telephone");
+        phLb.setFont(new Font("Arial",Font.BOLD, 15));
+        phLb.setBounds(30,80,100,20);
         // Create TextField 
-        txtEmail = new JTextField();
-        txtEmail.setBounds(30,100,325,50);
+        txtphone = new JTextField();
+        txtphone.setBounds(30,100,325,50);
         // JButton 
         btnNext = new JButton("Next");
         btnNext.setBackground(Color.BLUE);
@@ -79,8 +79,8 @@ public class ForgetPassword extends FoodDelivery{
         pnlC.setLayout(null);
         pnlC.add(headerLb);
         pnlC.add(informLb);
-        pnlC.add(emailLb);
-        pnlC.add(txtEmail);
+        pnlC.add(phLb);
+        pnlC.add(txtphone);
         pnlC.add(btnNext);
         // Add Componets to Frame
         frame.add(pnlN, BorderLayout.NORTH);
@@ -92,19 +92,19 @@ public class ForgetPassword extends FoodDelivery{
         btnNext.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
-                String email = txtEmail.getText().trim();
-                if (email.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Please enter email!");
+                String telephone = txtphone.getText().trim();
+                if (telephone.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Please enter telephone!");
                     return;
                 }               
                try{
                    dbConnection();
-                   String sql = "SELECT * FROM Users WHERE Email = ?;";
+                   String sql = "SELECT * FROM Users WHERE Telephone = ?;";
                    cmd = conn.prepareStatement(sql);
-                   cmd.setString(1, email);
+                   cmd.setString(1, telephone);
                    rs = cmd.executeQuery();
                    if(rs.next()){
-                        new ResetPassword(email);
+                        new ResetPassword(telephone);
                         frame.setVisible(false);
                    }
                    else{

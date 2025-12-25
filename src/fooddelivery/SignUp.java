@@ -31,9 +31,9 @@ public class SignUp extends FoodDelivery{
     PreparedStatement cmd;
     ResultSet rs;
     JFrame frame;
-    JLabel headerLb, welcomeLb, userLb, passLb1, passLb2, genderLb, emailLb;
+    JLabel headerLb, welcomeLb, userLb, passLb1, passLb2, genderLb, phoneLb;
     JButton btnLogin1, btnRegister1, btnSignUp, btnRegister2;
-    JTextField txtusername, txtEmail;
+    JTextField txtusername, txtphone;
     JPasswordField txtpass1, txtpass2;
     JCheckBox cb1, cb2, cb3;
     JPanel pnl1, pnl2;
@@ -59,9 +59,9 @@ public class SignUp extends FoodDelivery{
         userLb.setBounds(50,50,100,20);
         userLb.setForeground(Color.BLACK);
         
-        emailLb = new JLabel("Email");
-        emailLb.setBounds(50,105,100,20);
-        emailLb.setForeground(Color.BLACK);
+        phoneLb = new JLabel("Telephone");
+        phoneLb.setBounds(50,105,100,20);
+        phoneLb.setForeground(Color.BLACK);
 
         passLb1 = new JLabel("Password");
         passLb1.setBounds(50,160,100,20);
@@ -101,8 +101,8 @@ public class SignUp extends FoodDelivery{
         txtusername  = new JTextField("");
         txtusername.setBounds(48,70,290,30);
         
-        txtEmail = new JTextField("");
-        txtEmail.setBounds(48,125,290,30);
+        txtphone = new JTextField("");
+        txtphone.setBounds(48,125,290,30);
         
         txtpass1 = new JPasswordField("");
         txtpass1.setBounds(48,180,290,30);
@@ -136,8 +136,8 @@ public class SignUp extends FoodDelivery{
         pnl2.add(headerLb);
         pnl2.add(userLb);
         pnl2.add(txtusername);
-        pnl2.add(emailLb);      
-        pnl2.add(txtEmail);
+        pnl2.add(phoneLb);      
+        pnl2.add(txtphone);
         pnl2.add(passLb1); 
         pnl2.add(txtpass1);
         pnl2.add(passLb2);
@@ -158,15 +158,19 @@ public class SignUp extends FoodDelivery{
                 String username = txtusername.getText();
                 String password = txtpass1.getText();
                 String confirmPass = txtpass2.getText();
-                String email = txtEmail.getText();
+                String phone = txtphone.getText();
                 String gender;
                 
-                if (username.isEmpty() || password.isEmpty() || confirmPass.isEmpty() || email.isEmpty()) {
+                if (username.isEmpty() || password.isEmpty() || confirmPass.isEmpty() || phone.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Please fill in all required fields!");
                     return; 
                 }
                 if(!password.equals(confirmPass)){
                     JOptionPane.showMessageDialog(null, "Your new password do not match!");
+                    return;
+                }
+                if (!phone.matches("\\d{8,15}")) {
+                    JOptionPane.showMessageDialog(null, "Telephone must contain only numbers (8–15 digits)");
                     return;
                 }
                 if (cb1.isSelected()) {
@@ -183,24 +187,30 @@ public class SignUp extends FoodDelivery{
                 try 
                 {
                     dbConnection();
-                    String query = "SELECT * FROM Users WHERE Username = ? OR Email = ?";
+                    String query = "SELECT * FROM Users WHERE Username = ?";
                     PreparedStatement cmdCheck;
                     cmdCheck = conn.prepareStatement(query);
                     cmdCheck.setString(1, username);
-                    cmdCheck.setString(2, email);
                     rs = cmdCheck.executeQuery();
                     if(rs.next()){
-                        JOptionPane.showMessageDialog(null, "Username or Email already exists");
+                        JOptionPane.showMessageDialog(null, "Username already exists");
                         return;
                     }
-
-                    String sql = "INSERT INTO Users(Username,Password,Role,Gender,Email) VALUES (?, ?, ?, ?, ?);";
+                    String phoneCheck = "SELECT * FROM Users WHERE Telephone = ?";
+                    PreparedStatement phoneStmt = conn.prepareStatement(phoneCheck);
+                    phoneStmt.setString(1, phone);
+                    rs = phoneStmt.executeQuery();
+                    if (rs.next()) {
+                        JOptionPane.showMessageDialog(null, "Telephone already exists");
+                        return;
+                    }
+                    String sql = "INSERT INTO Users(Username,Password,Role,Gender,Telephone) VALUES (?, ?, ?, ?, ?);";
                     cmd = conn.prepareStatement(sql);            
                     cmd.setString(1, username); 
                     cmd.setString(2, password);
                     cmd.setString(3, "Customer");                  
                     cmd.setString(4, gender);
-                    cmd.setString(5, email);
+                    cmd.setString(5, phone);
                     cmd.executeUpdate();  
                     JOptionPane.showMessageDialog(null, "Your sign‑up was successful. Please log in to your account!");
                     new FormLogin();

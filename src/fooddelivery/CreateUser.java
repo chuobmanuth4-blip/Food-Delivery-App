@@ -26,16 +26,15 @@ import java.sql.SQLException;
 
 /**
  *
- * @author manut
+ * @author manuth
  */
 public class CreateUser extends UserAdmin{
     JFrame frame;
     JLabel  headerLb, userLb, passLb1, passLb2, roleLb, genderLb, emailLb;
-    JTextField txtusername,txtemail;
+    JTextField txtusername,txtphone;
     JPasswordField  txtpass1, txtpass2;
     JComboBox cmbGender, cmbRole;
     JButton btnCancel, btnConfirm;
-    JPanel pnlN, pnlC;
     public CreateUser(){
         // Create Frame
         frame = new JFrame();
@@ -52,7 +51,7 @@ public class CreateUser extends UserAdmin{
         passLb1.setBounds(30,70,100,20);
         passLb2 = new JLabel("Confirm Password: ");
         passLb2.setBounds(30,120,120,20);
-        emailLb = new JLabel("Email: ");
+        emailLb = new JLabel("Telephone: ");
         emailLb.setBounds(30,170,100,20);
         roleLb = new JLabel("User Type");
         roleLb.setBounds(30,220,100,20);
@@ -65,13 +64,13 @@ public class CreateUser extends UserAdmin{
         txtpass1.setBounds(150,60,300,40);
         txtpass2 = new JPasswordField("");
         txtpass2.setBounds(150,110,300,40);
-        txtemail = new JTextField();
-        txtemail.setBounds(150,160,300,40);
+        txtphone = new JTextField();
+        txtphone.setBounds(150,160,300,40);
         // Create ComboBox
-        String role [] = {"","Admin", "Customer", "Deliveryman"};
+        String role[] = {"Select role", "Admin", "Customer", "Deliveryman"};
         cmbRole = new JComboBox(role);
         cmbRole.setBounds(150,210,300,40);
-        String gender [] = {"", "Male", "Female", "Other"};
+        String gender[] = {"Select gender", "Male", "Female", "Other"};
         cmbGender = new JComboBox(gender);
         cmbGender.setBounds(150,260,300,40);
         // Create Button 
@@ -100,7 +99,7 @@ public class CreateUser extends UserAdmin{
         pnlC.add(passLb2);
         pnlC.add(txtpass2);
         pnlC.add(emailLb);
-        pnlC.add(txtemail);
+        pnlC.add(txtphone);
         pnlC.add(roleLb);
         pnlC.add(cmbRole);
         pnlC.add(genderLb);
@@ -112,14 +111,13 @@ public class CreateUser extends UserAdmin{
             @Override
             public void actionPerformed(ActionEvent e){
                 String username = txtusername.getText();
-                String password = txtpass1.getText();
-                String confirmPass = txtpass2.getText();
-                String email = txtemail.getText();
+                String password = String.valueOf(txtpass1.getPassword());
+                String confirmPass = String.valueOf(txtpass2.getPassword());
+                String phone = txtphone.getText();
                 String role = (String) cmbRole.getSelectedItem();
                 String gender = (String) cmbGender.getSelectedItem();
-                
-                
-                if (username.isEmpty() || password.isEmpty() || confirmPass.isEmpty() || email.isEmpty() || gender.isEmpty() || role.isEmpty()) {
+         
+                if (username.isEmpty() || password.isEmpty() || confirmPass.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Please fill in all required fields!");
                     return; 
                 }
@@ -127,29 +125,45 @@ public class CreateUser extends UserAdmin{
                     JOptionPane.showMessageDialog(null, "Your new password do not match!");
                     return;
                 }
+                if (cmbRole.getSelectedIndex() == 0 || cmbGender.getSelectedIndex() == 0) {
+                    JOptionPane.showMessageDialog(null, "Please select role and gender");
+                    return;
+                }
+                if (!phone.matches("\\d{8,15}")) {
+                    JOptionPane.showMessageDialog(null, "Telephone must contain only numbers (8–15 digits)");
+                    return;
+                }
                 try 
                 {
                     dbConnection(); 
-                    String query = "SELECT * FROM Users WHERE Username = ? OR Email = ?";
+                    String query = "SELECT * FROM Users WHERE Username = ?";
                     PreparedStatement cmdCheck;
                     cmdCheck = conn.prepareStatement(query);
                     cmdCheck.setString(1, username);
-                    cmdCheck.setString(2, email);
                     rs = cmdCheck.executeQuery();
                     if(rs.next()){
-                        JOptionPane.showMessageDialog(null, "Username or Email already exists");
+                        JOptionPane.showMessageDialog(null, "Username already exists");
                         return;
                     }
-                    String sql = "INSERT INTO Users(Username,Password,Role,Gender,Email) VALUES (?, ?, ?, ?, ?);";
+                    String phoneCheck = "SELECT * FROM Users WHERE Telephone = ?";
+                    PreparedStatement phoneStmt = conn.prepareStatement(phoneCheck);
+                    phoneStmt.setString(1, phone);
+                    rs = phoneStmt.executeQuery();
+                    if (rs.next()) {
+                        JOptionPane.showMessageDialog(null, "Telephone already exists");
+                        return;
+                    }
+                    String sql = "INSERT INTO Users(Username,Password,Role,Gender,Telephone) VALUES (?, ?, ?, ?, ?);";
                     cmd = conn.prepareStatement(sql);            
                     cmd.setString(1, username); 
                     cmd.setString(2, password);
                     cmd.setString(3, role);                  
                     cmd.setString(4, gender);
-                    cmd.setString(5, email);
+                    cmd.setString(5, phone);
                     cmd.executeUpdate();  
                     JOptionPane.showMessageDialog(null, "You have created account successfully!");
                     frame.setVisible(false);
+                    loadUserTable();
                 } 
                 catch (SQLException ex) {
                         ex.printStackTrace();

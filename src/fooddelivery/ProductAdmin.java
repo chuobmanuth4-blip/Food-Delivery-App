@@ -35,7 +35,7 @@ import javax.swing.JTextField;
  *
  * @author manut
  */
-public class ProductAdmin extends JFrame{
+public final class ProductAdmin extends JFrame{
     Container pane;
     Connection conn;
     PreparedStatement cmd; 
@@ -379,6 +379,12 @@ public class ProductAdmin extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e){
                 loadProductTable();
+                txtSearch.setText("");
+                txtProNo.setText("");
+                txtProName.setText("");
+                cmbCateNo.setSelectedItem(null);
+                txtPrice.setText("");
+                txtStock.setText("");
             }
         });
         btnClear.addActionListener(new ActionListener(){

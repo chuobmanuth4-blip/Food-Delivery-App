@@ -24,14 +24,12 @@ import java.sql.ResultSet;
  */
 public class ResetPassword extends FoodDelivery{
     PreparedStatement cmd;
-    String email; // email from ForgetPassword Form
     JFrame frame;
     JLabel headerLb, userLb, pass1Lb, pass2Lb, informLb;
     JTextField txtUsername;
     JPasswordField txtNewPass, txtConfirm;
     JButton btnReset;
-    public ResetPassword(String Email) {
-        this.email = Email;
+    public ResetPassword(String telephone) {
         // Create Frame
         frame = new JFrame();
         frame.setSize(400, 400);
@@ -92,25 +90,25 @@ public class ResetPassword extends FoodDelivery{
                 try {
                     dbConnection();
                     // Verify that username belongs to this email
-                    String check = "SELECT * FROM Users WHERE Email=? AND Username=?";
+                    String check = "SELECT * FROM Users WHERE Telephone =? AND Username=?";
                     cmd = conn.prepareStatement(check);
-                    cmd.setString(1, email);
+                    cmd.setString(1, telephone);
                     cmd.setString(2, username);
                     ResultSet rs = cmd.executeQuery();
                     if (rs.next()) {
                         String pass = txtNewPass.getText();
                         // Update password safely
-                        String update = "UPDATE Users SET Password=? WHERE Email=? AND Username=?";
+                        String update = "UPDATE Users SET Password=? WHERE Telephone=? AND Username=?";
                         cmd = conn.prepareStatement(update);
                         cmd.setString(1, pass);
-                        cmd.setString(2, email);
+                        cmd.setString(2, telephone);
                         cmd.setString(3, username);
                         cmd.executeUpdate();
                         JOptionPane.showMessageDialog(null, "Password updated successfull. Please log in with your new password!");
                         new FormLogin();
                         frame.setVisible(false);
                     } else {
-                        JOptionPane.showMessageDialog(null, "Username does not match this email!");
+                        JOptionPane.showMessageDialog(null, "Username does not match this telephone!");
                     }
                 } 
                 catch (Exception ex) {

@@ -43,7 +43,7 @@ public class FormLogin extends FoodDelivery{
         // Create Frame
         frame = new JFrame();
         frame.setSize(600,500);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
         // Create Label
         headerLb = new JLabel("Log In", JLabel.CENTER);
@@ -184,7 +184,6 @@ public class FormLogin extends FoodDelivery{
                             JOptionPane.showMessageDialog(null, "Unknown role!");
                             return;
                         }
-                        frame.dispose();
                     }
                     else{
                         JOptionPane.showMessageDialog(null, "Invalid Username or Password!");

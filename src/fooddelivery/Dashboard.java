@@ -103,25 +103,25 @@ public final class Dashboard extends JFrame{
             if(rs .next())
                 OrderToday = Integer.parseInt(rs.getString(1));
             
-            String sql5 = "SELECT SUM(Details.Quantity) as ItemSold FROM Orders JOIN Details on Orders.OrderNo = Details.OrderNo;";                     
+            String sql5 = "SELECT SUM(Details.Quantity) as ItemSold FROM Orders JOIN Details on Orders.OrderNo = Details.OrderNo WHERE Orders.Status = 'Completed';";                     
             cmd = conn.prepareStatement(sql5);            
             rs = cmd.executeQuery();     
             if(rs .next())
                 SoldNum = Integer.parseInt(rs.getString(1));
             
-            String sql6 = "SELECT SUM(Details.Quantity) as ItemSold FROM Orders JOIN Details on Orders.OrderNo = Details.OrderNo AND DATE(OrderDate) = Date(now());";                     
+            String sql6 = "SELECT SUM(Details.Quantity) as ItemSold FROM Orders JOIN Details on Orders.OrderNo = Details.OrderNo WHERE Orders.Status = 'Completed' AND DATE(Orders.OrderDate) = Date(now());";                     
             cmd = conn.prepareStatement(sql6);            
             rs = cmd.executeQuery();       
             if(rs .next())
                 SoldToday = Integer.parseInt(rs.getString(1));
             
-            String sql7 = "SELECT SUM(Details.Quantity * Details.Price) as Total FROM Orders JOIN Details WHERE Details.OrderNo = Orders.OrderNo;";                     
+            String sql7 = "SELECT SUM(Details.Quantity * Details.Price) as Total FROM Orders JOIN Details ON Details.OrderNo = Orders.OrderNo WHERE Orders.Status = 'Completed';";                     
             cmd = conn.prepareStatement(sql7);            
             rs = cmd.executeQuery();    
             if(rs .next())
                 Profit = Float.parseFloat(rs.getString(1));
             
-            String sql8 = "SELECT SUM(Details.Quantity * Details.Price) as Total FROM Orders JOIN Details WHERE Details.OrderNo = Orders.OrderNo AND DATE(OrderDate) = Date(now());";                     
+            String sql8 = "SELECT SUM(Details.Quantity * Details.Price) as Total FROM Orders JOIN Details ON Details.OrderNo = Orders.OrderNo WHERE Orders.Status = 'Completed' AND DATE(OrderDate) = Date(now());";                     
             cmd = conn.prepareStatement(sql8);            
             rs = cmd.executeQuery();        
             if(rs .next())

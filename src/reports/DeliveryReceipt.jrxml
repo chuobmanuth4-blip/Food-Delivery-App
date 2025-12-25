@@ -6,10 +6,10 @@
 	<query language="sql"><![CDATA[SELECT
     o.OrderNo,
     o.OrderDate,
-    o.DeliveryID AS DeliverymanID,
+    o.DeliverymanID,
     c.Username AS CustomerName,
     o.Address,
-    o.Phone AS Telephone,
+    c.Telephone,
     p.ProNo,
     p.ProName,
     d.Quantity,
@@ -23,7 +23,7 @@ INNER JOIN Products p
 INNER JOIN Users c
     ON o.CustomerID = c.UserID
 LEFT JOIN Users dm
-    ON o.DeliveryID = dm.UserID
+    ON o.DeliverymanID = dm.UserID
     WHERE o.OrderNo = $P{OrderNoParam}
 ORDER BY o.OrderNo
 ]]></query>
@@ -38,7 +38,7 @@ ORDER BY o.OrderNo
 		<property name="com.jaspersoft.studio.field.tree.path" value="orders"/>
 	</field>
 	<field name="DeliverymanID" class="java.lang.Integer">
-		<property name="com.jaspersoft.studio.field.name" value="DeliveryID"/>
+		<property name="com.jaspersoft.studio.field.name" value="DeliverymanID"/>
 		<property name="com.jaspersoft.studio.field.label" value="DeliverymanID"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="orders"/>
 	</field>
@@ -53,9 +53,9 @@ ORDER BY o.OrderNo
 		<property name="com.jaspersoft.studio.field.tree.path" value="orders"/>
 	</field>
 	<field name="Telephone" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="Phone"/>
+		<property name="com.jaspersoft.studio.field.name" value="Telephone"/>
 		<property name="com.jaspersoft.studio.field.label" value="Telephone"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="orders"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="users"/>
 	</field>
 	<field name="ProNo" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.name" value="ProNo"/>
@@ -113,22 +113,22 @@ ORDER BY o.OrderNo
 		<element kind="staticText" uuid="7c8a5deb-9195-4fb1-b40d-35a106c52897" x="232" y="3" width="90" height="32" forecolor="#F50E0A" fontSize="19.0" bold="true">
 			<text><![CDATA[RECEIPT]]></text>
 		</element>
-		<element kind="staticText" uuid="4ab6515c-bbcc-4b70-843d-27e7cd19e0ea" x="2" y="44" width="61" height="15" rotation="None" markup="html" fontName="Times New Roman" fontSize="13.0" bold="true" italic="false">
+		<element kind="staticText" uuid="4ab6515c-bbcc-4b70-843d-27e7cd19e0ea" x="2" y="44" width="61" height="15" rotation="None" markup="html" fontName="Times New Roman" fontSize="13.0" italic="false" bold="true">
 			<text><![CDATA[OrderNo: ]]></text>
 		</element>
-		<element kind="staticText" uuid="ca36daad-9dbd-4199-8322-39449b134988" x="0" y="85" width="100" height="15" rotation="None" markup="html" fontName="Times New Roman" fontSize="13.0" bold="true" italic="false">
+		<element kind="staticText" uuid="ca36daad-9dbd-4199-8322-39449b134988" x="0" y="85" width="100" height="15" rotation="None" markup="html" fontName="Times New Roman" fontSize="13.0" italic="false" bold="true">
 			<text><![CDATA[CustomerName: ]]></text>
 		</element>
-		<element kind="staticText" uuid="ac8b65e8-1225-43af-b8bf-c368bb848279" x="389" y="44" width="100" height="15" rotation="None" markup="html" fontName="Times New Roman" fontSize="13.0" bold="true" italic="false">
+		<element kind="staticText" uuid="ac8b65e8-1225-43af-b8bf-c368bb848279" x="389" y="44" width="100" height="15" rotation="None" markup="html" fontName="Times New Roman" fontSize="13.0" italic="false" bold="true">
 			<text><![CDATA[DeliverymanID: ]]></text>
 		</element>
-		<element kind="staticText" uuid="35551352-9995-4af5-8468-6ab5cce6973f" x="184" y="44" width="71" height="15" rotation="None" markup="html" fontName="Times New Roman" fontSize="13.0" bold="true" italic="false">
+		<element kind="staticText" uuid="35551352-9995-4af5-8468-6ab5cce6973f" x="184" y="44" width="71" height="15" rotation="None" markup="html" fontName="Times New Roman" fontSize="13.0" italic="false" bold="true">
 			<text><![CDATA[OrderDate: ]]></text>
 		</element>
-		<element kind="staticText" uuid="95a0458e-9fb3-49ba-9b45-d449fdf82080" x="184" y="85" width="54" height="15" rotation="None" markup="html" fontName="Times New Roman" fontSize="13.0" bold="true" italic="false">
+		<element kind="staticText" uuid="95a0458e-9fb3-49ba-9b45-d449fdf82080" x="184" y="85" width="54" height="15" rotation="None" markup="html" fontName="Times New Roman" fontSize="13.0" italic="false" bold="true">
 			<text><![CDATA[Address: ]]></text>
 		</element>
-		<element kind="staticText" uuid="5dc498f9-60f0-49b7-b897-5c2684c9169e" x="390" y="85" width="71" height="15" rotation="None" markup="html" fontName="Times New Roman" fontSize="13.0" bold="true" italic="false">
+		<element kind="staticText" uuid="5dc498f9-60f0-49b7-b897-5c2684c9169e" x="390" y="85" width="71" height="15" rotation="None" markup="html" fontName="Times New Roman" fontSize="13.0" italic="false" bold="true">
 			<text><![CDATA[Telephone: ]]></text>
 		</element>
 		<element kind="textField" uuid="7a9c4d69-5f9c-4cd6-9eb7-1b7c88a88cfb" x="63" y="44" width="121" height="15" fontName="Times New Roman" fontSize="13.0" bold="true">
@@ -151,19 +151,19 @@ ORDER BY o.OrderNo
 		</element>
 	</pageHeader>
 	<columnHeader height="26" splitType="Stretch">
-		<element kind="staticText" uuid="0aee30f0-bd10-4ba8-8787-9fa16e24bfdb" x="0" y="1" width="72" height="19" rotation="None" markup="html" fontName="Times New Roman" fontSize="13.0" bold="true" italic="false">
+		<element kind="staticText" uuid="0aee30f0-bd10-4ba8-8787-9fa16e24bfdb" x="0" y="1" width="72" height="19" rotation="None" markup="html" fontName="Times New Roman" fontSize="13.0" italic="false" bold="true">
 			<text><![CDATA[ProductNo]]></text>
 		</element>
-		<element kind="staticText" uuid="4fd2740d-f232-421f-944d-2d74ef631e7d" x="130" y="0" width="90" height="19" rotation="None" markup="html" fontName="Times New Roman" fontSize="13.0" bold="true" italic="false">
+		<element kind="staticText" uuid="4fd2740d-f232-421f-944d-2d74ef631e7d" x="130" y="0" width="90" height="19" rotation="None" markup="html" fontName="Times New Roman" fontSize="13.0" italic="false" bold="true">
 			<text><![CDATA[ProductName ]]></text>
 		</element>
-		<element kind="staticText" uuid="8c422bad-563e-411f-93c7-e704231a7ad4" x="280" y="0" width="63" height="19" rotation="None" markup="html" fontName="Times New Roman" fontSize="13.0" bold="true" italic="false">
+		<element kind="staticText" uuid="8c422bad-563e-411f-93c7-e704231a7ad4" x="280" y="0" width="63" height="19" rotation="None" markup="html" fontName="Times New Roman" fontSize="13.0" italic="false" bold="true">
 			<text><![CDATA[Quantity]]></text>
 		</element>
-		<element kind="staticText" uuid="110e7b74-a9ee-4f55-8896-e6dbdf43f8be" x="400" y="0" width="40" height="19" rotation="None" markup="html" fontName="Times New Roman" fontSize="13.0" bold="true" italic="false">
+		<element kind="staticText" uuid="110e7b74-a9ee-4f55-8896-e6dbdf43f8be" x="400" y="0" width="40" height="19" rotation="None" markup="html" fontName="Times New Roman" fontSize="13.0" italic="false" bold="true">
 			<text><![CDATA[Price]]></text>
 		</element>
-		<element kind="staticText" uuid="a1e0a886-b456-4bd9-9db6-58376b80d457" x="510" y="0" width="34" height="19" rotation="None" markup="html" fontName="Times New Roman" fontSize="13.0" bold="true" italic="false">
+		<element kind="staticText" uuid="a1e0a886-b456-4bd9-9db6-58376b80d457" x="510" y="0" width="34" height="19" rotation="None" markup="html" fontName="Times New Roman" fontSize="13.0" italic="false" bold="true">
 			<text><![CDATA[Total ]]></text>
 		</element>
 		<element kind="line" uuid="fca6c5e8-5387-4986-aa57-77f7b993142c" x="-2" y="20" width="546" height="1">
@@ -197,7 +197,7 @@ ORDER BY o.OrderNo
 		</band>
 	</detail>
 	<columnFooter height="25" splitType="Stretch">
-		<element kind="staticText" uuid="581ef66d-6322-4f1a-8f5a-dae15396ac2c" x="395" y="2" width="75" height="16" rotation="None" markup="html" fontName="Times New Roman" fontSize="13.0" bold="true" italic="false">
+		<element kind="staticText" uuid="581ef66d-6322-4f1a-8f5a-dae15396ac2c" x="395" y="2" width="75" height="16" rotation="None" markup="html" fontName="Times New Roman" fontSize="13.0" italic="false" bold="true">
 			<text><![CDATA[Grand Total: ]]></text>
 		</element>
 		<element kind="textField" uuid="d33e8182-a271-463e-af43-eb2c2898dcca" x="511" y="2" width="79" height="16" fontName="Times New Roman" fontSize="13.0" bold="true">
@@ -214,7 +214,7 @@ ORDER BY o.OrderNo
 		<element kind="textField" uuid="fc444b15-da05-4f24-bbf1-fd2b2d3dfc87" x="456" y="32" width="116" height="16" fontSize="12.0" bold="true">
 			<expression><![CDATA[$V{CurrentTime}]]></expression>
 		</element>
-		<element kind="staticText" uuid="52e70819-65f0-4a34-90f5-682b79f3ac7f" x="385" y="32" width="70" height="16" rotation="None" markup="html" fontName="Times New Roman" fontSize="13.0" bold="true" italic="false">
+		<element kind="staticText" uuid="52e70819-65f0-4a34-90f5-682b79f3ac7f" x="385" y="32" width="70" height="16" rotation="None" markup="html" fontName="Times New Roman" fontSize="13.0" italic="false" bold="true">
 			<text><![CDATA[Printed on: ]]></text>
 		</element>
 	</pageFooter>

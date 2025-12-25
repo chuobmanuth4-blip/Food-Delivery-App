@@ -38,7 +38,7 @@ import net.sf.jasperreports.swing.JRViewer;
  *
  * @author manut
  */
-public class OrderAdmin extends JFrame {
+public final class OrderAdmin extends JFrame {
     Container pane;   
     Connection conn;
     PreparedStatement cmd; 
@@ -203,7 +203,7 @@ public class OrderAdmin extends JFrame {
                 int deliveryId = Integer.parseInt(parts[0]);
                 try {
                     dbConnection();
-                    String sql = "UPDATE Orders SET DeliveryID = ? WHERE OrderNo = ?";
+                    String sql = "UPDATE Orders SET DeliverymanID = ? WHERE OrderNo = ?";
                     cmd = conn.prepareStatement(sql);
                     cmd.setInt(1, deliveryId);
                     cmd.setInt(2, orderNo);
@@ -228,13 +228,13 @@ public class OrderAdmin extends JFrame {
                 try 
                 {
                     dbConnection();
-                    String sql = "SELECT o.OrderNo, c.Username AS CustomerName, o.DeliveryID, o.OrderDate, SUM(d.Quantity * d.Price) AS Amount, o.Status FROM Orders o JOIN Users c ON o.CustomerID = c.UserID JOIN Details d ON o.OrderNo = d.OrderNo WHERE o.OrderNo = ? GROUP BY o.OrderNo, c.Username, o.DeliveryID, o.OrderDate, o.Status;";
+                    String sql = "SELECT o.OrderNo, c.Username AS CustomerName, o.DeliverymanID, o.OrderDate, SUM(d.Quantity * d.Price) AS Amount, o.Status FROM Orders o JOIN Users c ON o.CustomerID = c.UserID JOIN Details d ON o.OrderNo = d.OrderNo WHERE o.OrderNo = ? GROUP BY o.OrderNo, c.Username, o.DeliverymanID, o.OrderDate, o.Status;";
                     cmd = conn.prepareStatement(sql);                   
                     cmd.setString(1,Integer.toString(orderNo));                    
                     rs = cmd.executeQuery();                
                     if (rs.next()==true)
                     {
-                        Object deliveryId = rs.getObject("DeliveryID"); // Integer or null
+                        Object deliveryId = rs.getObject("DeliverymanID"); // Integer or null
                         tbOrder.setRowCount(0);
                         tbOrder.addRow(new Object[]{
                         rs.getInt("OrderNo"),
@@ -258,6 +258,11 @@ public class OrderAdmin extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e){
                 loadOrderTable();
+                txtSearch.setText("");
+                pnlCEC.removeAll();
+                pnlCEC.setLayout(new BorderLayout());
+                pnlCEC.revalidate();
+                pnlCEC.repaint();
             }
         });
         btnViewOrdDetail.addActionListener(new ActionListener(){
@@ -276,13 +281,12 @@ public class OrderAdmin extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    dbConnection(); // make sure conn is valid
+                    dbConnection(); 
 
                     // Load compiled report
                     JasperReport jr = (JasperReport) JRLoader.loadObjectFromFile(
                         "C:\\Users\\manut\\OneDrive - ACLEDA University of Business Co., Ltd\\My Documents\\AUB BACHELOR CSE\\AUB BACHELOR CSE Y2S1\\CS 214 Java Programming\\Project\\FoodDelivery\\src\\reports\\DeliveryReceipt.jasper"
                     );
-
                     // Parameters
                     Map<String, Object> param = new HashMap<>();
                     int row = tb.getSelectedRow();
@@ -292,19 +296,15 @@ public class OrderAdmin extends JFrame {
                     }
                     int orderNo = (int) tb.getValueAt(row, 0);
                     param.put("OrderNoParam", orderNo);
-
                     // Fill report
                     JasperPrint jp = JasperFillManager.fillReport(jr, param, conn);
-
                     // Clear panel
                     pnlCEC.removeAll();
                     pnlCEC.setLayout(new BorderLayout());
-
                     // Add JRViewer to panel
                     JRViewer viewer = new JRViewer(jp);
                     viewer.setZoomRatio(0.3f);
                     pnlCEC.add(viewer, BorderLayout.CENTER);
-
                     // Refresh panel
                     pnlCEC.revalidate();
                     pnlCEC.repaint();
@@ -337,12 +337,12 @@ public class OrderAdmin extends JFrame {
     public void loadOrderTable() {
         try {
             dbConnection();
-            String sql = "SELECT o.OrderNo, c.Username AS CustomerName, o.DeliveryID, o.OrderDate, SUM(d.Quantity * d.Price) AS Amount, o.Status FROM Orders o JOIN Users c ON o.CustomerID = c.UserID JOIN Details d ON o.OrderNo = d.OrderNo GROUP BY o.OrderNo, c.Username, o.DeliveryID, o.OrderDate, o.Status;";
+            String sql = "SELECT o.OrderNo, c.Username AS CustomerName, o.DeliverymanID, o.OrderDate, SUM(d.Quantity * d.Price) AS Amount, o.Status FROM Orders o JOIN Users c ON o.CustomerID = c.UserID JOIN Details d ON o.OrderNo = d.OrderNo GROUP BY o.OrderNo, c.Username, o.DeliverymanID, o.OrderDate, o.Status;";
             cmd = conn.prepareStatement(sql);
             rs = cmd.executeQuery();
             tbOrder.setRowCount(0);
             while (rs.next()) {
-                    Object deliveryId = rs.getObject("DeliveryID"); // Integer or null
+                    Object deliveryId = rs.getObject("DeliverymanID");
                     tbOrder.addRow(new Object[]{
                     rs.getInt("OrderNo"),
                     rs.getString("CustomerName"),

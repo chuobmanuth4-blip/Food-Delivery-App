@@ -13,10 +13,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -34,12 +30,11 @@ import javax.swing.JTextField;
  */
 public class UpdateUser extends UserAdmin{
     JFrame frame;
-    JLabel  headerLb,searchLb, userLb, passLb1, passLb2, roleLb, genderLb, emailLb;
-    JTextField txtsearch, txtusername,txtemail;
+    JLabel  headerLb,searchLb, userLb, passLb1, passLb2, roleLb, genderLb, phLb;
+    JTextField txtsearch, txtusername,txtphone;
     JPasswordField txtpass1, txtpass2;
     JComboBox cmbGender, cmbRole;
     JButton btnCancel, btnConfirm, btnSearch;
-    JPanel pnlN, pnlC;      
     int selectedUserId = -1;
     public UpdateUser(){
         // Create Frame
@@ -60,8 +55,8 @@ public class UpdateUser extends UserAdmin{
         passLb1.setBounds(30,70,100,20);
         passLb2 = new JLabel("Confirm Password: ");
         passLb2.setBounds(30,120,120,20);
-        emailLb = new JLabel("Email: ");
-        emailLb.setBounds(30,170,100,20);
+        phLb = new JLabel("Telephone: ");
+        phLb.setBounds(30,170,100,20);
         roleLb = new JLabel("User Type: ");
         roleLb.setBounds(30,220,100,20);
         genderLb = new JLabel("Gender: ");
@@ -92,13 +87,13 @@ public class UpdateUser extends UserAdmin{
         txtpass1.setBounds(150,60,300,40);
         txtpass2 = new JPasswordField("");
         txtpass2.setBounds(150,110,300,40);
-        txtemail = new JTextField();
-        txtemail.setBounds(150,160,300,40);
+        txtphone = new JTextField();
+        txtphone.setBounds(150,160,300,40);
         // Create ComboBox
-        String role [] = {null,"Admin", "Customer", "Deliveryman"};
+        String role[] = {"Select role", "Admin", "Customer", "Deliveryman"};
         cmbRole = new JComboBox(role);
         cmbRole.setBounds(150,210,300,40);
-        String gender [] = {"", "Male", "Female", "Other"};
+        String gender[] = {"Select gender", "Male", "Female", "Other"};
         cmbGender = new JComboBox(gender);
         cmbGender.setBounds(150,260,300,40);
         // Create Button 
@@ -137,8 +132,8 @@ public class UpdateUser extends UserAdmin{
         pnlC.add(txtpass1);
         pnlC.add(passLb2);
         pnlC.add(txtpass2);
-        pnlC.add(emailLb);
-        pnlC.add(txtemail);
+        pnlC.add(phLb);
+        pnlC.add(txtphone);
         pnlC.add(roleLb);
         pnlC.add(cmbRole);
         pnlC.add(genderLb);
@@ -156,15 +151,13 @@ public class UpdateUser extends UserAdmin{
                 } catch (NumberFormatException ex) {     
                 }
                 String username = input;
-                String email = input;
                 try 
                 {
                     dbConnection();
-                    String sql = "SELECT UserID, Username, Password, Role, Gender, Email FROM Users WHERE UserID = ? OR Username = ? OR Email = ?";
+                    String sql = "SELECT UserID, Username, Password, Role, Gender, Telephone FROM Users WHERE UserID = ? OR Username = ?";
                     cmd = conn.prepareStatement(sql);                   
                     cmd.setInt(1, id);                    
                     cmd.setString(2, username);
-                    cmd.setString(3, email);                    
                     rs = cmd.executeQuery();                
                     if (rs.next()==true)
                     {
@@ -172,7 +165,7 @@ public class UpdateUser extends UserAdmin{
                         txtusername.setText(rs.getString("Username"));
                         txtpass1.setText(rs.getString("Password"));
                         txtpass2.setText(rs.getString("Password"));
-                        txtemail.setText(rs.getString("Email"));
+                        txtphone.setText(rs.getString("Telephone"));
                         cmbRole.setSelectedItem(rs.getString("Role"));
                         cmbGender.setSelectedItem(rs.getString("Gender"));
                     }   
@@ -189,17 +182,17 @@ public class UpdateUser extends UserAdmin{
         btnConfirm.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
+                String username = txtusername.getText();
+                String password = String.valueOf(txtpass1.getPassword());
+                String confirmPass = String.valueOf(txtpass2.getPassword());
+                String phone = txtphone.getText();
+                String role = (String) cmbRole.getSelectedItem();
+                String gender = (String) cmbGender.getSelectedItem();
                 if (selectedUserId == -1) {
                     JOptionPane.showMessageDialog(null, "Please search a user first!");
                     return;
                 }
-                String username = txtusername.getText();
-                String password = txtpass1.getText();
-                String confirmPass = txtpass2.getText();
-                String email = txtemail.getText();
-                String role = (String) cmbRole.getSelectedItem();
-                String gender = (String) cmbGender.getSelectedItem();
-                if (username.isEmpty() || password.isEmpty() || confirmPass.isEmpty() || email.isEmpty() || gender.isEmpty() || role.isEmpty()) {
+                if (username.isEmpty() || password.isEmpty() || confirmPass.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Please fill in all required fields!");
                     return; 
                 }
@@ -207,15 +200,23 @@ public class UpdateUser extends UserAdmin{
                     JOptionPane.showMessageDialog(null, "Passwords do not match!");
                     return;
                 }
+                if (cmbRole.getSelectedIndex() == 0 || cmbGender.getSelectedIndex() == 0) {
+                    JOptionPane.showMessageDialog(null, "Please select role and gender");
+                    return;
+                }
+                if (!phone.matches("\\d{8,15}")) {
+                    JOptionPane.showMessageDialog(null, "Telephone must contain only numbers (8–15 digits)");
+                    return;
+                }
                 try {
                     dbConnection();
-                    String sql = "UPDATE Users SET Username= ?, Password = ?, Role = ?, Gender = ?, Email = ? WHERE UserID = ?;";                     
+                    String sql = "UPDATE Users SET Username= ?, Password = ?, Role = ?, Gender = ?, Telephone = ? WHERE UserID = ?;";                     
                     cmd = conn.prepareStatement(sql);            
                     cmd.setString(1, username);
                     cmd.setString(2, password);
                     cmd.setString(3, role);
                     cmd.setString(4, gender);
-                    cmd.setString(5, email); 
+                    cmd.setString(5, phone); 
                     cmd.setInt(6, selectedUserId);
                     
                     int x = cmd.executeUpdate();    

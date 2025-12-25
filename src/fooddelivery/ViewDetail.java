@@ -43,7 +43,7 @@ public final class ViewDetail extends FoodDelivery{
         lbHeader.setFont(new Font("Arial", Font.BOLD, 20));
         // Create Table
         tbDetail = new DefaultTableModel();
-        tbDetail.addColumn("OrderNo");
+        tbDetail.addColumn("ProNo");
         tbDetail.addColumn("ProName");
         tbDetail.addColumn("Quantity");
         tbDetail.addColumn("Price");
@@ -73,14 +73,14 @@ public final class ViewDetail extends FoodDelivery{
     public void loadDetailTable() {
         try {
             dbConnection();
-            String sql = "SELECT d.OrderNo, p.ProName, d.Quantity, d.Price, SUM(d.Quantity * d.Price) AS Total FROM Details d JOIN Products p on d.ProNo = p.ProNo WHERE OrderNo = ? GROUP BY d.OrderNo, p.ProName, d.Quantity, d.Price";
+            String sql = "SELECT d.ProNo, p.ProName, d.Quantity, d.Price, SUM(d.Quantity * d.Price) AS Total FROM Details d JOIN Products p on d.ProNo = p.ProNo WHERE d.OrderNo = ? GROUP BY d.ProNo, p.ProName, d.Quantity, d.Price";
             cmd = conn.prepareStatement(sql);
             cmd.setInt(1, OrderNo);
             rs = cmd.executeQuery();
             tbDetail.setRowCount(0);
             while (rs.next()) {
                     tbDetail.addRow(new Object[]{
-                    rs.getInt("OrderNo"),
+                    rs.getInt("ProNo"),
                     rs.getString("ProName"),
                     rs.getInt("Quantity"),
                     rs.getFloat("Price"),

@@ -34,11 +34,10 @@ public class DeliveryForm{
         this.DeliveryID = deliveryID;
         // Create Frame
         frame = new JFrame();
-        frame.setSize(400,400);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setLayout(new BorderLayout());
         // Create image
-        img = new ImageIcon("C:\\Users\\manut\\OneDrive - ACLEDA University of Business Co., Ltd\\My Documents\\AUB BACHELOR CSE\\AUB BACHELOR CSE Y2S1\\CS 214 Java Programming\\Project\\FoodDelivery\\src\\logo2.png");
+        img = new ImageIcon("C:\\Users\\manut\\OneDrive - ACLEDA University of Business Co., Ltd\\My Documents\\AUB BACHELOR CSE\\AUB BACHELOR CSE Y2S1\\CS 214 Java Programming\\Project\\FoodDelivery\\src\\logo.png");
         // Creat Label
         lb1 = new JLabel("Get it hot. Get it fast. GetFood.", img, JLabel.CENTER);
         lb1.setFont(new Font("Arial", Font.BOLD, 30));
@@ -83,6 +82,12 @@ public class DeliveryForm{
                 pnlC.revalidate();
                 pnlC.repaint();
                 pnlC.add(od.getPane());
+            }
+        });
+        btn4.addActionListener(new ActionListener(){
+            @Override 
+            public void actionPerformed(ActionEvent e){
+                frame.dispose();
             }
         });
         // Show Frame

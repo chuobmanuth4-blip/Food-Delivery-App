@@ -42,7 +42,7 @@ public final class OrderUser extends JFrame{
     Connection conn;
     PreparedStatement cmdOrder, cmdDetail; 
     ResultSet rs; 
-    JLabel lbGrandTotal, lbAddress, lbPhone;
+    JLabel lbGrandTotal, lbAddress;
     JTextField txtGrandTotal, txtAddress, txtPhone;
     JButton btnClear, btnOrder,btnDelete, btnAddToCart, btnMainDish, btnDrink, btnSnack, btnDessert, btnFastfood;
     JPanel pnlW, pnlE, pnlWC, pnlFastFood, pnlMainDish, pnlDrink, pnlSnack, pnlDessert;
@@ -61,13 +61,9 @@ public final class OrderUser extends JFrame{
         
         lbAddress = new JLabel("Address: ", JLabel.CENTER);
         lbAddress.setFont(new Font("Arial", Font.BOLD, 16));
-        
-        lbPhone = new JLabel("Phone: ", JLabel.CENTER);
-        lbPhone.setFont(new Font("Arial", Font.BOLD, 16));
         // Create TextField
         txtGrandTotal = new JTextField();
         txtAddress = new JTextField();
-        txtPhone = new JTextField();
         // Create Button
         btnMainDish = new JButton("1-Main Dishes");
         btnDrink = new JButton("2-Drinks");
@@ -77,8 +73,7 @@ public final class OrderUser extends JFrame{
         btnAddToCart = new JButton("Add to cart"); 
         btnClear = new JButton("Clear"); 
         btnDelete = new JButton("Delete"); 
-        btnOrder = new JButton("Order"); 
-        
+        btnOrder = new JButton("Order");   
         // Create Table
         tbDetails = new DefaultTableModel();
         tbDetails.addColumn("ProNo");
@@ -237,8 +232,8 @@ public final class OrderUser extends JFrame{
         pnlEC.add(txtGrandTotal); 
         pnlEC.add(lbAddress);
         pnlEC.add(txtAddress);  
-        pnlEC.add(lbPhone);
-        pnlEC.add(txtPhone); 
+        pnlEC.add(new JLabel(""));
+        pnlEC.add(new JLabel("")); 
         JPanel pnlES = new JPanel();
         pnlES.setLayout(new GridLayout(1,3));
         pnlES.setPreferredSize(new Dimension(0,80));
@@ -293,18 +288,16 @@ public final class OrderUser extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e){
                 String address = txtAddress.getText();
-                String phone = txtPhone.getText();
-                if (address.isEmpty() || phone.isEmpty()) {
+                if (address.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Please fill in all required fields!");
                     return; 
                 }
                 try{
                     dbConnection();
-                    String sqlOrder = "INSERT INTO Orders (CustomerID, DeliveryID, Status, Address, Phone) VALUES (?, NULL, 'Pending', ?, ?);";
+                    String sqlOrder = "INSERT INTO Orders (CustomerID, DeliverymanID, Address, Status) VALUES (?, NULL,?, 'Pending');";
                     cmdOrder = conn.prepareStatement(sqlOrder, Statement.RETURN_GENERATED_KEYS);
                     cmdOrder.setInt(1, userID);
                     cmdOrder.setString(2, txtAddress.getText());
-                    cmdOrder.setString(3, txtPhone.getText());                    
                     cmdOrder.executeUpdate();
                     
                     int orderNo = 0;
