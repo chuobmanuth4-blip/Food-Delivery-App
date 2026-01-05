@@ -285,7 +285,8 @@ public final class OrderAdmin extends JFrame {
 
                     // Load compiled report
                     JasperReport jr = (JasperReport) JRLoader.loadObjectFromFile(
-                        "C:\\Users\\manut\\OneDrive - ACLEDA University of Business Co., Ltd\\My Documents\\AUB BACHELOR CSE\\AUB BACHELOR CSE Y2S1\\CS 214 Java Programming\\Project\\FoodDelivery\\src\\reports\\DeliveryReceipt.jasper"
+                        "C:\\Users\\manut\\OneDrive - ACLEDA University of Business Co., Ltd\\My Documents\\AUB BACHELOR CSE\\AUB BACHELOR CSE Y2S1\\"
+                                + "CS 214 Java Programming\\Project\\FoodDelivery\\src\\reports\\DeliveryReceipt.jasper"
                     );
                     // Parameters
                     Map<String, Object> param = new HashMap<>();

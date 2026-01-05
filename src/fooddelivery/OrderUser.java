@@ -366,8 +366,7 @@ public final class OrderUser extends JFrame{
                 txtAddress.setText("");
                 txtPhone.setText("");
             }
-        });
-        
+        });  
         btnMainDish.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){

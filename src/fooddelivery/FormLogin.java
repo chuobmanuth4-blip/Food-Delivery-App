@@ -99,7 +99,7 @@ public class FormLogin extends FoodDelivery{
         txtusername.setBounds(48,120,290,30);
 
         //txtpass = new JPasswordField("Tur1234");
-        txtpass = new JPasswordField("Nuth@9273$");
+        txtpass = new JPasswordField("M1234567");
         txtpass.setBounds(48,180,290,30);
         // Create Panel
         pnl1 = new JPanel();
