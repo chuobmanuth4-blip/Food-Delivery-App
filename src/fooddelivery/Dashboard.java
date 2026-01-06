@@ -83,49 +83,49 @@ public final class Dashboard extends JFrame{
             cmd = conn.prepareStatement(sql1);            
             rs = cmd.executeQuery();         
             if(rs.next())
-                CountCust = Integer.parseInt(rs.getString(1));
+                CountCust = rs.getInt(1);
             
             String sql2 = "SELECT COUNT(*) AS CustomerNumber FROM Users WHERE Role = 'Customer' AND DATE(createdAt)= CURDATE();";                     
             cmd = conn.prepareStatement(sql2);            
             rs = cmd.executeQuery();       
             if(rs .next())
-                TodayCust = Integer.parseInt(rs.getString(1));
+                TodayCust = rs.getInt(1);
             
             String sql3 = "SELECT COUNT(*) AS OrderNumber FROM Orders;";                     
             cmd = conn.prepareStatement(sql3);            
             rs = cmd.executeQuery();       
             if(rs .next())
-                OrderNum = Integer.parseInt(rs.getString(1));
+                OrderNum = rs.getInt(1);
             
             String sql4 = "SELECT COUNT(*) AS OrderNumber FROM Orders WHERE DATE(OrderDate) = Date(now());";                     
             cmd = conn.prepareStatement(sql4);            
             rs = cmd.executeQuery();       
             if(rs .next())
-                OrderToday = Integer.parseInt(rs.getString(1));
+                OrderToday = rs.getInt(1);
             
             String sql5 = "SELECT SUM(Details.Quantity) as ItemSold FROM Orders JOIN Details on Orders.OrderNo = Details.OrderNo WHERE Orders.Status = 'Completed';";                     
             cmd = conn.prepareStatement(sql5);            
             rs = cmd.executeQuery();     
             if(rs .next())
-                SoldNum = Integer.parseInt(rs.getString(1));
+                SoldNum = rs.getInt(1);
             
             String sql6 = "SELECT SUM(Details.Quantity) as ItemSold FROM Orders JOIN Details on Orders.OrderNo = Details.OrderNo WHERE Orders.Status = 'Completed' AND DATE(Orders.OrderDate) = Date(now());";                     
             cmd = conn.prepareStatement(sql6);            
             rs = cmd.executeQuery();       
             if(rs .next())
-                SoldToday = Integer.parseInt(rs.getString(1));
+                SoldToday = rs.getInt(1);
             
-            String sql7 = "SELECT SUM(Details.Quantity * Details.Price) as Total FROM Orders JOIN Details ON Details.OrderNo = Orders.OrderNo WHERE Orders.Status = 'Completed';";                     
+            String sql7 = "SELECT SUM(d.Quantity * p.Price) FROM Orders o JOIN Details d ON o.OrderNo = d.OrderNo JOIN Products p ON d.ProNo = p.ProNo WHERE o.Status = 'Completed';";                     
             cmd = conn.prepareStatement(sql7);            
             rs = cmd.executeQuery();    
             if(rs .next())
-                Profit = Float.parseFloat(rs.getString(1));
+                Profit = rs.getFloat(1);
             
-            String sql8 = "SELECT SUM(Details.Quantity * Details.Price) as Total FROM Orders JOIN Details ON Details.OrderNo = Orders.OrderNo WHERE Orders.Status = 'Completed' AND DATE(OrderDate) = Date(now());";                     
+            String sql8 = "SELECT SUM(d.Quantity * p.Price) FROM Orders o JOIN Details d ON o.OrderNo = d.OrderNo JOIN Products p ON d.ProNo = p.ProNo WHERE o.Status = 'Completed' AND DATE(OrderDate) = Date(now());";                     
             cmd = conn.prepareStatement(sql8);            
             rs = cmd.executeQuery();        
             if(rs .next())
-                ProfitToday = Float.parseFloat(rs.getString(1));
+                ProfitToday = rs.getFloat(1);
         }
         catch (SQLException ex) {
             ex.printStackTrace();
