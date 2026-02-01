@@ -25,7 +25,7 @@ This project is a full-stack food delivery system that enables users to browse r
 + JDBC
 
 + Jaspersoft Studio
-+ 
+  
 ## Core Features
 
 + User registration and login
